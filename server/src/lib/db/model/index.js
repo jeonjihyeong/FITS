@@ -1,5 +1,5 @@
 const user = require('./user');
-const board = require('./board');
+const note = require('./note');
 const comment = require('./comment');
 
 const modelList = [
@@ -8,7 +8,7 @@ const modelList = [
 
 module.exports = {
     modelDefines : {
-        user, note, comment, follow, like
+        user, note, comment,
     },
     modelList
 }

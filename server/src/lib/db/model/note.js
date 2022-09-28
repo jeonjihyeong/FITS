@@ -1,7 +1,7 @@
 const {DataTypes, Sequelize} = require('sequelize');
 
 const create = async (sequelize) => {
-    const boardTable = await sequelize.define('note', {
+    const noteTable = await sequelize.define('note', {
         // Model attributes are defined here
         noteIdx: {
             type: DataTypes.INTEGER,
@@ -33,16 +33,16 @@ const create = async (sequelize) => {
         timestamps: false,
     });
 
-    boardTable.associate = function (models) {
-        boardTable.belongsTo(models.user,{ 
+    noteTable.associate = function (models) {
+        noteTable.belongsTo(models.user,{ 
             foreignKey: 'userIdx',
             onDelete: "CASCADE"
         });
-        boardTable.hasMany(models.comment,{ 
-            foreignKey: 'boardIdx',
+        noteTable.hasMany(models.comment,{ 
+            foreignKey: 'noteIdx',
         });
     };
 
-    return boardTable;
+    return noteTable;
 }
 module.exports = create;  
