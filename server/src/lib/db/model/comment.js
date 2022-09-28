@@ -13,8 +13,8 @@ const create = async (sequelize) => {
         noteIdx: {
             type: DataTypes.INTEGER,
             references: {
-                model: 'board',
-                key: 'boardIdx',
+                model: 'note',
+                key: 'noteIdx',
             }
         },
         userIdx: {
@@ -42,8 +42,8 @@ const create = async (sequelize) => {
             foreignKey: 'userIdx',
             onDelete: "CASCADE"
         });
-        commentTable.belongsTo(models.board,{ 
-            foreignKey: 'boardIdx',
+        commentTable.belongsTos(models.note,{ 
+            foreignKey: 'noteIdx',
             onDelete: 'CASCADE',
         });
     };
