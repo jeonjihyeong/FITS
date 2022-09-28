@@ -8,10 +8,10 @@
       <v-toolbar-title
       class="logo"
       >
-        <img src="../assets/가로/new/007.png" width="130px">
+        <router-link to="/"><img src="../assets/가로/new/007.png" width="130px"></router-link>
       </v-toolbar-title>
       <v-btn icon>
-        <v-icon color="white">{{icons.mdiAccount}}</v-icon>
+        <router-link to="/signIn"><v-icon color="white">{{icons.mdiAccount}}</v-icon></router-link>
       </v-btn>
     </v-app-bar>
 

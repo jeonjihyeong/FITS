@@ -2,7 +2,7 @@
     <div>
         <v-card>
               <v-img
-                src='../../../../../카카오톡 받은 파일/KakaoTalk_20220501_174338657_01.jpg'
+                src='https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTExMTJfMTI1%2FMDAxNjM2NzI1NjE4NjQw.GEewoww7BRhJBXexutXVeX_GLWvW96Im9i6sHNaZObcg.QBOiFhHfK86jeQL1PTru8HRqdeooyyU-EzWDeiS_7fgg.JPEG.ho0605%2F20211112_111322.jpg&type=sc960_832'
                 class="white--text align-end"
                 height="200px"
               >
