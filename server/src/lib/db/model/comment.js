@@ -42,7 +42,7 @@ const create = async (sequelize) => {
             foreignKey: 'userIdx',
             onDelete: "CASCADE"
         });
-        commentTable.belongsTos(models.note,{ 
+        commentTable.belongsTo(models.note,{ 
             foreignKey: 'noteIdx',
             onDelete: 'CASCADE',
         });
