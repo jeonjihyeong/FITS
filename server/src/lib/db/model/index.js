@@ -3,7 +3,7 @@ const note = require('./note');
 const comment = require('./comment');
 
 const modelList = [
-    'user','board','comment'
+    'user','note','comment'
 ]
 
 module.exports = {
