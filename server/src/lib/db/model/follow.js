@@ -1,31 +1,28 @@
 const {DataTypes, Sequelize} = require('sequelize');
 
 const create = async (sequelize) => {
-    const noteTable = await sequelize.define('note', {
+    const followTable = await sequelize.define('follow', {
         // Model attributes are defined here
-        noteIdx: {
+        followIdx: {
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
             autoIncrement: true,
             onDelete: 'CASCADE',
         },
-        userIdx: {
+        following: {
             type: DataTypes.INTEGER,
             references: {
                 model: 'user',
                 key: 'userIdx',
             }
         },
-        title: {
-            type: DataTypes.STRING
-        },
-        content: {
-            type: DataTypes.STRING
-        },
-        created: {
-            type: DataTypes.DATE,
-            defalutValue: sequelize.literal('now()')
+        follower: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'user',
+                key: 'userIdx',
+            }
         },
     }, {
         // Other model options go here   timestamps: false,
@@ -33,19 +30,17 @@ const create = async (sequelize) => {
         timestamps: false,
     });
 
-    noteTable.associate = function (models) {
-        noteTable.belongsTo(models.user,{ 
-            foreignKey: 'userIdx',
+    followTable.associate = function (models) {
+        followTable.belongsTo(models.user, {
+            foreignKey: 'following',
             onDelete: "CASCADE"
         });
-        noteTable.hasMany(models.comment,{ 
-            foreignKey: 'noteIdx',
-        });
-        noteTable.hasMany(models.like,{ 
-            foreignKey: 'noteIdx',
+        followTable.belongsTo(models.user, {
+            foreignKey: 'follower',
+            onDelete: "CASCADE"
         });
     };
 
-    return noteTable;
+    return followTable;
 }
 module.exports = create;  
