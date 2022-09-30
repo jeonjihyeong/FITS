@@ -1,9 +1,9 @@
 const {DataTypes, Sequelize} = require('sequelize');
 
 const create = async (sequelize) => {
-    const noteTable = await sequelize.define('note', {
+    const likeTable = await sequelize.define('like', {
         // Model attributes are defined here
-        noteIdx: {
+        likeIdx: {
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
@@ -17,15 +17,12 @@ const create = async (sequelize) => {
                 key: 'userIdx',
             }
         },
-        title: {
-            type: DataTypes.STRING
-        },
-        content: {
-            type: DataTypes.STRING
-        },
-        created: {
-            type: DataTypes.DATE,
-            defalutValue: sequelize.literal('now()')
+        noteIdx: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'note',
+                key: 'noteIdx',
+            }
         },
     }, {
         // Other model options go here   timestamps: false,
@@ -33,19 +30,17 @@ const create = async (sequelize) => {
         timestamps: false,
     });
 
-    noteTable.associate = function (models) {
-        noteTable.belongsTo(models.user,{ 
+    likeTable.associate = function (models) {
+        likeTable.belongsTo(models.user, {
             foreignKey: 'userIdx',
             onDelete: "CASCADE"
         });
-        noteTable.hasMany(models.comment,{ 
-            foreignKey: 'noteIdx',
-        });
-        noteTable.hasMany(models.like,{ 
-            foreignKey: 'noteIdx',
+        likeTable.belongsTo(models.note, {
+            foreignKey: 'userIdx',
+            onDelete: "CASCADE"
         });
     };
 
-    return noteTable;
+    return likeTable;
 }
 module.exports = create;  

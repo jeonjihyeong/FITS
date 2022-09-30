@@ -45,6 +45,15 @@ const create = async (sequelize) => {
         userTable.hasMany(models.comment, 
             {foreignKey: 'userIdx',
         });
+        userTable.hasMany(models.follow, 
+            {foreignKey: 'following',
+        });
+        userTable.hasMany(models.follow, 
+            {foreignKey: 'follower',
+        });
+        userTable.hasMany(models.like, 
+            {foreignKey: 'userIdx',
+        });
     };
 
     return userTable;
