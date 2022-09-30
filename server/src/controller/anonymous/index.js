@@ -43,7 +43,16 @@ const signup = async(req,res)=>{
     res.send({data: 0})
     }else{
     try{
-        await anonymousService.saveUser(data.id,hashPw,data.age,data.email,data.name,data.nickname,salt);
+        const payload={
+          id:data.id,
+          pw:hashPw,
+          age:data.age,
+          email:data.email,
+          name:data.name,
+          nickname:data.nickname,
+          salt:salt
+        }
+        await anonymousService.saveUser(payload);
         res.send({data: 1})
     }catch(err){
         console.log(err);

@@ -1,8 +1,6 @@
-import api from '@/api'
 
 const auth = {
     state:{
-        userInfo:{},
         
     },
     getter:{
