@@ -97,6 +97,7 @@
                     pw:this.pw
                 }
                 this.loginAction(reqInfo);
+                location.href = '/'
             }
         },
     }
