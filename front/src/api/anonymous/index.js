@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+// 로그인 API
 const login =async(id,pw)=>{
     console.log(process.env.VUE_APP_SERVER_URL)
     await axios.post(`${process.env.VUE_APP_SERVER_URL}/signIn`,{
@@ -19,4 +20,11 @@ const login =async(id,pw)=>{
     })
 }
 
-export default login
+// 회원가입 API
+    // 회원가입 인증 메일
+const sendSignUpMail = async()=>{
+    
+}
+
+
+export default {login,sendSignUpMail}

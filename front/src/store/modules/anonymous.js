@@ -1,8 +1,9 @@
-import loginApi from '@/api/anonymous'
+import anonymousApi from '@/api/anonymous'
 
 const anonymous = {
     state:{
         userInfo:{},
+        auth_key:'',
         
     },
     getter:{
@@ -11,15 +12,24 @@ const anonymous = {
         },
     },
     mutations:{
-        get_user_Info(){
-
-        }
+        change_auth_key: function (state, payload) {
+            return state.auth__key=payload;
+          }
     },
     actions:{
         login:(context,reqInfo)=>{
             console.log("store")
-            loginApi(reqInfo);
-        }
+            anonymousApi.login(reqInfo);
+        },
+        signUp:(context)=>{
+            console.log(context);
+        },
+        signUpMail:(context,email)=>{
+            console.log(context);
+            const auth_key = anonymousApi.sendSignUpMail(email);
+            
+        },
+
     }
 }
 
