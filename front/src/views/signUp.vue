@@ -23,21 +23,21 @@
             ></v-text-field>
             <v-text-field
                 label="이름 입력"
-                v-model="id"
-                hide-details="auto"
-                color="pink lighten-1"
-            >
-            </v-text-field>
-            <v-text-field
-                label="나이 입력"
-                v-model="id"
+                v-model="name"
                 hide-details="auto"
                 color="pink lighten-1"
             >
             </v-text-field>
             <v-text-field
                 label="닉네임 입력"
-                v-model="id"
+                v-model="nickname"
+                hide-details="auto"
+                color="pink lighten-1"
+            >
+            </v-text-field>
+            <v-text-field
+                label="나이 입력"
+                v-model="age"
                 hide-details="auto"
                 color="pink lighten-1"
             >
@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions} from 'vuex';
 
     export default {
         data() {
@@ -91,16 +91,28 @@ import { mapActions } from 'vuex';
                 nickname: '',
                 age: '',
                 email: '',
-                show1: true,
+                show1: false,
+                auth_input:'',
+                auth_key_ : ''
             }
         },
         methods: {
             ...mapActions({
                 signUpMail:'signUpMail'
             }),
-            sendMail() {
+            
+            async sendMail() {
                 if (confirm("메일을 전송하시겠습니까?"))
-                this.signUpMail(this.email)
+                this.auth_key_ = await this.signUpMail(this.email)
+                this.show1 =true
+                console.log(this.auth_key_)
+            },
+            checkAuth(){
+                if (this.auth_input===this.auth_key_){
+                    alert("인증되었습니다.")
+                    return;
+                }
+                alert("인증번호를 다시 확인해주세요.")
             }
         },
         

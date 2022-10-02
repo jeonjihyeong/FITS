@@ -3,8 +3,6 @@ import anonymousApi from '@/api/anonymous'
 const anonymous = {
     state:{
         userInfo:{},
-        auth_key:'',
-        
     },
     getter:{
         auth_get_token(){
@@ -12,22 +10,22 @@ const anonymous = {
         },
     },
     mutations:{
-        change_auth_key: function (state, payload) {
-            return state.auth__key=payload;
-          }
+        
     },
     actions:{
-        login:(context,reqInfo)=>{
+        // 로그인
+        async login(context,reqInfo){
             console.log("store")
-            anonymousApi.login(reqInfo);
+            await anonymousApi.login(reqInfo);
         },
-        signUp:(context)=>{
+        // 회원가입
+        async signUp(context){
             console.log(context);
         },
-        signUpMail:(context,email)=>{
-            console.log(context);
-            const auth_key = anonymousApi.sendSignUpMail(email);
-            
+        // 회원가입 메일
+        async signUpMail(context,email){
+            alert("메일을 전송하였습니다.");
+            return await anonymousApi.sendSignUpMail(email);
         },
 
     }
