@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // 로그인 API
-const login =async(id,pw)=>{
+const login =async({id,pw})=>{
     console.log(process.env.VUE_APP_SERVER_URL)
     await axios.post(`${process.env.VUE_APP_SERVER_URL}/signIn`,{
         id:id,
@@ -22,8 +22,18 @@ const login =async(id,pw)=>{
 
 // 회원가입 API
     // 회원가입 인증 메일
-const sendSignUpMail = async()=>{
-    
+const sendSignUpMail = async(email)=>{
+    console.log(process.env.VUE_APP_SERVER_URL)
+    let auth_key=''
+    await axios.post(`${process.env.VUE_APP_SERVER_URL}/signUpMail`,{
+        email:email
+    }).then((res)=>{
+        console.log("API레이어에서 호출:",res.data.data)
+        auth_key =res.data.data
+    }).catch((err)=>{
+        console.log(err);
+    })
+    return auth_key
 }
 
 
