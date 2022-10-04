@@ -19,8 +19,9 @@ const anonymous = {
             await anonymousApi.login(reqInfo);
         },
         // 회원가입
-        async signUp(context){
-            console.log(context);
+        async signUp(context,reqInfo){
+            alert("회원가입에 성공하였습니다.")
+            return await anonymousApi.signUp(reqInfo);
         },
         // 회원가입 메일
         async signUpMail(context,email){

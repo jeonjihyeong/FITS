@@ -36,5 +36,19 @@ const sendSignUpMail = async(email)=>{
     return auth_key
 }
 
+    // 회원가입 하기
+const signUp = async(reqInfo)=>{
+    console.log(process.env.VUE_APP_SERVER_URL)
+    await axios.post(`${process.env.VUE_APP_SERVER_URL}/signUp`,{
+        ...reqInfo
+    }).then((res)=>{
+        console.log(res.data.data);
 
-export default {login,sendSignUpMail}
+    }).catch((err)=>{
+        console.log(err)
+    })
+    return
+}
+
+
+export default {login,sendSignUpMail,signUp}

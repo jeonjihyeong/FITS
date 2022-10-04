@@ -36,28 +36,26 @@ const login = async(req, res) => {
 const signup = async(req,res)=>{
     const data= req.body;
     const hashPw = encryptionPassWord(data.pw);
-    console.log(hashPw)
+    console.log(data.id)
     const duplicateCheck= await anonymousService.getUserId(data.id);
+    console.log(duplicateCheck)
     if (duplicateCheck!==null){
-    console.log('id가 이미 존재합니다.');
-    res.send({data: 0})
+      console.log('id가 이미 존재합니다.');
+      res.send({data: 0})
     }else{
-    try{
-        const payload={
-          id:data.id,
-          pw:hashPw,
-          age:data.age,
-          email:data.email,
-          name:data.name,
-          nickname:data.nickname,
-          salt:salt
-        }
-        await anonymousService.saveUser(payload);
-        res.send({data: 1})
-    }catch(err){
-        console.log(err);
-        res.send({message:`ERROR: ${err}`});
-    }
+      try{
+          const payload={
+            ...data,
+            pw:hashPw,
+            salt:salt,
+          }
+          await anonymousService.saveUser(payload);
+          res.send({data: 1})
+      }catch(err){
+          console.log(err);
+          res.send({message:`ERROR: ${err}`});
+          throw new err
+      }
     }
 }
 

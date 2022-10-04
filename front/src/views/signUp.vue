@@ -71,7 +71,9 @@
                         </v-btn>
                     </template>
                 </v-text-field><br>
-                <v-btn class="pink lighten-1 white--text signUpButton">
+                <v-btn 
+                class="pink lighten-1 white--text signUpButton"
+                v-on:click="signUpUser()">
                     회원가입
                 </v-btn>
             </v-col>
@@ -98,11 +100,28 @@ import { mapActions} from 'vuex';
         },
         methods: {
             ...mapActions({
-                signUpMail:'signUpMail'
+                signUpMail:'signUpMail',
+                signUp: "signUp"
             }),
-            
+            async signUpUser(){
+                if(!confirm("회원가입 하시겠습니까?")){
+                    return;
+                }
+                const signUpInfo ={
+                    id:this.id,
+                    pw:this.pw,
+                    name:this.name,
+                    nickname:this.nickname,
+                    age:this.age,
+                    email:this.email
+                    }
+                await this.signUp(signUpInfo);
+
+            },
             async sendMail() {
-                if (confirm("메일을 전송하시겠습니까?"))
+                if (!confirm("메일을 전송하시겠습니까?")){
+                    return;
+                }
                 this.auth_key_ = await this.signUpMail(this.email)
                 this.show1 =true
                 console.log(this.auth_key_)
@@ -113,7 +132,7 @@ import { mapActions} from 'vuex';
                     return;
                 }
                 alert("인증번호를 다시 확인해주세요.")
-            }
+            },
         },
         
     }
