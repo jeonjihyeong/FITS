@@ -11,25 +11,25 @@ const login = async(req, res) => {
     try{
         const data=req.body;
         const idData=await anonymousService.getUserId(data.id);
-        const decodePW = decryptionPassWord(data.pw,idData.salt);
         if(idData===null){
-          res.send ({data: 'idFailed'})
+          res.send ({message: 'idFailed'})
         }else {
+            const decodePW = decryptionPassWord(data.pw,idData.salt);
             const pwData=idData.dataValues.pw
             if(decodePW!==pwData){
-                res.status(404).send({data: 'pwFailed'})
+                res.send({message: 'pwFailed'})
             }else {
               delete idData.dataValues.pw;
               const payload = {
                 ...idData.dataValues
               }
               const token = await signToken(payload);
-                res.status(200).send({data: token});
+                res.send({data: token});
             }
         }
       }catch(err){
         console.log(err);
-        res.send ({data: 'idFailed'})
+        res.status(400)
       }
     }
   // 회원가입
@@ -54,7 +54,7 @@ const signup = async(req,res)=>{
       }catch(err){
           console.log(err);
           res.send({message:`ERROR: ${err}`});
-          throw new err
+          
       }
     }
 }
@@ -67,7 +67,7 @@ const signUp_mail = async(req,res)=>{
         res.send({data:signUpText.auth_key})
     }catch(err){
         console.log(err);
-        res.send({message:"FAIL_SEND_EMAIL"})
+        throw new Error("SEND_MAIL_ERROR")
     }
     }
 

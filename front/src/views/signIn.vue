@@ -13,8 +13,7 @@
                     v-model="id"
                     hide-details="auto"
                     color="pink lighten-2"
-                >
-                </v-text-field>
+                />
             </v-row>
             <v-row>
                 <v-text-field
@@ -26,7 +25,7 @@
                     @click:append="show1 = !show1"
                     @keyup.enter  ="login({id,pw})"
                     color="pink lighten-2"
-                ></v-text-field>
+                />
             </v-row>
             <v-row>
                 <v-col cols="3" class="signInNav"><router-link to="/findId"><v-btn text color="pink lighten-1">아이디 찾기</v-btn></router-link></v-col>
@@ -97,7 +96,7 @@
                     pw:this.pw
                 }
                 this.loginAction(reqInfo);
-                location.href = '/'
+                // location.href = '/'
             }
         },
     }
