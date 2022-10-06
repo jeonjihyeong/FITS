@@ -2,6 +2,10 @@
     <v-container
         justify-center
         class="signUp">
+        <v-row
+            class="signUpTitle" >
+            회원가입
+        </v-row>
         <v-row>
             <v-col>
             <v-text-field
@@ -139,6 +143,13 @@ import { mapActions} from 'vuex';
 </script>
 
 <style lang="scss" scoped>
+    .signUpTitle{
+        margin-top: 25%;        
+        font-size: 25px;
+        font-weight: bold;
+        text-align: center;
+        justify-content: center;
+    }
     .signUp{
         width:50%;
     }

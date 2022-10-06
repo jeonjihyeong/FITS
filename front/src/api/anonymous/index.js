@@ -1,19 +1,26 @@
 import axios from 'axios'
 
 // 로그인 API
-const login =async({id,pw})=>{
+const login =async(reqInfo)=>{
     console.log(process.env.VUE_APP_SERVER_URL)
-    await axios.post(`${process.env.VUE_APP_SERVER_URL}/signIn`,{
-        id:id,
-        pw:pw
+    await axios.post(`${process.env.VUE_APP_SERVER_URL}/login`,{
+        ...reqInfo
     }).then((res)=>{
-        if(res.status === 200){
-            console.log("success");
-            localStorage.setItem('accessToken',res.data.data)
-            return;
+        console.log(res.status)
+        if("message" in res.data){
+            if(res.data.message==="idFailed"){
+                alert('아이디가 틀렸습니다.')
+                return;
+            }    
+            if(res.data.message==="pwFailed"){
+                alert('비밀번호가 틀렸습니다.')
+                return;
+            }    
         }
-        console.log("failed");
+        alert("로그인 하였습니다.");
+        localStorage.setItem('accessToken',res.data.data)
         return;
+
     }).catch((err)=>{
         console.log(err);
         return;
@@ -50,5 +57,18 @@ const signUp = async(reqInfo)=>{
     return
 }
 
+// 아이디 찾기
+const sendFindIdMail = async(reqInfo)=>{
+    console.log(process.env.VUE_APP_SERVER_URL)
+    await axios.post(`${process.env.VUE_APP_SERVER_URL}/findId`,{
+        ...reqInfo
+    }).then((res)=>{
+        console.log(res.data.data);
+    }).catch((err)=>{
+        console.log(err)
+    })
+    return
+}
 
-export default {login,sendSignUpMail,signUp}
+
+export default {login,sendSignUpMail,signUp,sendFindIdMail}

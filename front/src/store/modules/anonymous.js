@@ -28,6 +28,11 @@ const anonymous = {
             alert("메일을 전송하였습니다.");
             return await anonymousApi.sendSignUpMail(email);
         },
+        // 아이디 찾기 메일
+        async findIdMail(context,reqInfo){
+            alert("메일을 전송하였습니다.");
+            return await anonymousApi.sendFindIdMail(reqInfo)
+        }
 
     }
 }
