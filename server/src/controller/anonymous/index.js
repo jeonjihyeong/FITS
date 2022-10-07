@@ -67,11 +67,22 @@ const signUp_mail = async(req,res)=>{
         res.send({data:signUpText.auth_key})
     }catch(err){
         console.log(err);
-        throw new Error("SEND_MAIL_ERROR")
     }
     }
 
+const SendfindIdMail = async(req,res)=>{
+  if(getEmail_data(req.body)!==null){
+    const mail_data = req.body.email;
+    const findIdMailText = findIdMail()
+    try{
+      mailSender.sendGmail(findIdMailText.mailText, mail_data)
+      res.send({data:signUpText.auth_key})
+    }catch(err){
+        console.log(err);
+    }
+  }
+}
 
 module.exports={
-    login, signup,signUp_mail
+    login, signup,signUp_mail,SendfindIdMail
 }
