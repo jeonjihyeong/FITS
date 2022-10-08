@@ -50,7 +50,14 @@ const signUp = async(reqInfo)=>{
         ...reqInfo
     }).then((res)=>{
         console.log(res.data.data);
-
+        if(res.data.data===0){
+            alert("회원가입에 실패하였습니다.")
+            return;
+        }
+        if(res.data.data===1){
+            alert("회원가입에 성공하였습니다.")
+            return;
+        }
     }).catch((err)=>{
         console.log(err)
     })
@@ -63,6 +70,12 @@ const sendFindIdMail = async(reqInfo)=>{
     await axios.post(`${process.env.VUE_APP_SERVER_URL}/findId`,{
         ...reqInfo
     }).then((res)=>{
+        if(res.data.message){
+            console.log(res.data.message)
+            alert("메일을 전송하는데 실패하였습니다.")
+            return;
+        }
+        alert("메일을 전송하였습니다.")
         console.log(res.data.data);
     }).catch((err)=>{
         console.log(err)

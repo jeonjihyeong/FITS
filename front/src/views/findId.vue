@@ -12,13 +12,13 @@
                     label="이름 입력"
                     v-model="name"
                     hide-details="auto"
-                    color="pink lighten-2"
+                    color="pink lighten-1"
                 />
                 <v-text-field
                     label="이메일 입력"
                     v-model="email"
                     hide-details="auto"
-                    color="pink lighten-2"
+                    color="pink lighten-1"
                 />
                 <v-btn
                     class="pink lighten-1 white--text mt-2 findIdbtn"
@@ -32,7 +32,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-
     export default {
         data() {
             return {
@@ -47,7 +46,7 @@ import { mapActions } from 'vuex';
             findId() {
                 confirm("아이디를 찾으시겠습니까?")
                 const reqInfo={
-                    id:this.id,
+                    name:this.name,
                     email:this.email
                 }
                 this.findIdMail(reqInfo)    

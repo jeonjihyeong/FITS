@@ -32,7 +32,7 @@ const login = async(req, res) => {
         res.status(400)
       }
     }
-  // 회원가입
+// 회원가입
 const signup = async(req,res)=>{
     const data= req.body;
     const hashPw = encryptionPassWord(data.pw);
@@ -58,7 +58,7 @@ const signup = async(req,res)=>{
       }
     }
 }
-
+// 회원가입 메일
 const signUp_mail = async(req,res)=>{
     const mail_data = req.body.email;
     const signUpText = signUpMail()
@@ -68,21 +68,61 @@ const signUp_mail = async(req,res)=>{
     }catch(err){
         console.log(err);
     }
-    }
+  }
 
+// 아이디 찾기 메일
 const SendfindIdMail = async(req,res)=>{
-  if(getEmail_data(req.body)!==null){
-    const mail_data = req.body.email;
-    const findIdMailText = findIdMail()
-    try{
-      mailSender.sendGmail(findIdMailText.mailText, mail_data)
-      res.send({data:signUpText.auth_key})
+  try{
+    console.log("controller")
+    if(await anonymousService.getEmailData(req.body)===null){
+      res.send({message:"No User Data"});
+      console.log("No User Data")
+    }else{
+      console.log(req.body)
+      const mail_data = req.body.email;
+      const findIdMailText = findIdMail(req.body)
+      mailSender.sendGmail(findIdMailText, mail_data)
+      res.send({data:1})
+    }
     }catch(err){
         console.log(err);
     }
+}
+
+const SendFindPwMail = async(req,res)=>{
+  try{
+    console.log(req.body);
+    if(await anonymousService.getPwData(req.body)===null){
+      res.send({message:"No User Data"})
+      console.log("No User Data")
+    }else{
+      console.log(req.body)
+      const mail_data =req.body.email;
+      const findPwMailText = findPwMail(req.body.name)
+      mailSender.sendGmail(findPwMailText.mailText,mail_data)
+      res.send({data:findPwMailText.auth_key})
+    }
+  }catch(err){
+    console.log(err);
+  }
+}
+
+const changePw = async(req,res)=>{
+  try{
+    console.log(req.body);
+    if(await anonymousService.getEmailData(req.body)===null){
+      res.send({message:"No User Data"})
+      console.log("No user Data")
+    }else{
+      console.log(req.body)
+      await anonymousService.changePassword(req.body);
+      res.send({data: 1})
+    }
+  }catch(err){
+    console.log(err)
   }
 }
 
 module.exports={
-    login, signup,signUp_mail,SendfindIdMail
+    login, signup,signUp_mail,SendfindIdMail,SendFindPwMail
 }

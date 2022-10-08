@@ -64,6 +64,7 @@
             <v-row>
                 <v-btn class="pink lighten-1 white--text mobile_login" @click="login({id,pw})">로그인</v-btn>
             </v-row>
+            
             <v-row>
                 <v-col class="signInNav"><router-link to="/findId"><v-btn text color="pink lighten-1">아이디 찾기</v-btn></router-link></v-col>
                 <v-col class="signInNav"><router-link to="/findPw"><v-btn text color="pink lighten-1">비밀번호 찾기</v-btn></router-link></v-col>
