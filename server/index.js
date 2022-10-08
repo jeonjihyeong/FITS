@@ -13,6 +13,6 @@ app.use(cors());
 app.use(router.basicRouter);
 
 app.listen(port, async () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`FITS_SERVER_LISTENING_ON_PORT ${port}`)
   await db.initialize()
 })

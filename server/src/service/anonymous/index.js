@@ -31,6 +31,39 @@ const getUserId = async(id)=>{
     return results
 }
 
+const getEmailData = async({email,name})=>{
+    let results;
+    console.log("Service layer")
+    try{
+        results =await models['user'].findOne({
+            where:{
+                email:email,
+                name:name
+            }
+        })
+    }catch(err){
+        console.log(err)
+    }
+    return results
+}
+
+const getPwData = async({id,email,name})=>{
+    let results;
+    console.log("Service layer")
+    try{
+        results =await models['user'].findOne({
+            where:{
+                id:id,
+                email:email,
+                name:name
+            }
+        })
+    }catch(err){
+        console.log(err)
+    }
+    return results
+}
+
 module.exports={
-    saveUser,getUserId
+    saveUser,getUserId,getEmailData,getPwData
 }

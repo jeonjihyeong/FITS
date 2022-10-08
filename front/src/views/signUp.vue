@@ -19,9 +19,9 @@
                 label="비밀번호 입력"
                 v-model="pw"
                 hide-details="auto"
-                :type="show1 ? 'text' : 'password'"
-                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                @click:append="show1 = !show1"
+                :type="pw_show ? 'text' : 'password'"
+                :append-icon="pw_show ? 'mdi-eye' : 'mdi-eye-off'"
+                @click:append="pw_show = !pw_show"
                 @keyup.enter  ="login()"
                 color="pink lighten-1"
             ></v-text-field>
@@ -61,7 +61,7 @@
                     </template>
                 </v-text-field>
                 <v-text-field
-                v-if="show1"
+                v-if="auth_show"
                 label="인증번호를 입력해주세요."
                 color="pink lighten-1"
                 v-model="auth_input"
@@ -97,9 +97,11 @@ import { mapActions} from 'vuex';
                 nickname: '',
                 age: '',
                 email: '',
-                show1: false,
+                pw_show: false,
+                auth_show:false,
                 auth_input:'',
-                auth_key_ : ''
+                auth_key_ : '',
+                check_auth: false,
             }
         },
         methods: {
@@ -107,9 +109,14 @@ import { mapActions} from 'vuex';
                 signUpMail:'signUpMail',
                 signUp: "signUp"
             }),
+            // 회원가입
             async signUpUser(){
                 if(!confirm("회원가입 하시겠습니까?")){
                     return;
+                }
+                if(this.check_auth!==true){
+                    alert("이메일 인증을 먼저해주세요.")
+                    return
                 }
                 const signUpInfo ={
                     id:this.id,
@@ -120,19 +127,22 @@ import { mapActions} from 'vuex';
                     email:this.email
                     }
                 await this.signUp(signUpInfo);
-
             },
+            // 회원가입 확인 메일
             async sendMail() {
                 if (!confirm("메일을 전송하시겠습니까?")){
                     return;
                 }
+                
                 this.auth_key_ = await this.signUpMail(this.email)
-                this.show1 =true
+                this.auth_show =true
                 console.log(this.auth_key_)
             },
+            // 인증키 확인
             checkAuth(){
                 if (this.auth_input===this.auth_key_){
                     alert("인증되었습니다.")
+                    this.check_auth=true;
                     return;
                 }
                 alert("인증번호를 다시 확인해주세요.")
