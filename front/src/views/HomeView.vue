@@ -10,9 +10,7 @@
       >
         <router-link to="/"><img src="../assets/가로/new/007.png" width="130px"></router-link>
       </v-toolbar-title>
-      <v-btn icon>
-        <router-link to="/signIn"><v-icon color="white">{{icons.mdiAccount}}</v-icon></router-link>
-      </v-btn>
+        <router-link to="/signIn"><v-btn icon><v-icon color="white">{{icons.mdiAccount}}</v-icon></v-btn></router-link>
     </v-app-bar>
 
     <v-navigation-drawer

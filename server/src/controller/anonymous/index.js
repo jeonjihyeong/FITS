@@ -35,15 +35,13 @@ const login = async(req, res) => {
 // 회원가입
 const signup = async(req,res)=>{
     const data= req.body;
-    const hashPw = encryptionPassWord(data.pw);
-    console.log(data.id)
-    const duplicateCheck= await anonymousService.getUserId(data.id);
-    console.log(duplicateCheck)
-    if (duplicateCheck!==null){
-      console.log('id가 이미 존재합니다.');
-      res.send({data: 0})
-    }else{
-      try{
+    try{
+      if (await anonymousService.getUserId(data.id)!==null){
+        console.log('id가 이미 존재합니다.');
+        res.send({data: 0})
+      }
+      else{
+          const hashPw = encryptionPassWord(data.pw);
           const payload={
             ...data,
             pw:hashPw,
@@ -51,12 +49,12 @@ const signup = async(req,res)=>{
           }
           await anonymousService.saveUser(payload);
           res.send({data: 1})
+        }
       }catch(err){
           console.log(err);
           res.send({message:`ERROR: ${err}`});
-          
       }
-    }
+    
 }
 // 회원가입 메일
 const signUp_mail = async(req,res)=>{
@@ -89,6 +87,7 @@ const SendfindIdMail = async(req,res)=>{
     }
 }
 
+// 비밀번호 찾기 메일
 const SendFindPwMail = async(req,res)=>{
   try{
     console.log(req.body);
@@ -107,15 +106,19 @@ const SendFindPwMail = async(req,res)=>{
   }
 }
 
+// 비밀번호 변경하기
 const changePw = async(req,res)=>{
   try{
     console.log(req.body);
-    if(await anonymousService.getEmailData(req.body)===null){
+    let changePwUserData = await anonymousService.getEmailData(req.body)
+    if(changePwUserData===null){
       res.send({message:"No User Data"})
       console.log("No user Data")
     }else{
       console.log(req.body)
-      await anonymousService.changePassword(req.body);
+      let inCodeNewPw =encryptionPassWord(req.body.afterPw);
+
+      await anonymousService.changePassword(changePwUserData.userIdx,inCodeNewPw,salt);
       res.send({data: 1})
     }
   }catch(err){
@@ -124,5 +127,10 @@ const changePw = async(req,res)=>{
 }
 
 module.exports={
-    login, signup,signUp_mail,SendfindIdMail,SendFindPwMail
+    login,
+    signup,
+    signUp_mail,
+    SendfindIdMail,
+    SendFindPwMail,
+    changePw
 }

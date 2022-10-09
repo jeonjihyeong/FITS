@@ -84,4 +84,9 @@ const sendFindIdMail = async(reqInfo)=>{
 }
 
 
-export default {login,sendSignUpMail,signUp,sendFindIdMail}
+export default {
+    login,
+    sendSignUpMail,
+    signUp,
+    sendFindIdMail
+}
