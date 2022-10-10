@@ -29,6 +29,10 @@ const anonymous = {
         // 아이디 찾기 메일
         async findIdMail(context,reqInfo){
             return await anonymousApi.sendFindIdMail(reqInfo)
+        },
+        // 비밀번호 찾기 메일
+        async sendfindPwMail(context,reqInfo){
+            return await anonymousApi.sendFindPwMail(reqInfo)
         }
 
     }
