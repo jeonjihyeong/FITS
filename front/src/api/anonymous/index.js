@@ -83,10 +83,27 @@ const sendFindIdMail = async(reqInfo)=>{
     return
 }
 
+const sendFindPwMail=async(reqInfo)=>{
+    await axios.post(`${process.env.VUE_APP_SERVER_URL}/findPw`,{
+        ...reqInfo
+    }).then((res)=>{
+        if(res.data.message){
+            alert("메일을 전송하는데 실패하였습니다.")
+            console.log(res.data.message)
+            return;
+        }
+        alert("메일을 전송하였습니다.")
+        return res.data.data
+    }).catch((err)=>{
+        console.log(err)
+    })
+}
+
 
 export default {
     login,
     sendSignUpMail,
     signUp,
-    sendFindIdMail
+    sendFindIdMail,
+    sendFindPwMail
 }
