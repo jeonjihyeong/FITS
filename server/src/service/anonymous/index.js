@@ -69,12 +69,12 @@ const getPwData = async({id,email,name})=>{
 }
 
 // 비밀번호 변경
-const changePassword=async(userIdx,newPw,newSalt)=>{
+const changePassword=async(userIdx,{hashPw,salt})=>{
     console.log("Service layer")
     try{
         await models['user'].update({
-            pw: newPw,
-            salt: newSalt
+            pw: hashPw,
+            salt: salt
         },{
             where:{
                 userIdx:userIdx,

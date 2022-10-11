@@ -69,7 +69,7 @@ const signUp_mail = async(req,res)=>{
   }
 
 // 아이디 찾기 메일
-const SendfindIdMail = async(req,res)=>{
+const sendFindIdMail = async(req,res)=>{
   try{
     console.log("controller")
     if(await anonymousService.getEmailData(req.body)===null){
@@ -88,7 +88,7 @@ const SendfindIdMail = async(req,res)=>{
 }
 
 // 비밀번호 찾기 메일
-const SendFindPwMail = async(req,res)=>{
+const sendFindPwMail = async(req,res)=>{
   try{
     console.log(req.body);
     if(await anonymousService.getPwData(req.body)===null){
@@ -110,15 +110,16 @@ const SendFindPwMail = async(req,res)=>{
 const changePw = async(req,res)=>{
   try{
     console.log(req.body);
-    let changePwUserData = await anonymousService.getEmailData(req.body)
+    let changePwUserData = await anonymousService.getPwData(req.body)
     if(changePwUserData===null){
       res.send({message:"No User Data"})
       console.log("No user Data")
     }else{
-      console.log(req.body)
-      let inCodeNewPw =encryptionPassWord(req.body.afterPw);
-
-      await anonymousService.changePassword(changePwUserData.userIdx,inCodeNewPw,salt);
+      let inCodeNewPw ={
+        hashPw: encryptionPassWord(req.body.new_Pw),
+        salt: salt
+      }
+      await anonymousService.changePassword(changePwUserData.userIdx,inCodeNewPw);
       res.send({data: 1})
     }
   }catch(err){
@@ -130,7 +131,7 @@ module.exports={
     login,
     signup,
     signUp_mail,
-    SendfindIdMail,
-    SendFindPwMail,
+    sendFindIdMail,
+    sendFindPwMail,
     changePw
 }
