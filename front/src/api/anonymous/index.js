@@ -54,7 +54,7 @@ const signUp = async(reqInfo)=>{
             alert("회원가입에 실패하였습니다.")
             return;
         }
-        if(res.data.data===1){
+        else if(res.data.data===1){
             alert("회원가입에 성공하였습니다.")
             return;
         }
@@ -82,8 +82,9 @@ const sendFindIdMail = async(reqInfo)=>{
     })
     return
 }
-
+// 비밀번호 인증 메일
 const sendFindPwMail=async(reqInfo)=>{
+    let result = ''
     await axios.post(`${process.env.VUE_APP_SERVER_URL}/findPw`,{
         ...reqInfo
     }).then((res)=>{
@@ -93,9 +94,25 @@ const sendFindPwMail=async(reqInfo)=>{
             return;
         }
         alert("메일을 전송하였습니다.")
-        return res.data.data
+        console.log(res.data.data)
+        result = res.data.data
     }).catch((err)=>{
         console.log(err)
+    })
+    return result;
+}
+// 비밀번호 변경
+const changePw=async(reqInfo)=>{
+    await axios.post(`${process.env.VUE_APP_SERVER_URL}/changePw`,{
+        ...reqInfo
+    }).then((res)=>{
+        if(res.data.message){
+            alert("비밀번호를 변경하지 못하였습니다.")
+            console.log(res.data.message)
+            return
+        }
+        alert("비밀번호를 변경하였습니다.");
+        location.href='/'
     })
 }
 
@@ -105,5 +122,6 @@ export default {
     sendSignUpMail,
     signUp,
     sendFindIdMail,
-    sendFindPwMail
+    sendFindPwMail,
+    changePw,
 }

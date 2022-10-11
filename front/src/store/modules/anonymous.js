@@ -33,7 +33,10 @@ const anonymous = {
         // 비밀번호 찾기 메일
         async sendfindPwMail(context,reqInfo){
             return await anonymousApi.sendFindPwMail(reqInfo)
-        }
+        },
+        async changePw(context,reqInfo){
+            return await anonymousApi.changePw(reqInfo)
+        },
 
     }
 }
