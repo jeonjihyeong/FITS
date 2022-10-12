@@ -91,7 +91,7 @@ const sendFindIdMail = async(req,res)=>{
 const sendFindPwMail = async(req,res)=>{
   try{
     console.log(req.body);
-    if(await anonymousService.getPwData(req.body)===null){
+    if(await anonymousService.getPwData(req.body.id,req.body.email,req.body.name)===null){
       res.send({message:"No User Data"})
       console.log("No User Data")
     }else{

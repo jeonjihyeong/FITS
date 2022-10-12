@@ -5,6 +5,7 @@ import mainHome from '../views/mainHome.vue'
 import signUp from '../views/signUp.vue'
 import findId from '@/views/findId.vue'
 import findPw from '@/views/findPw.vue'
+import myNote from '@/views/myNote.vue'
 
 Vue.use(VueRouter)
 
@@ -33,6 +34,11 @@ const routes = [
     path: '/findPw',
     name: 'findPw',
     component: findPw
+  },
+  {
+    path: '/Note/my',
+    name: 'myNote',
+    component: myNote
   },
   
   
