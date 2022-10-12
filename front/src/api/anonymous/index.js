@@ -19,6 +19,7 @@ const login =async(reqInfo)=>{
         }
         alert("로그인 하였습니다.");
         localStorage.setItem('accessToken',res.data.data)
+        location.href='/'
         return;
 
     }).catch((err)=>{

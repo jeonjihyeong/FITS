@@ -13,6 +13,7 @@ const mailSender = {
     // 메일 옵션
     var mailOptions = {
       from: process.env.CLIENT_ID, // 보내는 메일의 주소
+      // from: "FITS", // 보내는 메일의 주소
       to: toEmail, // 수신할 이메일
       subject: param.subject, // 메일 제목
       html: param.html // 메일 내용

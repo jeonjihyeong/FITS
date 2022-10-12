@@ -10,13 +10,13 @@
             <v-col>
                 <v-text-field
                     label="아이디 입력"
-                    v-model="name"
+                    v-model="id"
                     hide-details="auto"
                     color="pink lighten-1"
                 />
                 <v-text-field
                     label="이름 입력"
-                    v-model="id"
+                    v-model="name"
                     hide-details="auto"
                     color="pink lighten-1"
                 />
@@ -90,7 +90,7 @@ import { mapActions } from 'vuex';
                 id: '',
                 name: '',
                 email: '',
-                auth_key:'',
+                auth_key:null,
                 input_auth_key:'',
                 show:false,
                 check_auth:false,
@@ -114,8 +114,8 @@ import { mapActions } from 'vuex';
                 this.show=true
             },
             // 인증번호 확인
-            async authCheck(){
-                if(this.auth_key===this.input_auth_key){
+            authCheck(){
+                if(this.auth_key!=='' && this.auth_key===this.input_auth_key){
                     alert("성공적으로 인증되었습니다.")
                     this.check_auth=true
                     return;
