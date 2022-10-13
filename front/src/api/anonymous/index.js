@@ -57,6 +57,7 @@ const signUp = async(reqInfo)=>{
         }
         else if(res.data.data===1){
             alert("회원가입에 성공하였습니다.")
+            location.href='/'
             return;
         }
     }).catch((err)=>{

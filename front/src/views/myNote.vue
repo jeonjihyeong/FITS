@@ -5,116 +5,34 @@
         <v-row class="MyNoteTitle">
             내 노트
         </v-row>
-        <v-row class="MyNoteContent">
-            
-            <v-card>
-            <router-link to="/">
-              <v-img
-                src='https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTExMTJfMTI1%2FMDAxNjM2NzI1NjE4NjQw.GEewoww7BRhJBXexutXVeX_GLWvW96Im9i6sHNaZObcg.QBOiFhHfK86jeQL1PTru8HRqdeooyyU-EzWDeiS_7fgg.JPEG.ho0605%2F20211112_111322.jpg&type=sc960_832'
-                class="white--text align-end"
-                height="200px"
-              >
-              <v-card-title v-text="hello"></v-card-title>
-            </v-img>
-        </router-link>
-  
-              <v-card-actions>
-                <v-spacer></v-spacer>
-  
-                <v-btn icon
-                    color="pink lighten-1">
-                  <v-icon>mdi-heart</v-icon>
-                </v-btn>
-  
-                <v-btn icon
-                    color="pink lighten-1"
-                    @click="marker=!marker">
-                  <v-icon v-if="marker">mdi-bookmark</v-icon>
-                  <v-icon disabled v-if="!marker">mdi-bookmark</v-icon>
-                </v-btn>
-  
-                <v-btn icon>
-                  <v-icon>mdi-share-variant</v-icon>
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-        
+        <v-row>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="pink lighten-1"
+            text
+            class="writeMemoBtn"
+            >
+            글쓰기
+          </v-btn>
         </v-row>
         <v-row class="MyNoteContent">
-            <v-card>
-              <v-img
-                src='https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTExMTJfMTI1%2FMDAxNjM2NzI1NjE4NjQw.GEewoww7BRhJBXexutXVeX_GLWvW96Im9i6sHNaZObcg.QBOiFhHfK86jeQL1PTru8HRqdeooyyU-EzWDeiS_7fgg.JPEG.ho0605%2F20211112_111322.jpg&type=sc960_832'
-                class="white--text align-end"
-                height="200px"
-              >
-                <v-card-title v-text="hello"></v-card-title>
-              </v-img>
-  
-              <v-card-actions>
-                <v-spacer></v-spacer>
-  
-                <v-btn icon
-                    color="pink lighten-1">
-                  <v-icon>mdi-heart</v-icon>
-                </v-btn>
-  
-                <v-btn icon
-                    color="pink lighten-1"
-                    @click="marker=!marker">
-                  <v-icon v-if="marker">mdi-bookmark</v-icon>
-                  <v-icon disabled v-if="!marker">mdi-bookmark</v-icon>
-                </v-btn>
-  
-                <v-btn icon>
-                  <v-icon>mdi-share-variant</v-icon>
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-        </v-row>
-        <v-row class="MyNoteContent">
-            <v-card>
-              <v-img
-                src='https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTExMTJfMTI1%2FMDAxNjM2NzI1NjE4NjQw.GEewoww7BRhJBXexutXVeX_GLWvW96Im9i6sHNaZObcg.QBOiFhHfK86jeQL1PTru8HRqdeooyyU-EzWDeiS_7fgg.JPEG.ho0605%2F20211112_111322.jpg&type=sc960_832'
-                class="white--text align-end"
-                height="200px"
-              >
-                <v-card-title v-text="hello"></v-card-title>
-              </v-img>
-  
-              <v-card-actions>
-                <v-spacer></v-spacer>
-  
-                <v-btn icon
-                    color="pink lighten-1">
-                  <v-icon>mdi-heart</v-icon>
-                </v-btn>
-  
-                <v-btn icon
-                    color="pink lighten-1"
-                    @click="marker=!marker">
-                  <v-icon v-if="marker">mdi-bookmark</v-icon>
-                  <v-icon disabled v-if="!marker">mdi-bookmark</v-icon>
-                </v-btn>
-  
-                <v-btn icon>
-                  <v-icon>mdi-share-variant</v-icon>
-                </v-btn>
-              </v-card-actions>
-            </v-card>
+          <v-col cols="6" v-for="(item,index) in list" :key="index">
+              <MyNoteCard :memoNumber='item'/>
+          </v-col>
         </v-row>
     </v-container>
 </template>
 
 <script>
+import MyNoteCard from "../components/board/myNoteCard.vue";
     export default {
-        data() {
-            return {
-                hello:"ㅎㅇㅎㅇ",
-                marker: Boolean,
-                like: Boolean,
-            }
-        },
-    }
+    data() {
+        return {
+            list: [1, 2, 3, 4,5],
+        };
+    },
+    components: { MyNoteCard }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -126,9 +44,14 @@
     margin-bottom: 30px;
 }
 .MyNoteTitle{
-    justify-content: center;
+    justify-content: left;
     margin-bottom:20px;
-    font-size:25px;
+    font-size:28px;
     font-weight: bold;
+    margin-left:3px
+}
+.writeMemoBtn{
+    font-size: 17px;
+    font-weight: bolder;
 }
 </style>
