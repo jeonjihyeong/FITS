@@ -6,6 +6,8 @@ import signUp from '../views/signUp.vue'
 import findId from '@/views/findId.vue'
 import findPw from '@/views/findPw.vue'
 import myNote from '@/views/myNote.vue'
+import allNote from '@/views/allNote.vue'
+import memoView from '@/views/memoView.vue'
 
 Vue.use(VueRouter)
 
@@ -39,6 +41,16 @@ const routes = [
     path: '/Note/my',
     name: 'myNote',
     component: myNote
+  },
+  {
+    path: '/Note',
+    name: 'allNote',
+    component: allNote
+  },
+  {
+    path: '/memo/:memoNumber',
+    name: 'memo',
+    component: memoView
   },
   
   
