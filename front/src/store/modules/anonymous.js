@@ -3,6 +3,7 @@ import anonymousApi from '@/api/anonymous'
 const anonymous = {
     state:{
         userInfo:{},
+        accessToken:10000,
     },
     getter:{
         auth_get_token(){

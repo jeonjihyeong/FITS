@@ -10,7 +10,8 @@
       >
         <router-link to="/"><img src="../assets/가로/new/007.png" width="130px"></router-link>
       </v-toolbar-title>
-        <router-link to="/signIn"><v-btn icon><v-icon color="white">{{icons.mdiAccount}}</v-icon></v-btn></router-link>
+        <router-link v-if="accessToken===null" to="/myInfo"><v-btn icon><v-icon color="white">{{icons.mdiAccount}}</v-icon></v-btn></router-link>
+        <router-link v-if="accessToken!==null" to="/signIn"><v-btn icon><v-icon color="white">{{icons.mdiAccount}}</v-icon></v-btn></router-link>
     </v-app-bar>
 
     <v-navigation-drawer
@@ -26,9 +27,15 @@
     <router-link to="/Note/best"><div class="navDrawer">인기 스터디 룸</div></router-link><br>
     </v-navigation-drawer>
     <br><br><br><br>
-    <v-container>
+    <v-row class="main">
       <router-view />
-    </v-container>
+    </v-row>
+    
+    <br><br><br><br>
+    <br><br><br><br>
+    <v-row>{{this.accessToken}}</v-row>
+    <br><br><br><br>
+      <Footer ></Footer>
   </v-app>
 </template>
 
@@ -36,14 +43,20 @@
   import {
     mdiAccount,
   } from '@mdi/js'
+  import Footer from '@/components/Footer/Footer.vue';
+  import { mapState } from "vuex";
   export default {
-    data: () => ({ 
-      drawer: null,
-      icons: {
-        mdiAccount,
-        } }),
-    
-  }
+    data: () => ({
+        drawer: null,
+        icons: {
+            mdiAccount,
+        },
+    }),
+    components: { Footer },
+    computed: {
+      ...mapState('anonymous',['accessToken'])
+    },
+}
 </script>
 <style>
   .logo{
@@ -64,6 +77,15 @@
 }
   .card{
     border: 1px solid black;
+  }
+  
+  .main{
+    padding: auto;
+    vertical-align: center;
+    min-height: 500px;
+    height: auto;
+    margin-bottom: 20px;
+    justify-content: center;
   }
  
 </style>
