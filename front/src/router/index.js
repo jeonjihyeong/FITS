@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import signIn from '../views/signIn.vue'
-import mainHome from '../views/mainHome.vue'
-import signUp from '../views/signUp.vue'
-import findId from '@/views/findId.vue'
-import findPw from '@/views/findPw.vue'
-import myNote from '@/views/myNote.vue'
-import allNote from '@/views/allNote.vue'
-import memoView from '@/views/memoView.vue'
+import signIn from '../views/auth/signIn.vue'
+import mainHome from '../views/main/mainHome.vue'
+import signUp from '../views/auth/signUp.vue'
+import findId from '@/views/auth/findId.vue'
+import findPw from '@/views/auth/findPw.vue'
+import myNote from '@/views/note/myNote.vue'
+import allNote from '@/views/note/allNote.vue'
+import memoView from '@/views/note/memoView.vue'
 
 Vue.use(VueRouter)
 
