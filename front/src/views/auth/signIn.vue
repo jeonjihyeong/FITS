@@ -88,7 +88,7 @@
             ...mapActions({
                 loginAction:'login'
             }),
-            login(){
+            async login(){
                 if(!confirm('로그인?')){
                     return;
                 }
@@ -96,8 +96,8 @@
                     id:this.id,
                     pw:this.pw
                 }
-                this.loginAction(reqInfo);
-                // location.href = '/'
+                await this.loginAction(reqInfo);
+                this.$router.push('/')
             }
         },
     }
