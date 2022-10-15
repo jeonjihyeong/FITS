@@ -10,8 +10,8 @@
       >
         <router-link to="/"><img src="../assets/가로/new/007.png" width="130px"></router-link>
       </v-toolbar-title>
-        <router-link v-if="accessToken===null" to="/myInfo"><v-btn icon><v-icon color="white">{{icons.mdiAccount}}</v-icon></v-btn></router-link>
-        <router-link v-if="accessToken!==null" to="/signIn"><v-btn icon><v-icon color="white">{{icons.mdiAccount}}</v-icon></v-btn></router-link>
+        <router-link v-if="this.accessToken" to="/myInfo"><v-btn icon><v-icon color="white">{{icons.mdiAccount}}</v-icon></v-btn></router-link>
+        <router-link v-if="!this.accessToken" to="/signIn"><v-btn icon><v-icon color="white">{{icons.mdiAccount}}</v-icon></v-btn></router-link>
     </v-app-bar>
 
     <v-navigation-drawer
@@ -32,8 +32,10 @@
     </v-row>
     
     <br><br><br><br>
+    <v-container>
+      {{this.accessToken}}
+    </v-container>
     <br><br><br><br>
-    <v-row>{{this.accessToken}}</v-row>
     <br><br><br><br>
       <Footer ></Footer>
   </v-app>
@@ -44,7 +46,7 @@
     mdiAccount,
   } from '@mdi/js'
   import Footer from '@/components/Footer/Footer.vue';
-  import { mapState } from "vuex";
+  import {mapState} from 'vuex'
   export default {
     data: () => ({
         drawer: null,
@@ -54,7 +56,9 @@
     }),
     components: { Footer },
     computed: {
-      ...mapState('anonymous',['accessToken'])
+      ...mapState({
+        accessToken:state=>state.anonymous.accessToken
+      })
     },
 }
 </script>

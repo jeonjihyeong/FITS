@@ -1,23 +1,37 @@
 import anonymousApi from '@/api/anonymous'
-
+import jwt_decode from 'jwt-decode'
 const anonymous = {
     state:{
-        userInfo:{},
-        accessToken:10000,
+        userInfo:null,
+        accessToken:false,
     },
     getter:{
         auth_get_token(){
             return localStorage.getItem('accessToken')
         },
     },
-    mutations:{
-        
+    mutations: {
+        updateUserInfo(state, payload) {
+            state.userInfo = payload;
+            state.accessToken = true;
+        }
     },
     actions:{
         // 로그인
         async login(context,reqInfo){
-            console.log("store")
-            await anonymousApi.login(reqInfo);
+            try{
+                console.log("store")
+                const result = await anonymousApi.login(reqInfo);
+                console.log(result)
+                if(result!==0){
+                    localStorage.setItem('accessToken',result.data.data)
+                    const decodeToken = jwt_decode(result.data.data)
+                    context.commit('updateUserInfo',decodeToken)
+                    
+                }
+            }catch(err){
+                console.log(err)
+            }
         },
         // 회원가입
         async signUp(context,reqInfo){
@@ -41,6 +55,5 @@ const anonymous = {
 
     }
 }
-
 
 export default anonymous

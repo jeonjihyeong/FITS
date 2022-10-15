@@ -2,6 +2,7 @@ import axios from 'axios'
 
 // 로그인 API
 const login =async(reqInfo)=>{
+    let result = '';
     console.log(process.env.VUE_APP_SERVER_URL)
     await axios.post(`${process.env.VUE_APP_SERVER_URL}/login`,{
         ...reqInfo
@@ -10,22 +11,23 @@ const login =async(reqInfo)=>{
         if("message" in res.data){
             if(res.data.message==="idFailed"){
                 alert('아이디가 틀렸습니다.')
-                return;
+                return 0;
             }    
             if(res.data.message==="pwFailed"){
                 alert('비밀번호가 틀렸습니다.')
-                return;
+                return 0;
             }    
         }
         alert("로그인 하였습니다.");
-        localStorage.setItem('accessToken',res.data.data)
-        location.href='/'
+        
+        result = res
         return;
-
+        
     }).catch((err)=>{
         console.log(err);
-        return;
+        return 0;
     })
+    return result
 }
 
 // 회원가입 API
