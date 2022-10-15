@@ -20,6 +20,7 @@ const login = async(req, res) => {
                 res.send({message: 'pwFailed'})
             }else {
               delete idData.dataValues.pw;
+              delete idData.dataValues.salt;
               const payload = {
                 ...idData.dataValues
               }
