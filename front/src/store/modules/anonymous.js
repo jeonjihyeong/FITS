@@ -2,7 +2,13 @@ import anonymousApi from '@/api/anonymous'
 import jwt_decode from 'jwt-decode'
 const anonymous = {
     state:{
-        userInfo:null,
+        userInfo:{
+            id:'',
+            name:'',
+            nickname:'',
+            age:'',
+            email:'',
+        },
         accessToken:false,
     },
     getter:{
@@ -12,7 +18,7 @@ const anonymous = {
     },
     mutations: {
         updateUserInfo(state, payload) {
-            state.userInfo = payload;
+            state.userInfo = {...payload};
             state.accessToken = true;
         }
     },
@@ -27,7 +33,7 @@ const anonymous = {
                     localStorage.setItem('accessToken',result.data.data)
                     const decodeToken = jwt_decode(result.data.data)
                     context.commit('updateUserInfo',decodeToken)
-                    
+                    return 'SUCCESS'
                 }
             }catch(err){
                 console.log(err)

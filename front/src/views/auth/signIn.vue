@@ -96,8 +96,12 @@
                     id:this.id,
                     pw:this.pw
                 }
-                await this.loginAction(reqInfo);
-                this.$router.push('/')
+                const result = await this.loginAction(reqInfo);
+                if(result ==="SUCCESS"){
+                    this.$router.push('/')
+                    return;
+                }
+                
             }
         },
     }
