@@ -138,12 +138,12 @@ import RoomCard from '@/components/board/roomCard.vue';
 
 <style lang="scss" scoped>
     @media all and (max-width:767px) {
-    #pc, .pc_margin, .pc_item{
+    #pc{
         display: none;
     }
 }
 @media all and (max-width:1023px) {
-    #pc, .pc_margin, .pc_item{
+    #pc{
         display: none;
     }
 }

@@ -7,6 +7,7 @@ const anonymousRouter = require(('./anonymous'));
 // const userRouter = require(('./user'));
 
 
+
 basicRouter.use('/',anonymousRouter)
 // basicRouter.use('/board',middleware.validateToken,boardRouter)
 // basicRouter.use('/comment',middleware.validateToken,commentRouter)

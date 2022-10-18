@@ -8,6 +8,7 @@ import findPw from '@/views/auth/findPw.vue'
 import myNote from '@/views/note/myNote.vue'
 import allNote from '@/views/note/allNote.vue'
 import memoView from '@/views/note/memoView.vue'
+import myInfo from '@/views/user/myInfo.vue'
 
 Vue.use(VueRouter)
 
@@ -51,6 +52,11 @@ const routes = [
     path: '/memo/:memoNumber',
     name: 'memo',
     component: memoView
+  },
+  {
+    path: '/user/myInfo',
+    name: 'myInfo',
+    component: myInfo
   },
   
   
