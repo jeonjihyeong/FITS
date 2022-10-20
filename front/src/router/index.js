@@ -9,6 +9,7 @@ import myNote from '@/views/note/myNote.vue'
 import allNote from '@/views/note/allNote.vue'
 import memoView from '@/views/note/memoView.vue'
 import myInfo from '@/views/user/myInfo.vue'
+import writeMemo from '@/views/note/writeMemo.vue'
 
 Vue.use(VueRouter)
 
@@ -49,7 +50,7 @@ const routes = [
     component: allNote
   },
   {
-    path: '/memo/:memoNumber',
+    path: '/memo/view/:memoNumber',
     name: 'memo',
     component: memoView
   },
@@ -58,8 +59,11 @@ const routes = [
     name: 'myInfo',
     component: myInfo
   },
-  
-  
+  {
+    path: '/memo/write',
+    name: 'writeMemo',
+    component: writeMemo
+  },
 ]
 
 const router = new VueRouter({

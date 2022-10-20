@@ -9,13 +9,15 @@
             </v-row>
             <v-row>
             <v-spacer></v-spacer>
-            <v-btn
-                color="pink lighten-1"
-                text
-                class="writeMemoBtn"
-                >
-                글쓰기
-            </v-btn>
+            <router-link to="/memo/write">
+                <v-btn
+                    color="pink lighten-1"
+                    text
+                    class="writeMemoBtn"
+                    >
+                    글쓰기
+                </v-btn>
+            </router-link>
             </v-row>
             <v-row class="MyNoteContent">
             <v-col cols="6" v-for="(item,index) in list" :key="index">
