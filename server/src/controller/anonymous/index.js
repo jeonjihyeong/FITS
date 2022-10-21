@@ -4,7 +4,6 @@ const {signToken}=require('../../lib/common/token')
 const mailSender = require('../../lib/common/mailer')
 const {salt,encryptionPassWord,decryptionPassWord} =require('../../lib/common/hashing')
 const {signUpMail,findIdMail,findPwMail} =require('../../lib/common/setMail')
-require('dotenv').config();
 
 // 로그인
 const login = async(req, res) => {

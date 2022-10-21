@@ -22,6 +22,10 @@
                 height="500px"
             ></v-textarea>
         </v-row>
+        <v-row>
+            <v-spacer/>
+            <v-btn>작성하기</v-btn>
+        </v-row>
     </v-container>
 </template>
 
