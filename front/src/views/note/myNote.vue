@@ -2,10 +2,10 @@
     <v-container>
         <v-container
             id="pc"
-            class="myNOteContainer"
+            class="myNoteContainer"
             justify-center>
             <v-row class="MyNoteTitle">
-                내 노트
+                내 스터디 노트
             </v-row>
             <v-row>
             <v-spacer></v-spacer>
@@ -20,8 +20,15 @@
             </router-link>
             </v-row>
             <v-row class="MyNoteContent">
-            <v-col cols="6" v-for="(item,index) in list" :key="index">
+                <v-col cols="12" class="MyNoteContentTitle">그림메모</v-col>
+                <v-col cols="6" v-for="(item,index) in list" :key="index">
                 <MyNoteCard :memoNumber='item'/>
+            </v-col>
+            </v-row>
+            <v-row class="MyNoteContent">
+                <v-col cols="12" class="MyNoteContentTitle">텍스트 메모</v-col>
+                <v-col cols="4" v-for="(item,index) in list" :key="index">
+                <MyNoteTextCard :memoNumber='item'/>
             </v-col>
             </v-row>
         </v-container>
@@ -48,19 +55,38 @@
                 <MyNoteCard :memoNumber='item'/>
             </v-col>
             </v-row>
+            <v-row class="MyNoteContent">
+                <v-col cols="12" class="MyNoteContentTitle">텍스트 메모</v-col>
+                <v-col cols="6" v-for="(item,index) in list" :key="index">
+                <MyNoteTextCard :memoNumber='item'/>
+            </v-col>
+            </v-row>
         </v-container>
     </v-container>
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex';
 import MyNoteCard from "../../components/board/myNoteCard.vue";
+import MyNoteTextCard from "../../components/board/myNoteTextCard.vue";
     export default {
     data() {
         return {
-            list: [1, 2, 3, 4,5],
+            list: [1, 2, 3, 4,5,6],
         };
     },
-    components: { MyNoteCard }
+    components: { MyNoteCard, MyNoteTextCard },
+    methods: {
+        ...mapActions({})
+    },
+    created () {
+        
+    },
+    computed: {
+        ...mapState({
+        userInfo:state=>state.anonymous.userInfo
+      })
+        },
 }
 </script>
 
@@ -83,16 +109,20 @@ import MyNoteCard from "../../components/board/myNoteCard.vue";
 .myNOteContainer{
     width: 80%;
 }
-.MyNoteContent{
-    justify-content: center;
-    margin-bottom: 30px;
-}
 .MyNoteTitle{
     justify-content: left;
     margin-bottom:20px;
     font-size:28px;
     font-weight: bold;
     margin-left:3px
+}
+.MyNoteContent{
+    justify-content: center;
+    margin-bottom: 30px;
+}
+.MyNoteContentTitle{
+    font-size: 20px;
+    font-weight: bold;
 }
 .writeMemoBtn{
     font-size: 17px;

@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const {db}= require('./src/lib/index')
 const router = require('./src/router')
 // const morgan = require('morgan');
+require('dotenv').config();
 
 app.use(bodyParser.json())
 // app.use(morgan())
