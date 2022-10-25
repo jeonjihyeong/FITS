@@ -14,7 +14,7 @@ export default {
     },
     actions: {
         async getNote(context,userIdx){
-            return await getNote
+            return await getNote(userIdx)
         }
     }
 };
