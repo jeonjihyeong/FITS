@@ -26,7 +26,19 @@ const get = async(req, res)=>{
     }
 }
 
-const getContent = async(req, res)=>{
+const getMy = async(req, res)=>{
+    console.log("controller: working")
+    let result;
+    try{
+        result = await boardService.getBoard(1);
+        res.send({data:result});
+    }catch(err){
+        console.log(err)
+        res.send({message:"Failed"})
+    }
+}
+
+const getOne = async(req, res)=>{
     console.log("CONTROLLER: WORKING");
     const textId = req.params.boardIdx;
     console.log("파라미터 전달 확인"+textId)
@@ -41,7 +53,6 @@ const getContent = async(req, res)=>{
     }
 }
 
-
 const deleteContent = async(req,res)=>{
     console.log("CONTROLLER: WORKING");
     const textId = req.params.boardIdx;
@@ -53,7 +64,7 @@ const deleteContent = async(req,res)=>{
     }    
 }
 
-const updateContent = async(req,res)=>{
+const update = async(req,res)=>{
     console.log("CONTROLLER: WORKING");
     const boardIdx= req.params.boardIdx;
     try{
@@ -66,5 +77,5 @@ const updateContent = async(req,res)=>{
 }
 
 module.exports={
-    write, get, getContent, deleteContent, updateContent
+    write, get, getOne, deleteContent, update
 }

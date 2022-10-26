@@ -9,7 +9,7 @@ const anonymousRouter = require(('./anonymous'));
 
 
 basicRouter.use('/',anonymousRouter)
-// basicRouter.use('/board',middleware.validateToken,boardRouter)
+basicRouter.use('/note',middleware.validateToken,boardRouter)
 // basicRouter.use('/comment',middleware.validateToken,commentRouter)
 // basicRouter.use('/user',middleware.validateToken,userRouter)
 
