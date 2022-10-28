@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import userLayout from '@/views/user/userLayout.vue'
 import signIn from '../views/auth/signIn.vue'
 import mainHome from '../views/main/mainHome.vue'
 import signUp from '../views/auth/signUp.vue'
@@ -20,25 +21,42 @@ const routes = [
     component: mainHome
   },
   {
-    path: '/signIn',
-    name: 'signIn',
-    component: signIn
+    path:'/auth',
+    name: 'auth',
+    component:userLayout,
+    beforeEnter:(to,from,next)=>{
+      console.log("로그인 상태 체크");
+      if(localStorage.getItem("accessToken")){
+        console.log("로그인 상태")
+        return;
+      }
+      console.log("로그아웃 상태")      
+      next()
+    },
+    children:[
+    {
+      path:"login",
+      name:'login',
+      component: signIn
+    },
+    {
+      path:"signUp",
+      name:'signUp',
+      component: signUp
+    },
+    {
+      path:"findId",
+      name:'findId',
+      component: findId
+    },
+    {
+      path:"findPw",
+      name:'findPw',
+      component: findPw
+    },
+  ]
   },
-  {
-    path: '/signUp',
-    name: 'signUp',
-    component: signUp
-  },
-  {
-    path: '/findId',
-    name: 'findId',
-    component: findId
-  },
-  {
-    path: '/findPw',
-    name: 'findPw',
-    component: findPw
-  },
+ 
   {
     path: '/Note/my',
     name: 'myNote',

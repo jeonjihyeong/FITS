@@ -11,7 +11,7 @@
         <router-link to="/"><img src="../assets/가로/new/007.png" width="130px"></router-link>
       </v-toolbar-title>
         <router-link v-if="this.accessToken" to="/user/myInfo"><v-btn icon><v-icon color="white">{{icons.mdiAccount}}</v-icon></v-btn></router-link>
-        <router-link v-if="!this.accessToken" to="/signIn"><v-btn icon><v-icon color="white">{{icons.mdiAccount}}</v-icon></v-btn></router-link>
+        <router-link v-if="!this.accessToken" to="auth/login"><v-btn icon><v-icon color="white">{{icons.mdiAccount}}</v-icon></v-btn></router-link>
     </v-app-bar>
 
     <v-navigation-drawer

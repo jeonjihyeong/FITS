@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import anonymous from './modules/anonymous.js'
 import auth from './modules/auth.js'
+import note from './modules/note'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -14,6 +15,6 @@ export default new Vuex.Store({
   // actions: {
   // },
   modules: {
-    anonymous,auth,
+    anonymous,auth,note
   }
 })
