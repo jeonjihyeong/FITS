@@ -1,3 +1,5 @@
+import noteApi from '@/api/note'
+
 export default {
     state: {
         value: 'my value'
@@ -14,7 +16,10 @@ export default {
     },
     actions: {
         async getNote(context,userIdx){
-            return await getNote(userIdx)
+            return await noteApi.getNote(userIdx)
+        },
+        async write(context,reqData){
+            return await noteApi.writeNote(reqData)
         }
     }
 };

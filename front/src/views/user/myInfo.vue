@@ -10,19 +10,19 @@
         >
             <br><br><br><br><br><br>
             <v-row class="myInfoText">
-                아이디: {{userInfo.id}}
+                아이디:{{userInfo.id}}
             </v-row>
             <v-row class="myInfoText">
                 이메일: {{userInfo.email}}
             </v-row>
             <v-row class="myInfoText">
-                이름: {{userInfo.name}}
+                이름:{{userInfo.name}}
             </v-row>
             <v-row class="myInfoText">
-                닉네임: {{userInfo.nickname}}
+                닉네임:{{userInfo.nickname}}
             </v-row>
             <v-row class="myInfoText">
-                나이: {{userInfo.age}}
+                나이:{{userInfo.age}}
             </v-row>
         </v-card>
         <br>
@@ -43,6 +43,7 @@ import { mapState } from 'vuex';
         userInfo:state=>state.anonymous.userInfo
       })
         },
+        
     }
 </script>
 

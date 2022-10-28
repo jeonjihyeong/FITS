@@ -8,7 +8,7 @@
             <v-text-field
                 outlined
                 label="제목"
-                v-model="content" 
+                v-model="title" 
                 hide-details="false"
                 class = 'writeMemoInputTitle mb-2'
             ></v-text-field>
@@ -24,17 +24,29 @@
         </v-row>
         <v-row>
             <v-spacer/>
-            <v-btn>작성하기</v-btn>
+            <v-btn
+                v-on:click="noteWrite()"
+                >작성하기</v-btn>
         </v-row>
     </v-container>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
     export default {
         data() {
             return {
                 title: '',
                 content: '',
+            }
+        },methods: {
+            ...mapActions({writeNote: "write"}),
+            async noteWrite(){
+                const reqData={
+                    title:this.title,
+                    content:this.content
+                }
+                await this.writeNote(reqData)
             }
         },
     }

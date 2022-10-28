@@ -1,4 +1,7 @@
 import anonymousApi from "@/api/anonymous";
+import noteApi from '@/api/note'
 // import authApi from "@/api/auth";
-
-export default anonymousApi
+const API={
+    anonymousApi,noteApi
+}
+export default API

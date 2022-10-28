@@ -9,7 +9,7 @@ noteRouter.post('/', note.write);
 noteRouter.get('/', note.get);
 
 // 내 노트 가져오기
-noteRouter.get('/my', note.getMy)
+// noteRouter.get('/my', note.getMy)
 
 // 게시글 view
 noteRouter.get('/view/:noteIdx', note.getOne);
