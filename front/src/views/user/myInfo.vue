@@ -28,20 +28,42 @@
         <br>
         <v-row class="myInfoNav">
             <v-spacer></v-spacer>
-            <v-btn color="pink lighten-1" text>회원정보 변경</v-btn>
-            <v-btn color="pink lighten-1" text>비밀번호 변경</v-btn>
+            <v-btn 
+                color="pink lighten-1"
+                text
+             >회원정보 변경</v-btn>
+            <v-btn 
+                color="pink lighten-1"
+                text
+                >회원정보 변경</v-btn>
+            <v-btn 
+                color="pink lighten-1"
+                text
+                v-on:click="logOut()"
+                >로그아웃</v-btn>
         </v-row>
     </v-container>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState,mapActions } from 'vuex';
 
     export default {
         computed: {
             ...mapState({
         userInfo:state=>state.anonymous.userInfo
       })
+        },
+        methods: {
+            ...mapActions({logout:"dropToken"}),
+            logOut() {
+                try{
+                    this.logout();
+                    this.$router.push('/')
+                }catch(err){
+                    console.log(err)
+                }
+            }
         },
         
     }

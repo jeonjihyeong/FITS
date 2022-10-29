@@ -1,6 +1,4 @@
-const jwt = require("jsonwebtoken");
 const token = require("./token");
-const {anonymousService} =require('../../service');
 
 // 토큰확인
 const validateToken = async(req,res,next)=>{

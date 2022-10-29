@@ -3,6 +3,7 @@ import axios from 'axios'
 // 글전체 목록 가지고 오기
 const getNote=async()=>{
     const token = localStorage.getItem("accessToken")
+    let result;
     await axios.get(`${process.env.VUE_APP_SERVER_URL}/note`,{
         headers:{
             authorization: token,
@@ -13,11 +14,12 @@ const getNote=async()=>{
             return;
         }
         console.log(res.data.data)
+        result = res.data.data
         return;
     }).catch((err)=>{
         console.log(err);
     })
-    return;
+    return result;
 }
 
 // 글작성하기
