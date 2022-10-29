@@ -3,8 +3,9 @@ import Vuex from 'vuex'
 import anonymous from './modules/anonymous.js'
 import auth from './modules/auth.js'
 import note from './modules/note'
-Vue.use(Vuex)
+import createPersistedState from "vuex-persistedstate";
 
+Vue.use(Vuex)
 export default new Vuex.Store({
   // state: {
   // },
@@ -16,5 +17,7 @@ export default new Vuex.Store({
   // },
   modules: {
     anonymous,auth,note
-  }
+  },
+  plugins: [createPersistedState()],
+
 })

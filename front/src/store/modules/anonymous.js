@@ -20,6 +20,16 @@ const anonymous = {
         updateUserInfo(state, payload) {
             state.userInfo = {...payload};
             state.accessToken = true;
+        },
+        dropUserInfo(state){
+            state.userInfo = {
+                id:'',
+                name:'',
+                nickname:'',
+                age:'',
+                email:'',
+            }
+            state.accessToken=false
         }
     },
     actions:{
@@ -58,6 +68,10 @@ const anonymous = {
         async changePw(context,reqInfo){
             return await anonymousApi.changePw(reqInfo)
         },
+        async dropToken(context){
+            localStorage.removeItem("accessToken");
+            return context.commit("dropUserInfo");
+        }
 
     }
 }
