@@ -15,7 +15,7 @@
       </v-card-text>
       <v-card-actions
       backgroundColor="pink">
-        <router-link :to="{name:'memo', params:{memoNumber:memoNumber}}">
+        <router-link :to="{path:`/note/view/${noteIdx}`}">
             <v-btn
                 text
                 color="pink lighten-1"
@@ -42,7 +42,7 @@
                 like:Boolean,
             }
         },
-        props: ['memoNumber']
+        props: ['noteIdx']
 
     }
 </script>

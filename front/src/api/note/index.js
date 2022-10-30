@@ -11,6 +11,12 @@ const getNote=async()=>{
     }).then((res)=>{
         if (res.data.message){
             console.log(res.data.message);
+            if(res.data.message==='expired token'){
+                alert("만료된 토큰입니다.")
+                localStorage.removeItem('accessToken')
+                result = "expired token"
+                return;
+            }
             return;
         }
         console.log(res.data.data)
@@ -19,6 +25,7 @@ const getNote=async()=>{
     }).catch((err)=>{
         console.log(err);
     })
+    console.log(result)
     return result;
 }
 

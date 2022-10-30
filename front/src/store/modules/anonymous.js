@@ -65,9 +65,11 @@ const anonymous = {
         async sendfindPwMail(context,reqInfo){
             return await anonymousApi.sendFindPwMail(reqInfo)
         },
+        // 비밀번호 변경
         async changePw(context,reqInfo){
             return await anonymousApi.changePw(reqInfo)
         },
+        // 로그아웃 토큰 삭제
         async dropToken(context){
             localStorage.removeItem("accessToken");
             return context.commit("dropUserInfo");

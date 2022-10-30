@@ -1,12 +1,12 @@
 <template>
     <v-card>
-        <router-link :to="{name:'memo', params:{memoNumber:memoNumber}}">
+        <router-link :to="{path:`/note/view/${noteIdx}`}">
             <v-img
             src='https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTExMTJfMTI1%2FMDAxNjM2NzI1NjE4NjQw.GEewoww7BRhJBXexutXVeX_GLWvW96Im9i6sHNaZObcg.QBOiFhHfK86jeQL1PTru8HRqdeooyyU-EzWDeiS_7fgg.JPEG.ho0605%2F20211112_111322.jpg&type=sc960_832'
             class="white--text align-end"
             height="200px"
             >
-            <v-card-title v-text="hello"></v-card-title>
+            <v-card-title v-text="title"></v-card-title>
             </v-img>
         </router-link>
         <v-card-actions>
@@ -39,7 +39,7 @@
                 like: Boolean,
             }
         },
-        props: ['memoNumber'],
+        props: ['title','noteIdx'],
     }
 </script>
 
