@@ -22,15 +22,10 @@
             <v-row class="MyNoteContent">
                 <v-col cols="12" class="MyNoteContentTitle">그림메모</v-col>
                 <v-col cols="6" v-for="(item,index) in list" :key="index">
-                <MyNoteCard :memoNumber='item'/>
+                <MyNoteCard :noteIdx='item'/>
             </v-col>
             </v-row>
-            <v-row class="MyNoteContent">
-                <v-col cols="12" class="MyNoteContentTitle">텍스트 메모</v-col>
-                <v-col cols="4" v-for="(item,index) in list" :key="index">
-                <MyNoteTextCard :memoNumber='item'/>
-            </v-col>
-            </v-row>
+           
         </v-container>
         <!-- mobile version -->
         <v-container
@@ -52,15 +47,10 @@
             </v-row>
             <v-row class="MyNoteContent">
             <v-col cols="12" v-for="(item,index) in list" :key="index">
-                <MyNoteCard :memoNumber='item'/>
+                <MyNoteCard :noteIdx='item'/>
             </v-col>
             </v-row>
-            <v-row class="MyNoteContent">
-                <v-col cols="12" class="MyNoteContentTitle">텍스트 메모</v-col>
-                <v-col cols="6" v-for="(item,index) in list" :key="index">
-                <MyNoteTextCard :memoNumber='item'/>
-            </v-col>
-            </v-row>
+           
         </v-container>
     </v-container>
 </template>
@@ -68,14 +58,13 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import MyNoteCard from "../../components/board/myNoteCard.vue";
-import MyNoteTextCard from "../../components/board/myNoteTextCard.vue";
     export default {
     data() {
         return {
             list: [1, 2, 3, 4,5,6],
         };
     },
-    components: { MyNoteCard, MyNoteTextCard },
+    components: { MyNoteCard},
     methods: {
         ...mapActions({})
     },

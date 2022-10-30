@@ -8,9 +8,10 @@ import findId from '@/views/auth/findId.vue'
 import findPw from '@/views/auth/findPw.vue'
 import myNote from '@/views/note/myNote.vue'
 import allNote from '@/views/note/allNote.vue'
-import memoView from '@/views/note/memoView.vue'
+import noteView from '@/views/note/noteView.vue'
 import myInfo from '@/views/user/myInfo.vue'
-import writeMemo from '@/views/note/writeMemo.vue'
+import writeNote from '@/views/note/writeNote.vue'
+import noteLayout from '@/views/note/noteLayout.vue'
 
 Vue.use(VueRouter)
 
@@ -20,6 +21,7 @@ const routes = [
     name: 'home',
     component: mainHome
   },
+  // auth router
   {
     path:'/auth',
     name: 'auth',
@@ -56,32 +58,58 @@ const routes = [
     },
   ]
   },
- 
   {
-    path: '/Note/my',
-    name: 'myNote',
-    component: myNote
-  },
-  {
-    path: '/Note',
-    name: 'allNote',
-    component: allNote
-  },
-  {
-    path: '/memo/view/:memoNumber',
-    name: 'memo',
-    component: memoView
-  },
+    path:'/note',
+    // name:'note',//
+    component: noteLayout,
+    beforeEnter:(to,from,next)=>{
+      console.log("로그인 상태 체크");
+      if(localStorage.getItem("accessToken")){
+        console.log("로그인 중")
+        next();
+        return;
+      }
+      console.log("로그인을 해주세요")
+      alert("로그인을 해주세요")
+      return;
+    },
+    children:[
+      {
+        path:'',
+        name: 'allNote',
+        component:allNote
+      },
+      {
+        path:'my',
+        name:'myNote',
+        component:myNote
+      },
+      {
+        path:'best',
+        name:'bestNote',
+        component:myNote
+      },
+      {
+        path:'write',
+        name:'writeNote',
+        component:writeNote
+      },
+      {
+        path:'view/:noteIdx',
+        name:'viewNote',
+        component:noteView,
+        props: route => ({
+          noteIdx: Number(route.params.noteIdx)
+        })
+      }
+    ]
+  },  
   {
     path: '/user/myInfo',
     name: 'myInfo',
     component: myInfo
   },
-  {
-    path: '/memo/write',
-    name: 'writeMemo',
-    component: writeMemo
-  },
+  
 ]
 
 const router = new VueRouter({
