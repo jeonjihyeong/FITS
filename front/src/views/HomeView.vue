@@ -21,10 +21,10 @@
     >
     <br><br>
     <router-link to="/"><div class="navDrawer">홈</div></router-link><br>
-    <router-link to="/Note/my"><div class="navDrawer">내 스터디룸</div></router-link><br>
-    <router-link to="/memo/best"><div class="navDrawer">인기 스터디 글</div></router-link><br>
-    <router-link to="/Note"><div class="navDrawer">전체 스터디 룸</div></router-link><br>
-    <router-link to="/Note/best"><div class="navDrawer">인기 스터디 룸</div></router-link><br>
+    <router-link to="/note/my"><div class="navDrawer">내 스터디룸</div></router-link><br>
+    <router-link to="/note/best"><div class="navDrawer">인기 스터디 글</div></router-link><br>
+    <router-link to="/note"><div class="navDrawer">전체 스터디 룸</div></router-link><br>
+    <router-link to="/note/best"><div class="navDrawer">인기 스터디 룸</div></router-link><br>
     </v-navigation-drawer>
     <br><br><br><br>
     <v-row class="main">

@@ -12,7 +12,7 @@ noteRouter.get('/', note.get);
 // noteRouter.get('/my', note.getMy)
 
 // 게시글 view
-noteRouter.get('/view/:noteIdx', note.getOne);
+noteRouter.get('/:noteIdx', note.getOne);
 
 // 게시글 수정
 noteRouter.put('/:noteIdx',note.update);

@@ -5,8 +5,22 @@
             전체 스터디 노트
         </v-row>
         <v-row>
+            <v-spacer></v-spacer>
+            <router-link to="/note/write">
+                <v-btn
+                    color="pink lighten-1"
+                    text
+                    class="writeMemoBtn"
+                    >
+                    글쓰기
+                </v-btn>
+            </router-link>
+            </v-row>
+        <v-row>
             <v-col cols="6" v-for="(item, index) in allNoteInfo" :key="index">
-                <MyNoteCard :title='item.title'/>
+                <MyNoteCard 
+                :title='item.title'
+                :noteIdx = 'item.noteIdx'/>
             </v-col>
         </v-row>
     </v-container>
@@ -53,5 +67,9 @@ import { mapActions } from 'vuex'
     font-size:28px;
     font-weight: bold;
     margin-left:3px
+}
+.writeMemoBtn{
+    font-size: 17px;
+    font-weight: bolder;
 }
 </style>

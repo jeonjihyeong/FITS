@@ -51,6 +51,20 @@ const writeNote =async(reqData)=>{
     return;
 }
 
+const getOneNote =async(noteIdx)=>{
+    const token = localStorage.getItem("accessToken")
+    await axios.get(`${process.env.VUE_APP_SERVER_URL}/note/${noteIdx}`,{
+        headers:{
+            authorization:token
+        }
+    }).then((res)=>{
+        console.log(res.data.data)
+        console.log(res.data.message)
+    }).catch((err)=>{
+        console.log(err)
+    })
+}
+
 export default {
-    getNote,writeNote
+    getNote,writeNote,getOneNote
 }
