@@ -33,13 +33,13 @@ const getBoard= async()=>{
 }
 
 // 게시판 글 가지고 오기
-const getText = async(boardIdx)=>{
+const getText = async(noteIdx)=>{
     let result;
     try{
         result = await models['note'].findOne({
             include:models['user'],
             where:{
-                boardIdx: boardIdx
+                noteIdx: noteIdx
             }
     })
     }catch(err){

@@ -22,6 +22,10 @@ export default {
         // 글 작성하기(완)
         async write(context,reqData){
             return await noteApi.writeNote(reqData)
-        }
+        },
+        // 게시글 하나 가지고오기
+        async getOneNote(context,noteIdx){
+            return await noteApi.getOneNote(noteIdx)
+        },
     }
 };
