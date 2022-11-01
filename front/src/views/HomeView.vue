@@ -84,6 +84,7 @@
     height: auto;
     margin-bottom: 20px;
     justify-content: center;
+    margin-left:10px
   }
  
 </style>

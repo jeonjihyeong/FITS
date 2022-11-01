@@ -98,9 +98,9 @@ const routes = [
         path:'view/:noteIdx',
         name:'viewNote',
         component:noteView,
-        props: route => ({
-          noteIdx: Number(route.params.noteIdx)
-        })
+        // props: route => ({
+        //   noteIdx: Number(route.params.noteIdx)
+        // })
       }
     ]
   },  

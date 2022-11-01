@@ -1,4 +1,5 @@
 import noteApi from '@/api/note'
+import commentApi from '@/api/comment'
 
 export default {
     state: {
@@ -27,5 +28,8 @@ export default {
         async getOneNote(context,noteIdx){
             return await noteApi.getOneNote(noteIdx)
         },
+        async writeComment(context,reqInfo){
+            return await commentApi.writeComment(reqInfo);
+        }
     }
 };
