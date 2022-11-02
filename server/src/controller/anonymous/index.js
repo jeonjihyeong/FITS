@@ -24,11 +24,12 @@ const login = async(req, res) => {
                 ...idData.dataValues
               }
               const token = await signToken(payload);
-                res.send({data: token});
+              res.send({data: token});
             }
-        }
-      }catch(err){
-        console.log(err);
+          }
+        }catch(err){
+          console.log(err);
+          throw new Error("LOGIN_ERROR")
       }
     }
 // 회원가입

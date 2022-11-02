@@ -28,9 +28,9 @@
                 />
             </v-row>
             <v-row>
-                <v-col cols="3" class="signInNav"><router-link to="/findId"><v-btn text color="pink lighten-1">아이디 찾기</v-btn></router-link></v-col>
-                <v-col cols="4" class="signInNav"><router-link to="/findPw"><v-btn text color="pink lighten-1">비밀번호 찾기</v-btn></router-link></v-col>
-                <v-col cols="3" class="signInNav"><router-link to="/signUp"><v-btn text color="pink lighten-1">회원가입</v-btn></router-link></v-col>
+                <v-col cols="3" class="signInNav"><router-link to="/auth/findId"><v-btn text color="pink lighten-1">아이디 찾기</v-btn></router-link></v-col>
+                <v-col cols="4" class="signInNav"><router-link to="/auth/findPw"><v-btn text color="pink lighten-1">비밀번호 찾기</v-btn></router-link></v-col>
+                <v-col cols="3" class="signInNav"><router-link to="/auth/signUp"><v-btn text color="pink lighten-1">회원가입</v-btn></router-link></v-col>
                 <v-col cols="2"><v-btn class="pink lighten-1 white--text mt-3 signInNav" @click="login()">로그인</v-btn></v-col>
             </v-row>
         </v-container>
@@ -66,9 +66,9 @@
             </v-row>
             
             <v-row>
-                <v-col class="signInNav"><router-link to="/findId"><v-btn text color="pink lighten-1">아이디 찾기</v-btn></router-link></v-col>
-                <v-col class="signInNav"><router-link to="/findPw"><v-btn text color="pink lighten-1">비밀번호 찾기</v-btn></router-link></v-col>
-                <v-col class="signInNav"><router-link to="/signUp"><v-btn text color="pink lighten-1">회원가입</v-btn></router-link></v-col>
+                <v-col class="signInNav"><router-link to="/auth/findId"><v-btn text color="pink lighten-1">아이디 찾기</v-btn></router-link></v-col>
+                <v-col class="signInNav"><router-link to="/auth/findPw"><v-btn text color="pink lighten-1">비밀번호 찾기</v-btn></router-link></v-col>
+                <v-col class="signInNav"><router-link to="/auth/signUp"><v-btn text color="pink lighten-1">회원가입</v-btn></router-link></v-col>
             </v-row>
         </v-container>
     </v-container>

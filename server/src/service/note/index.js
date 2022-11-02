@@ -49,11 +49,11 @@ const getText = async(noteIdx)=>{
 }
 
 // 게시판 글 삭제
-const deleteBoard = async(boardIdx)=>{
+const deleteBoard = async(noteIdx)=>{
     try{
         await models['note'].destroy({
             where:{
-                boardIdx: boardIdx
+                noteIdx: noteIdx
             }
         })
     }catch(err){

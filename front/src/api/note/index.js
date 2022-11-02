@@ -51,6 +51,7 @@ const writeNote =async(reqData)=>{
     return;
 }
 
+// 글한개 가지고 오기
 const getOneNote =async(noteIdx)=>{
     const token = localStorage.getItem("accessToken")
     let result;
@@ -60,10 +61,13 @@ const getOneNote =async(noteIdx)=>{
         }
     }).then((res)=>{
         if(res.status ===200){
-            result = res.data.data;
+            result = {
+                noteInfo:res.data.data,
+                comment:res.data.comment,
+            }
+            console.log(res.data.comment)
             return;
         }
-        console.log(res.data.message)
         return;
     }).catch((err)=>{
         console.log(err)
@@ -71,6 +75,25 @@ const getOneNote =async(noteIdx)=>{
     return result
 }
 
+const deleteNote=async(noteIdx)=>{
+    const token = localStorage.getItem("accessToken");
+    let result;
+    await axios.delete(`${process.env.VUE_APP_SERVER_URL}/note/${noteIdx}`,{
+        headers:{
+            authorization:token
+        }
+    }).then((res)=>{
+        if(res.status===200){
+            alert("삭제 성공")
+            result='success'
+            return;
+        }
+    }).catch((err)=>{
+        console.log(err)
+    })
+    return result
+}
+
 export default {
-    getNote,writeNote,getOneNote
+    getNote,writeNote,getOneNote,deleteNote
 }

@@ -30,6 +30,9 @@ export default {
         },
         async writeComment(context,reqInfo){
             return await commentApi.writeComment(reqInfo);
-        }
+        },
+        async deleteNote(context, noteIdx){
+            return await noteApi.deleteNote(noteIdx);
+        },
     }
 };

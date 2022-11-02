@@ -22,7 +22,6 @@
                 <v-icon v-if="marker">mdi-bookmark</v-icon>
                 <v-icon disabled v-if="!marker">mdi-bookmark</v-icon>
             </v-btn>
-
             <v-btn icon>
                 <v-icon>mdi-share-variant</v-icon>
             </v-btn>
