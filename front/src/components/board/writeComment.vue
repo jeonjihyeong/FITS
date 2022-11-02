@@ -29,10 +29,14 @@ import { mapActions } from 'vuex';
         },
         methods: {
             ...mapActions({
-                CommentWrite:"writeComment"
+                commentWrite:"writeComment"
             }),
-            writeComment() {
-                
+            async writeComment() {
+                const reqInfo={
+                    comment:this.comment,
+                    noteIdx:this.$route.params.noteIdx
+                }
+                await this.commentWrite(reqInfo);
             }
         },
     }

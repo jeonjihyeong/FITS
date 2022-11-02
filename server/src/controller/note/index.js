@@ -44,18 +44,20 @@ const getOne = async(req, res)=>{
     console.log("파라미터 전달 확인"+textId)
     try{
         const result = await noteService.getText(textId);
-        // const comment= await commentService.getComment(textId);
+        const comment= await commentService.getComment(textId);
+        console.log(comment)
         const userInfo = req.writeUser
-        res.send({data:result, accessUser:userInfo});
+        res.send({data:result,comment:comment, accessUser:userInfo});
     }catch(err){
         console.log(err)
-        res.send({message:"Failed"})
+        res.status(500).send({message:"Failed"})
     }
 }
 
 const deleteContent = async(req,res)=>{
     console.log("CONTROLLER: WORKING");
-    const textId = req.params.boardIdx;
+    const textId = req.params.noteIdx;
+    console.log(textId)
     try{
         await noteService.deleteBoard(textId);
         res.send({message:"Success"})
