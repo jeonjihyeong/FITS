@@ -40,13 +40,15 @@ import { mapActions } from 'vuex'
         },
         methods: {
             ...mapActions({
-                get: "getNote"
+                get: "getNote",
+                logOut:"dropToken"
             }),
             async getNote() {
                 try{
                     const result = await this.get();
                     if(result ==='expired token'){
-                        this.$router.push('/')
+                        this.logOut();
+                        this.$router.push('/');
                     }
                 this.allNoteInfo ={...result}
                 console.log(this.allNoteInfo)

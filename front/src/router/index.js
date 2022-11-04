@@ -12,6 +12,7 @@ import noteView from '@/views/note/noteView.vue'
 import myInfo from '@/views/user/myInfo.vue'
 import writeNote from '@/views/note/writeNote.vue'
 import noteLayout from '@/views/note/noteLayout.vue'
+import updateInfo from '@/views/user/updateInfo.vue'
 
 Vue.use(VueRouter)
 
@@ -109,6 +110,11 @@ const routes = [
     name: 'myInfo',
     component: myInfo
   },
+  {
+    path: '/user/update',
+    name: 'updateInfo',
+    component:updateInfo
+  }
   
 ]
 
