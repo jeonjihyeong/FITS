@@ -37,6 +37,8 @@ import { mapActions } from 'vuex';
                     noteIdx:this.$route.params.noteIdx
                 }
                 await this.commentWrite(reqInfo);
+                alert("댓글을 작성하였습니다.")
+                this.$router.go();
             }
         },
     }

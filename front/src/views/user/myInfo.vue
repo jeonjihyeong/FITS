@@ -27,15 +27,15 @@
         </v-card>
         <br>
         <v-row class="myInfoNav">
-            <v-spacer></v-spacer>
-            <v-btn 
+            <v-spacer/>
+            <router-link to="/user/update">
+                <v-btn 
                 color="pink lighten-1"
                 text
-             >회원정보 변경</v-btn>
-            <v-btn 
-                color="pink lighten-1"
-                text
-                >회원정보 변경</v-btn>
+                >회원정보 변경
+                </v-btn>
+            </router-link>
+            
             <v-btn 
                 color="pink lighten-1"
                 text
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { mapState,mapActions } from 'vuex';
+import {mapState, mapActions} from 'vuex';
 
     export default {
         computed: {

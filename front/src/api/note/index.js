@@ -13,7 +13,6 @@ const getNote=async()=>{
             console.log(res.data.message);
             if(res.data.message==='expired token'){
                 alert("만료된 토큰입니다.")
-                localStorage.removeItem('accessToken')
                 result = "expired token"
                 return;
             }
@@ -75,6 +74,7 @@ const getOneNote =async(noteIdx)=>{
     return result
 }
 
+// 노트 삭제
 const deleteNote=async(noteIdx)=>{
     const token = localStorage.getItem("accessToken");
     let result;
