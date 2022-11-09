@@ -7,7 +7,8 @@ const {signUpMail,findIdMail,findPwMail} =require('../../lib/common/setMail')
 
 // 로그인
 const login = async(req, res) => {
-    try{
+      let result;
+      try{
         const data=req.body;
         const idData=await anonymousService.getUserId(data.id);
         if(idData===null){
@@ -23,15 +24,18 @@ const login = async(req, res) => {
               const payload = {
                 ...idData.dataValues
               }
-              const token = await signToken(payload);
-              res.send({data: token});
+              result = await signToken(payload);
             }
           }
         }catch(err){
-          console.log(err);
-          throw new Error("LOGIN_ERROR")
-      }
+          console.log(err.message);
+          // res.status(406).send({message:"err.message"})
+          throw new Error('LOGIN_ERROR')
+        }
+        res.send({data: result});
+        
     }
+
 // 회원가입
 const signup = async(req,res)=>{
     const data= req.body;
