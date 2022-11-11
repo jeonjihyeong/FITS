@@ -1,5 +1,5 @@
-import noteApi from '@/api/note'
-import commentApi from '@/api/comment'
+import noteApi from '@/service/note'
+import commentApi from '@/service/comment'
 
 export default {
     state: {

@@ -5,28 +5,30 @@ const cors = require('cors');
 const bodyParser = require('body-parser')
 const {db}= require('./src/lib/index')
 const router = require('./src/router')
-const errorCode =require('./src/lib/common/error')
+const errorHandler =require('./src/lib/common/error')
 require('express-async-errors');
 
-// const morgan = require('morgan');
 require('dotenv').config();
 
 app.use(bodyParser.json())
-// app.use(morgan())
 app.use(cors());
 
+    
 app.use(router.basicRouter);
+    
 app.use(async (err, req, res, next) => {
-  console.log('index : ', err)
-  if(err.message in errorCode){
-    res.status(errorCode[err.message].status).send({message : errorCode[err.message].message});
-    next();  
-    return;
-  }else {
-    res.send({message : '시스템 오류가 발생했습니다. 잠시 후 시도해주세요.'});
-    next();   return;
+  console.log(err);
+  if(err.message in errorHandler){
+      res.status(errorHandler[err.message].status).send({message : errorHandler[err.message].message});
+      next();  
+      return;
+    }else {
+      res.send({message : '시스템 오류가 발생했습니다. 잠시 후 시도해주세요.'});
+      next();
+      return;
   }
 })
+      
 
 app.listen(port, async () => {
   console.log(`FITS_SERVER_LISTENING_ON_PORT ${port}`)

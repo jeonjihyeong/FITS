@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 // 메일발송 객체
 const mailSender = {
   // 메일발송 함수
-  sendGmail: function (param, toEmail) {
+  sendGmail: async function (param, toEmail) {
     var transporter = nodemailer.createTransport({
       service: 'gmail',   // 메일 보내는 곳
       auth: {
@@ -20,7 +20,7 @@ const mailSender = {
     };
     
     // 메일 발송    
-    transporter.sendMail(mailOptions, function (error, info) {
+    transporter.sendMail(mailOptions, async function (error, info) {
       if (error) {
         console.log(error);
         return error;

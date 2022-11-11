@@ -6,7 +6,7 @@ const {salt,encryptionPassWord,decryptionPassWord} =require('../../lib/common/ha
 const {signUpMail,findIdMail,findPwMail} =require('../../lib/common/setMail')
 
 // 로그인
-const login = async(req, res) => {
+const login = async(req, res,next) => {
       let result;
       try{
         const data=req.body;
@@ -21,19 +21,14 @@ const login = async(req, res) => {
             }else {
               delete idData.dataValues.pw;
               delete idData.dataValues.salt;
-              const payload = {
-                ...idData.dataValues
-              }
-              result = await signToken(payload);
+              result = await signToken(...idData.dataValues);
+              res.send({data: result});
             }
           }
         }catch(err){
-          console.log(err.message);
-          // res.status(406).send({message:"err.message"})
-          throw new Error('LOGIN_ERROR')
+          console.log(err);
+          next(err)
         }
-        res.send({data: result});
-        
     }
 
 // 회원가입
@@ -61,11 +56,11 @@ const signup = async(req,res)=>{
     
 }
 // 회원가입 메일
-const signUp_mail = async(req,res)=>{
+const sendSignUpMail = async(req,res)=>{
     const mail_data = req.body.email;
     const signUpText = signUpMail()
     try{
-        mailSender.sendGmail(signUpText.mailText, mail_data)
+        await mailSender.sendGmail(signUpText.mailText, mail_data)
         res.send({data:signUpText.auth_key})
     }catch(err){
         console.log(err);
@@ -134,7 +129,7 @@ const changePw = async(req,res)=>{
 module.exports={
     login,
     signup,
-    signUp_mail,
+    sendSignUpMail,
     sendFindIdMail,
     sendFindPwMail,
     changePw

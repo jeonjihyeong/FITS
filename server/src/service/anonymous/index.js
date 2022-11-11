@@ -14,7 +14,7 @@ const saveUser=async({id, pw,age,email,name,nickname,salt})=>{
         })
     }catch(err){
         console.log(err);
-        res.status(400).send({message:"FAILED"});
+        throw new Error('SERVICE_SAVE_USER')
     }
 }
 
@@ -29,6 +29,7 @@ const getUserId = async(id)=>{
         })
     }catch(err){
         console.log(err);
+        throw new Error('SERVICE_GET_USER_ID')
     }
     return results
 }

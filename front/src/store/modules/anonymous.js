@@ -1,4 +1,4 @@
-import anonymousApi from '@/api/anonymous'
+import anonymousApi from '@/service/anonymous'
 import jwt_decode from 'jwt-decode'
 const anonymous = {
     state:{

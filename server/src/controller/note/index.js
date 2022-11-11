@@ -2,7 +2,7 @@ const {noteService,commentService} = require('../../service');
 const jwt = require('jsonwebtoken');
 
 const write = async(req,res)=>{
-    console.log("컨트롤러 동작");
+    console.log("CONTROLLER: WORKING");
     const dataValue = req.body;
     try{
         console.log(req.writeUser.userIdx)
@@ -15,7 +15,7 @@ const write = async(req,res)=>{
 }
 
 const get = async(req, res)=>{
-    console.log("controller: working")
+    console.log("CONTROLLER: WORKING");
     let result;
     try{
         result = await noteService.getBoard(1);
@@ -27,7 +27,7 @@ const get = async(req, res)=>{
 }
 
 const getMy = async(req, res)=>{
-    console.log("controller: working")
+    console.log("CONTROLLER: WORKING");
     let result;
     try{
         result = await noteService.getBoard(1);
@@ -45,7 +45,6 @@ const getOne = async(req, res)=>{
     try{
         const result = await noteService.getText(textId);
         const comment= await commentService.getComment(textId);
-        console.log(comment)
         const userInfo = req.writeUser
         res.send({data:result,comment:comment, accessUser:userInfo});
     }catch(err){
