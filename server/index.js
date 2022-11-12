@@ -17,7 +17,8 @@ app.use(cors());
 app.use(router.basicRouter);
     
 app.use(async (err, req, res, next) => {
-  console.log(err);
+  console.log(err.message);
+  console.log("에러처리기");
   if(err.message in errorHandler){
       res.status(errorHandler[err.message].status).send({message : errorHandler[err.message].message});
       next();  

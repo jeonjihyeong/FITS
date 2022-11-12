@@ -21,7 +21,7 @@ const login = async(req, res,next) => {
             }else {
               delete idData.dataValues.pw;
               delete idData.dataValues.salt;
-              result = await signToken(...idData.dataValues);
+              result = await signToken({...idData.dataValues});
               res.send({data: result});
             }
           }

@@ -46,7 +46,8 @@ import { mapActions } from 'vuex'
             async getNote() {
                 try{
                     const result = await this.get();
-                    if(result ==='expired token'){
+                    if(result ==='expired token'&&result=='invalid token'){
+                        alert('만료된 토큰입니다.')
                         this.logOut();
                         this.$router.push('/');
                     }

@@ -29,7 +29,7 @@ const getUserId = async(id)=>{
         })
     }catch(err){
         console.log(err);
-        throw new Error('SERVICE_GET_USER_ID')
+        throw new Error('SERVICE_GET_USER_BY_ID')
     }
     return results
 }
