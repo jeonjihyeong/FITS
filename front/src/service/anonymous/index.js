@@ -2,13 +2,13 @@ import axios from 'axios'
 
 // 로그인 API
 const login =async(reqInfo)=>{
-    let result = '';
+    let result;
     console.log(process.env.VUE_APP_SERVER_URL)
     await axios.post(`${process.env.VUE_APP_SERVER_URL}/login`,{
         ...reqInfo
     }).then((res)=>{
         console.log(res.status)
-        if("message" in res.data){
+        if(res.data.message){
             if(res.data.message==="idFailed"){
                 alert('아이디가 틀렸습니다.')
                 return 0;
@@ -19,12 +19,12 @@ const login =async(reqInfo)=>{
             }    
         }
         alert("로그인 하였습니다.");
-        
         result = res
         return;
         
     }).catch((err)=>{
-        console.log(err);
+        console.log(err.response.data.message);
+        console.log("에러")
         return 0;
     })
     return result

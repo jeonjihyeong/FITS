@@ -11,18 +11,16 @@ const getNote=async()=>{
     }).then((res)=>{
         if (res.data.message){
             console.log(res.data.message);
-            if(res.data.message==='expired token'){
-                alert("만료된 토큰입니다.")
-                result = "expired token"
-                return;
-            }
             return;
         }
-        console.log(res.data.data)
         result = res.data.data
         return;
     }).catch((err)=>{
         console.log(err);
+        if(err.response.data){
+            result = err.response.data.message
+            alert(result)
+        }
     })
     console.log(result)
     return result;

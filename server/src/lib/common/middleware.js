@@ -6,14 +6,14 @@ const validateToken = async(req,res,next)=>{
     console.log("MIDDLE_WARE: WORKING")
     try{
         if(!await token.verifyToken(accessToken)){
-            res.send({message : "expired token"})
-            return;
+            
         }
         const writeUserInfo =await token.decodeToken(accessToken);
-        req.writeUser = writeUserInfo;
+        req.decode = writeUserInfo;
         next();
     }catch(err){
         console.log(err)
+        next(err)
     }
 }
 

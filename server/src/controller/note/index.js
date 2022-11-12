@@ -5,8 +5,8 @@ const write = async(req,res)=>{
     console.log("CONTROLLER: WORKING");
     const dataValue = req.body;
     try{
-        console.log(req.writeUser.userIdx)
-        await noteService.writeBoard(req.writeUser.userIdx,dataValue.title,dataValue.content)
+        console.log(req.decode.userIdx)
+        await noteService.writeBoard(req.decode.userIdx,dataValue.title,dataValue.content)
         res.send({data: 'Success'})
     }catch(err){
         console.log(err)
@@ -45,7 +45,7 @@ const getOne = async(req, res)=>{
     try{
         const result = await noteService.getText(textId);
         const comment= await commentService.getComment(textId);
-        const userInfo = req.writeUser
+        const userInfo = req.decode
         res.send({data:result,comment:comment, accessUser:userInfo});
     }catch(err){
         console.log(err)

@@ -20,7 +20,6 @@ const signToken = async(payload) => {
     }catch(err){
         consonle.log(err)
     }
-  return result
 }
 
 // 토큰 검증
@@ -30,7 +29,8 @@ const verifyToken = async(anyToken)=>{
         })
         return true;
     }catch(err){
-        console.log(err)
+        if (err.name==='TokenExpiredError')throw new Error("EXPIRED_TOKEN");
+        throw new Error("INVALID_TOKEN")
     }
 }
 
