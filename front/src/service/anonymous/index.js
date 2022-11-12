@@ -1,12 +1,17 @@
 import axios from 'axios'
+import http from '@/service/axios'
 
 // 로그인 API
 const login =async(reqInfo)=>{
     let result;
     console.log(process.env.VUE_APP_SERVER_URL)
-    await axios.post(`${process.env.VUE_APP_SERVER_URL}/login`,{
+    await http.post('/login',{
         ...reqInfo
-    }).then((res)=>{
+    })
+    // await axios.post(`${process.env.VUE_APP_SERVER_URL}/login`,{
+    //     ...reqInfo
+    // })
+    .then((res)=>{
         console.log(res.status)
         if(res.data.message){
             if(res.data.message==="idFailed"){
@@ -49,7 +54,7 @@ const sendSignUpMail = async(email)=>{
     // 회원가입 하기
 const signUp = async(reqInfo)=>{
     console.log(process.env.VUE_APP_SERVER_URL)
-    await axios.post(`${process.env.VUE_APP_SERVER_URL}/signUp`,{
+    await http.post('/signUp',{
         ...reqInfo
     }).then((res)=>{
         console.log(res.data.data);
@@ -71,7 +76,7 @@ const signUp = async(reqInfo)=>{
 // 아이디 찾기
 const sendFindIdMail = async(reqInfo)=>{
     console.log(process.env.VUE_APP_SERVER_URL)
-    await axios.post(`${process.env.VUE_APP_SERVER_URL}/findId`,{
+    await http.post('/findId',{
         ...reqInfo
     }).then((res)=>{
         if(res.data.message){
@@ -89,7 +94,7 @@ const sendFindIdMail = async(reqInfo)=>{
 // 비밀번호 인증 메일
 const sendFindPwMail=async(reqInfo)=>{
     let result = ''
-    await axios.post(`${process.env.VUE_APP_SERVER_URL}/findPw`,{
+    await http.post('/findPw',{
         ...reqInfo
     }).then((res)=>{
         if(res.data.message){
@@ -107,7 +112,7 @@ const sendFindPwMail=async(reqInfo)=>{
 }
 // 비밀번호 변경
 const changePw=async(reqInfo)=>{
-    await axios.post(`${process.env.VUE_APP_SERVER_URL}/changePw`,{
+    await http.post('/changePw',{
         ...reqInfo
     }).then((res)=>{
         if(res.data.message){
