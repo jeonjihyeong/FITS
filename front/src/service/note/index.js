@@ -1,13 +1,14 @@
 import axios from 'axios'
+import http from '@/service/axios'
 
 // 글전체 목록 가지고 오기
 const getNote=async()=>{
-    const token = localStorage.getItem("accessToken")
+    // const token = localStorage.getItem("accessToken")
     let result;
-    await axios.get(`${process.env.VUE_APP_SERVER_URL}/note`,{
-        headers:{
-            authorization: token,
-        }
+    await http.get('/note',{
+        // headers:{
+        //     authorization: token,
+        // }
     }).then((res)=>{
         if (res.data.message){
             console.log(res.data.message);
