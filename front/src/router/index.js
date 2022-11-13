@@ -20,7 +20,8 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: mainHome
+    component: mainHome,
+    
   },
   // auth router
   {

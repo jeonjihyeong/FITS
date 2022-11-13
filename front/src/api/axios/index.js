@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const instance = axios.create({
-    baseURL:process.env.VUE_APP_SERVER_URL,
+    baseURL: process.env.VUE_APP_SERVER_URL,
 });
 
 instance.interceptors.request.use(
@@ -11,7 +11,7 @@ instance.interceptors.request.use(
             config={
                 ...config,
                 headers:{
-                    authorization:token
+                    authorization:token+25
                 },
             }
         }
@@ -24,6 +24,7 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
     function(response){
+
         return response;
     },
     function(error){
