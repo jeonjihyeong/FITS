@@ -8,25 +8,29 @@ const httpStatus = {
 }
 
 const controller_error ={
-    LOGIN_ERROR:{
-        message :"LOGIN_ERROR",
-        status:406
+    CONTROLLER_LOGIN_ERROR:{
+        message :"controller error to login",
+        status:httpStatus.not_accept
     },
-    ACOUNT_ERROR:{
-        message:"ACOUNT_ERROR",
-        status:404
+    CONTROLLER_ACOUNT_ERROR:{
+        message:"controller error to acount",
+        status:httpStatus.not_accept
     },
-    ACOUNT_ERROR:{
-        message:"ACOUNT_ERROR",
-        status:404
+    CONTROLLER_SEND_ACOUNT_MAIL_ERROR:{
+        message:"controller error to send acount mail",
+        status:httpStatus.not_accept
     },
-    ACOUNT_ERROR:{
-        message:"ACOUNT_ERROR",
-        status:404
+    CONTROLLER_SEND_FIND_ID_MAIL_ERROR:{
+        message:"controller error to send find id mail",
+        status:httpStatus.not_accept
     },
-    ACOUNT_ERROR:{
-        message:"ACOUNT_ERROR",
-        status:404
+    CONTROLLER_SEND_FIND_PW_MAIL_ERROR:{
+        message:"controller error to send find pw mail",
+        status:httpStatus.not_accept
+    },
+    CONTROLLER_CHANGE_PW_ERROR:{
+        message:"controller error to change pw mail",
+        status:httpStatus.not_accept
     },
 }
 

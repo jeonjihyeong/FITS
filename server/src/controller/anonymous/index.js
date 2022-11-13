@@ -90,7 +90,8 @@ const sendFindIdMail = async(req,res)=>{
 const sendFindPwMail = async(req,res)=>{
   try{
     console.log(req.body);
-    if(await anonymousService.getPwData(req.body.id,req.body.email,req.body.name)===null){
+    const pwData =  await anonymousService.getPwData(req.body.id,req.body.email,req.body.name)
+    if(pwData===null||pwData===undefined){
       res.send({message:"No User Data"})
       console.log("No User Data")
     }else{
@@ -110,7 +111,7 @@ const changePw = async(req,res)=>{
   try{
     console.log(req.body);
     let changePwUserData = await anonymousService.getPwData(req.body)
-    if(changePwUserData===null){
+    if(changePwUserData===null||changePwUserData===undefined){
       res.send({message:"No User Data"})
       console.log("No user Data")
     }else{
