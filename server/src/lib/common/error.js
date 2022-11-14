@@ -35,8 +35,24 @@ const controller_error ={
 }
 
 const service_error={
-    SERVICE_GET_USER_BY_ID:{
+    SERVICE_SAVE_USER_ERROR:{
+        message:"Can not save user data in dataBase.",
+        status:httpStatus.server_error
+    },
+    SERVICE_GET_USER_BY_ID_ERROR:{
         message:"Can not get user data by id.",
+        status:httpStatus.server_error
+    },
+    SERVICE_GET_USER_BY_EMAIL_ERROR:{
+        message:"Can not get user data by email.",
+        status:httpStatus.server_error
+    },
+    SERVICE_GET_PW_DATA_ERROR:{
+        message:"Can not get password data.",
+        status:httpStatus.server_error
+    },
+    SERVICE_CHANGE_PW_ERROR:{
+        message:"Can not change password.",
         status:httpStatus.server_error
     },
 }

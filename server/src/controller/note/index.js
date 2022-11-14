@@ -18,7 +18,7 @@ const get = async(req, res)=>{
     console.log("CONTROLLER: WORKING");
     let result;
     try{
-        result = await noteService.getBoard(1);
+        result = await noteService.getBoard();
         res.send({data:result});
     }catch(err){
         console.log(err)

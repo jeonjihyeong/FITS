@@ -52,6 +52,7 @@ const signup = async(req,res)=>{
       }catch(err){
           console.log(err);
           res.send({message:`ERROR: ${err}`});
+          next(err)
       }
     
 }
@@ -64,6 +65,7 @@ const sendSignUpMail = async(req,res)=>{
         res.send({data:signUpText.auth_key})
     }catch(err){
         console.log(err);
+        next(err)
     }
   }
 
@@ -83,6 +85,7 @@ const sendFindIdMail = async(req,res)=>{
     }
     }catch(err){
         console.log(err);
+        next(err)
     }
 }
 
@@ -103,6 +106,7 @@ const sendFindPwMail = async(req,res)=>{
     }
   }catch(err){
     console.log(err);
+    next(err)
   }
 }
 
@@ -124,6 +128,7 @@ const changePw = async(req,res)=>{
     }
   }catch(err){
     console.log(err)
+    next(err)
   }
 }
 
