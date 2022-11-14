@@ -14,7 +14,7 @@ const saveUser=async({id, pw,age,email,name,nickname,salt})=>{
         })
     }catch(err){
         console.log(err);
-        throw new Error('SERVICE_SAVE_USER')
+        throw new Error('SERVICE_SAVE_USER_ERROR')
     }
 }
 
@@ -29,7 +29,7 @@ const getUserId = async(id)=>{
         })
     }catch(err){
         console.log(err);
-        throw new Error('SERVICE_GET_USER_BY_ID')
+        throw new Error('SERVICE_GET_USER_BY_ID_ERROR')
     }
     return results
 }
@@ -47,6 +47,7 @@ const getEmailData = async({email,name})=>{
         })
     }catch(err){
         console.log(err)
+        throw new Error('SERVICE_GET_USER_BY_EMAIL_ERROR')
     }
     return results
 }
@@ -65,6 +66,7 @@ const getPwData = async(id,email,name)=>{
         })
     }catch(err){
         console.log(err)
+        throw new Error('SERVICE_GET_PW_DATA_ERROR')
     }
     return results
 }
@@ -83,6 +85,7 @@ const changePassword=async(userIdx,{hashPw,salt})=>{
         })
     }catch(err){
         console.log(err)
+        throw new Error("SERVICE_CHANGE_PW_ERROR")
     }
 }
 

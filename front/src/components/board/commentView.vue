@@ -40,10 +40,10 @@
     font-size: 17px;
 }
 .deleteButton{
-    text-align: center;
+    text-align: right;
 }
 .commentDate{
-    font-size: 15px;
+    font-size: 13px;
     color: #aaa;
 }
 .commentRow{

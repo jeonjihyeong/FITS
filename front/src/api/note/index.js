@@ -19,6 +19,7 @@ const Note ={
                 alert(result)
             }
         })
+        return result;
     },
     // 글작성하기
     writeNote:async(reqData)=>{

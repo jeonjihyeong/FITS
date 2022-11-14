@@ -22,9 +22,8 @@ const getBoard= async()=>{
     try{
         result = await models['note'].findAll({
             include:models['user'].name,
-            order:[['created','DESC']]
+            order:[['created','DESC']],
         })
-        // res.data=result;
         
     }catch(err){
         console.log(err);

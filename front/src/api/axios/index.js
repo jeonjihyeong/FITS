@@ -11,7 +11,7 @@ instance.interceptors.request.use(
             config={
                 ...config,
                 headers:{
-                    authorization:token+25
+                    authorization:token
                 },
             }
         }
