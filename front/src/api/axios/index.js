@@ -34,6 +34,7 @@ instance.interceptors.response.use(
     function(error){
         if(error.response.status===419){
             console.log(error.response.status);
+            
         }
         return Promise.reject(error);
     }
