@@ -21,6 +21,7 @@ const Note ={
         })
         return result;
     },
+
     // 글작성하기
     writeNote:async(reqData)=>{
         await http.post('/note',reqData
@@ -34,6 +35,7 @@ const Note ={
             console.log(err);
         })
     },
+
     // 글한개 가지고 오기
     getOneNote:async(noteIdx)=>{
         let result;
@@ -53,7 +55,7 @@ const Note ={
         })
         return result
     },
-    
+
     // 글 삭제
     deleteNote:async(noteIdx)=>{
         let result;

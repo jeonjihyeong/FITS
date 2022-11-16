@@ -6,12 +6,16 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
     function(config){
-        const token = localStorage.getItem('accessToken')
-        if (token!==null&&token!==undefined){
+        const accessToken = localStorage.getItem('accessToken')
+        const refreshToken = localStorage.getItem('refreshToken')
+        if (accessToken!==null&&accessToken!==undefined){
             config={
                 ...config,
                 headers:{
-                    authorization:token
+                    authorization:{
+                        accessToken:accessToken,
+                        refreshToken:refreshToken
+                    }
                 },
             }
         }
@@ -28,6 +32,9 @@ instance.interceptors.response.use(
         return response;
     },
     function(error){
+        if(error.response.status===419){
+            console.log(error.response.status);
+        }
         return Promise.reject(error);
     }
 )

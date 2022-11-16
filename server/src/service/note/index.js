@@ -75,8 +75,6 @@ const updateBoard = async(boardIdx, title, content)=>{
     }
 }
 
-
-
 module.exports = {
     writeBoard, getBoard, getText,deleteBoard, updateBoard
 }
