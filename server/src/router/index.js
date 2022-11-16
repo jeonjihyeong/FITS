@@ -1,5 +1,5 @@
 const express = require('express')
-const middleware = require('../lib/common/middleware');
+const middleware = require('../lib/utils/middleware');
 const basicRouter= express.Router();
 const anonymousRouter = require(('./anonymous'));
 const noteRouter = require(('./note'));

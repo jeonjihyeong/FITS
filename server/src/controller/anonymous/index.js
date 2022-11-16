@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken')
 const {anonymousService} =require('../../service')
-const {signToken}=require('../../lib/common/token')
-const mailSender = require('../../lib/common/mailer')
-const {salt,encryptionPassWord,decryptionPassWord} =require('../../lib/common/hashing')
-const {signUpMail,findIdMail,findPwMail} =require('../../lib/common/setMail')
+const {signToken}=require('../../lib/utils/token')
+const mailSender = require('../../lib/utils/mailer')
+const {salt,encryptionPassWord,decryptionPassWord} =require('../../lib/utils/hashing')
+const {signUpMail,findIdMail,findPwMail} =require('../../lib/utils/setMail')
 
 // 로그인
 const login = async(req, res,next) => {
