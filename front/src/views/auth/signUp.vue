@@ -13,6 +13,7 @@
                 v-model="id"
                 hide-details="auto"
                 color="pink lighten-1"
+                
             >
             </v-text-field>
             <v-text-field
@@ -24,6 +25,7 @@
                 @click:append="pw_show = !pw_show"
                 @keyup.enter  ="login()"
                 color="pink lighten-1"
+                hint="8자리 이상의 영문, 숫자, 특수문자를 모두 사용하세요."
             ></v-text-field>
             <v-text-field
                 label="이름 입력"
@@ -87,6 +89,7 @@
 
 <script>
 import { mapActions} from 'vuex';
+import authValidations from '../../utils/validation'
 
     export default {
         data() {
@@ -133,11 +136,16 @@ import { mapActions} from 'vuex';
                 if (!confirm("메일을 전송하시겠습니까?")){
                     return;
                 }
-                
+                const pre =authValidations.checkEmail(this.email)
+                if(pre.message){
+                    alert(pre.message)
+                    return;
+                }
                 this.auth_key_ = await this.signUpMail(this.email)
                 this.auth_show =true
                 console.log(this.auth_key_)
             },
+
             // 인증키 확인
             checkAuth(){
                 if (this.auth_input===this.auth_key_){

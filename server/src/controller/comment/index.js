@@ -1,4 +1,4 @@
-const { commentService }=require("../../service");
+const { commentService }=require("../../reposiotory");
 
 const writeComment=async(req,res)=>{
     try{

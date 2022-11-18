@@ -1,16 +1,16 @@
 const jwt = require('jsonwebtoken')
-const {anonymousService} =require('../../service')
-const {signToken}=require('../../lib/utils/token')
-const mailSender = require('../../lib/utils/mailer')
-const {salt,encryptionPassWord,decryptionPassWord} =require('../../lib/utils/hashing')
-const {signUpMail,findIdMail,findPwMail} =require('../../lib/utils/setMail')
+const {anonymousReposiotory} =require('../../reposiotory')
+const {signToken}=require('../../lib/common/token')
+const mailSender = require('../../lib/common/mailer')
+const {salt,encryptionPassWord,decryptionPassWord} =require('../../lib/common/hashing')
+const {signUpMail,findIdMail,findPwMail} =require('../../lib/common/setMail')
 
 // 로그인
 const login = async(req, res,next) => {
     let result;
     try{
       const data=req.body;
-      const idData=await anonymousService.getUserId(data.id);
+      const idData=await anonymousReposiotory.getUserId(data.id);
       if(idData===null){
         res.send ({message: 'idFailed'})
       }else {
@@ -30,12 +30,31 @@ const login = async(req, res,next) => {
         next(err)
       }
   }
+const login2 = async(req,res)=>{
+  if(req.body===null||req.body===undefined){
+    return res.status(200).json({
+      status: 400,
+      message: "Error: Body(JSON)값이 비어있습니다."
+    });
+  }
+  if(req.body.hasOwnProperty('id')===false||req.body.hasOwnProperty('pw')===false){
+    return res.status(200).json({
+      message:"Error: 이메일 또는 비밀번호가 없습니다."
+    });
+  }
+  try{
+    await anonymousReposiotory.login()
+  }catch(err){
+    
+  }
+  
+}
 
 // 회원가입
 const signup = async(req,res)=>{
     const data= req.body;
     try{
-      if (await anonymousService.getUserId(data.id)!==null){
+      if (await anonymousReposiotory.getUserId(data.id)!==null){
         console.log('id가 이미 존재합니다.');
         res.send({data: 0})
       }
@@ -46,7 +65,7 @@ const signup = async(req,res)=>{
             pw:hashPw,
             salt:salt,
           }
-          await anonymousService.saveUser(payload);
+          await anonymousReposiotory.saveUser(payload);
           res.send({data: 1})
         }
       }catch(err){
@@ -73,7 +92,7 @@ const sendSignUpMail = async(req,res)=>{
 const sendFindIdMail = async(req,res)=>{
   try{
     console.log("controller")
-    if(await anonymousService.getEmailData(req.body)===null){
+    if(await anonymousReposiotory.getEmailData(req.body)===null){
       res.send({message:"No User Data"});
       console.log("No User Data")
     }else{
@@ -93,7 +112,7 @@ const sendFindIdMail = async(req,res)=>{
 const sendFindPwMail = async(req,res)=>{
   try{
     console.log(req.body);
-    const pwData =  await anonymousService.getPwData(req.body.id,req.body.email,req.body.name)
+    const pwData =  await anonymousReposiotory.getPwData(req.body.id,req.body.email,req.body.name)
     if(pwData===null||pwData===undefined){
       res.send({message:"No User Data"})
       console.log("No User Data")
@@ -114,7 +133,7 @@ const sendFindPwMail = async(req,res)=>{
 const changePw = async(req,res)=>{
   try{
     console.log(req.body);
-    let changePwUserData = await anonymousService.getPwData(req.body)
+    let changePwUserData = await anonymousReposiotory.getPwData(req.body)
     if(changePwUserData===null||changePwUserData===undefined){
       res.send({message:"No User Data"})
       console.log("No user Data")
@@ -123,7 +142,7 @@ const changePw = async(req,res)=>{
         hashPw: encryptionPassWord(req.body.new_Pw),
         salt: salt
       }
-      await anonymousService.changePassword(changePwUserData.userIdx,inCodeNewPw);
+      await anonymousReposiotory.changePassword(changePwUserData.userIdx,inCodeNewPw);
       res.send({data: 1})
     }
   }catch(err){
