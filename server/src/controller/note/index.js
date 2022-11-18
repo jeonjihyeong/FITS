@@ -1,4 +1,4 @@
-const {noteService,commentService} = require('../../service');
+const {noteService,commentService} = require('../../reposiotory');
 const jwt = require('jsonwebtoken');
 
 const write = async(req,res)=>{
