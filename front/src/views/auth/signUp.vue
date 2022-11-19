@@ -13,7 +13,6 @@
                 v-model="id"
                 hide-details="auto"
                 color="pink lighten-1"
-                
             >
             </v-text-field>
             <v-text-field
@@ -39,6 +38,7 @@
                 v-model="nickname"
                 hide-details="auto"
                 color="pink lighten-1"
+                hint="3글자 이상, 12글자 이하로 입력해주세요"
             >
             </v-text-field>
             <v-text-field
@@ -117,6 +117,25 @@ import authValidations from '../../utils/validation'
                 if(!confirm("회원가입 하시겠습니까?")){
                     return;
                 }
+                const pre={
+                    Id:authValidations.checkId(this.id),
+                    Pw:authValidations.checkPw(this.pw),
+                    NickName:authValidations.checkNickName(this.nickname)
+                }
+                if(pre.Id?.message||pre.Pw?.message||pre.NickName?.message){
+                    if(pre.Id?.message){
+                        alert("아이디: "+pre.Id?.message)
+                        return;
+                    }
+                    if(pre.Pw?.message){
+                        alert("비밀번호: "+pre.Pw?.message)
+                        return;
+                    }
+                    if(pre.NickName?.message){
+                        alert("닉네임: "+pre.NickName?.message)
+                        return;
+                    }
+                }
                 if(this.check_auth!==true){
                     alert("이메일 인증을 먼저해주세요.")
                     return
@@ -137,7 +156,7 @@ import authValidations from '../../utils/validation'
                     return;
                 }
                 const pre =authValidations.checkEmail(this.email)
-                if(pre.message){
+                if(pre?.message){
                     alert(pre.message)
                     return;
                 }
