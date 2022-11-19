@@ -8,7 +8,7 @@ export default {
         if (!email){
             return {message :'이메일이 입력되지 않았습니다.'};
         }
-        if (emailForm.test(email)){
+        if (!emailForm.test(email)){
             return {message :'이메일 형식이 아닙니다.'};
         }
         return;
@@ -23,7 +23,7 @@ export default {
         if(id.length > 15){
             return {message : '최대 15글자까지 입력해주세요.'};
         }
-        if(idForm.test(id)){
+        if(!idForm.test(id)){
             return {message:'영어와 숫자만 사용해주세요'}
         }
         return;
@@ -32,7 +32,7 @@ export default {
         if (!pw){
             return {message :'비밀번호가 입력되지 않았습니다.'};
         }
-        if (passwordForm.test(pw)){
+        if (!passwordForm.test(pw)){
             return {message :'8자리 이상의 영문, 숫자, 특수문자를 모두 사용하세요.'};
         }
         return

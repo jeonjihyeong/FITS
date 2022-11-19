@@ -30,7 +30,7 @@
         <!-- mobile version -->
         <v-container
             id ="mobile"
-            class="myNOteContainer"
+            class="myNoteContainer"
             justify-center>
             <v-row class="MyNoteTitle">
                 내 노트
@@ -97,7 +97,7 @@ import MyNoteCard from "../../components/board/myNoteCard.vue";
         display: none;
     }
 }
-.myNOteContainer{
+.myNoteContainer{
     width: 80%;
 }
 .MyNoteTitle{
