@@ -93,7 +93,7 @@
                     return;
                 }
                 const reqInfo={
-                    // id:this.id,
+                    id:this.id,
                     pw:this.pw
                 }
                 const result = await this.loginAction(reqInfo);

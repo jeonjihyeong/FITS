@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken')
 const {anonymousReposiotory} =require('../../reposiotory')
 const {signToken}=require('../../lib/common/token')
 const mailSender = require('../../lib/common/mailer')
@@ -30,6 +29,7 @@ const login = async(req, res,next) => {
         next(err)
       }
   }
+
 const login2 = async(req,res)=>{
   if(req.body===null||req.body===undefined){
     return res.status(200).json({
@@ -45,9 +45,8 @@ const login2 = async(req,res)=>{
   try{
     await anonymousReposiotory.login()
   }catch(err){
-    
+    console.log(err);
   }
-  
 }
 
 // 회원가입
@@ -73,8 +72,8 @@ const signup = async(req,res)=>{
           res.send({message:`ERROR: ${err}`});
           next(err)
       }
-    
 }
+
 // 회원가입 메일
 const sendSignUpMail = async(req,res)=>{
     const mail_data = req.body.email;
@@ -86,7 +85,7 @@ const sendSignUpMail = async(req,res)=>{
         console.log(err);
         next(err)
     }
-  }
+}
 
 // 아이디 찾기 메일
 const sendFindIdMail = async(req,res)=>{

@@ -5,7 +5,7 @@ const SECRET_KEY = process.env.JWT_KEY;
 
 module.exports={
     //  토큰생성
-    signToken : (payload) => {
+    signToken : async(payload) => {
         try{
             return jwt.sign(payload, SECRET_KEY,{
             algorithm: 'HS256',
