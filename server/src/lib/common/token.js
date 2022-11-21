@@ -17,7 +17,7 @@ module.exports={
     },
 
     // 토큰해석
-    decodeToken :(anyToken)=>{
+    decodeToken : async(anyToken)=>{
         try{
             return jwt.decode(anyToken, SECRET_KEY)
         } catch(err){
@@ -27,7 +27,7 @@ module.exports={
     },
 
     // 토큰 검증
-    verifyToken : (anyToken)=>{
+    verifyToken : async(anyToken)=>{
         try {
             jwt.verify(anyToken, SECRET_KEY);
             return true;
@@ -38,7 +38,7 @@ module.exports={
     },
 
     // 리프레쉬 토큰
-    refreshToken:()=>{
+    signRefreshToken : async()=>{
         return jwt.sign({},SECRET_KEY,{
             algorithm:'HS256',
             expirseIn: '14d',
@@ -46,7 +46,7 @@ module.exports={
     },
 
     // 리프레쉬 토큰 검증
-    refreshVerify: async (token, email) => {
+    refreshVerify: async(token, email) => {
         const getAsync = promisify(redisClient.get).bind(redisClient);
 
         try {
