@@ -1,8 +1,9 @@
 const {anonymousReposiotory} =require('../../reposiotory')
-const {signToken}=require('../../lib/common/token')
+const jwt=require('../../lib/common/token')
 const mailSender = require('../../lib/common/mailer')
 const {salt,encryptionPassWord,decryptionPassWord} =require('../../lib/common/hashing')
 const {signUpMail,findIdMail,findPwMail} =require('../../lib/common/setMail')
+const redisClient = require("../utils/redis.util");
 
 // 로그인
 const login = async(req, res,next) => {
@@ -20,8 +21,14 @@ const login = async(req, res,next) => {
           }else {
             delete idData.dataValues.pw;
             delete idData.dataValues.salt;
-            result = await signToken({...idData.dataValues});
-            res.send({data: result});
+            const accessToken = await jwt.signToken({...idData.dataValues});
+            const refreshToken = await jwt.signRefreshToken();
+
+            redisClient.set(respond.email, refreshToken);
+            res.send({token: {
+              accessToken:accessToken,
+              refreshToken:refreshToken
+            }});
           }
         }
       }catch(err){
