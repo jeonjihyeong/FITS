@@ -7,19 +7,19 @@ module.exports={
     //  토큰생성
     signToken : async(payload) => {
         try{
-            return jwt.sign(payload, SECRET_KEY,{
+            return jwt.sign(payload, process.env.JWT_KEY,{
             algorithm: 'HS256',
             expiresIn: '5h',
             })
         }catch(err){
-            consonle.log(err)
+            console.log(err)
         }
     },
 
     // 토큰해석
     decodeToken :(anyToken)=>{
         try{
-            return jwt.decode(anyToken, SECRET_KEY)
+            return jwt.decode(anyToken, process.env.JWT_KEY)
         } catch(err){
             if (err.name==='TokenExpiredError')throw new Error("EXPIRED_TOKEN");
             throw new Error("INVALID_TOKEN")
@@ -29,7 +29,7 @@ module.exports={
     // 토큰 검증
     verifyToken : (anyToken)=>{
         try {
-            jwt.verify(anyToken, SECRET_KEY);
+            jwt.verify(anyToken, process.env.JWT_KEY);
             return true;
         }catch(err){
             if (err.name==='TokenExpiredError')throw new Error("EXPIRED_TOKEN");
@@ -38,10 +38,10 @@ module.exports={
     },
 
     // 리프레쉬 토큰
-    refreshToken:()=>{
-        return jwt.sign({},SECRET_KEY,{
+    refreshToken:async()=>{
+        return jwt.sign({},process.env.JWT_KEY,{
             algorithm:'HS256',
-            expirseIn: '14d',
+            expiresIn: '14d',
         });
     },
 

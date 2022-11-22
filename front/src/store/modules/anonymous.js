@@ -40,8 +40,9 @@ const anonymous = {
                 const result = await anonymousApi.login(reqInfo);
                 console.log(result)
                 if(result!==0){
-                    localStorage.setItem('accessToken',result.data.data)
-                    const decodeToken = jwt_decode(result.data.data)
+                    localStorage.setItem('accessToken',result.data.token.accessToken)
+                    localStorage.setItem('refreshToken',result.data.token.refreshToken)
+                    const decodeToken = jwt_decode(result.data.token.accessToken)
                     context.commit('updateUserInfo',decodeToken)
                     return 'SUCCESS'
                 }

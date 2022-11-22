@@ -34,7 +34,16 @@ instance.interceptors.response.use(
     function(error){
         if(error.response.status===419){
             console.log(error.response.status);
-            
+            const accessToken = localStorage.getItem('accessToken')
+            const refreshToken = localStorage.getItem('refreshToken')
+            axios.get(`${process.env.VUE_APP_SERVER_URL}/refresh`,{
+                headers:{
+                    authorization:{
+                        accessToken:accessToken,
+                        refreshToken:refreshToken
+                    }
+                }
+            })
         }
         return Promise.reject(error);
     }
