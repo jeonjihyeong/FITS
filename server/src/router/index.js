@@ -9,6 +9,7 @@ const commentRouter = require(('./comment'));
 
 
 basicRouter.use('/',anonymousRouter)
+basicRouter.get('/refresh',middleware.refreshToken)
 basicRouter.use('/note',middleware.validateToken,noteRouter)
 basicRouter.use('/comment',middleware.validateToken,commentRouter)
 // basicRouter.use('/user',middleware.validateToken,userRouter)

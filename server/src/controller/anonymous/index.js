@@ -3,7 +3,11 @@ const jwt=require('../../lib/common/token')
 const mailSender = require('../../lib/common/mailer')
 const {salt,encryptionPassWord,decryptionPassWord} =require('../../lib/common/hashing')
 const {signUpMail,findIdMail,findPwMail} =require('../../lib/common/setMail')
+<<<<<<< HEAD
 const redisClient = require("../utils/redis.util");
+=======
+const redisClient = require("../../lib/common/redis.util");
+>>>>>>> 11.23
 
 // 로그인
 const login = async(req, res,next) => {
@@ -20,7 +24,9 @@ const login = async(req, res,next) => {
               res.send({message: 'pwFailed'})
           }else {
             delete idData.dataValues.pw;
+            console.log(idData.dataValues.userIdx);
             delete idData.dataValues.salt;
+<<<<<<< HEAD
             const accessToken = await jwt.signToken({...idData.dataValues});
             const refreshToken = await jwt.signRefreshToken();
 
@@ -28,6 +34,17 @@ const login = async(req, res,next) => {
             res.send({token: {
               accessToken:accessToken,
               refreshToken:refreshToken
+=======
+            const SECRET_KEY = process.env.JWT_KEY; 
+            console.log(SECRET_KEY)
+            const accessToken = await jwt.signToken({...idData.dataValues});
+            const refreshToken = await jwt.refreshToken();
+            redisClient.set(idData.dataValues.email, refreshToken);
+            res.send({
+              token:{
+                accessToken:accessToken,
+                refreshToken:refreshToken,
+>>>>>>> 11.23
             }});
           }
         }
@@ -43,7 +60,7 @@ const login2 = async(req,res)=>{
       status: 400,
       message: "Error: Body(JSON)값이 비어있습니다."
     });
-  }
+  } 
   if(req.body.hasOwnProperty('id')===false||req.body.hasOwnProperty('pw')===false){
     return res.status(200).json({
       message:"Error: 이메일 또는 비밀번호가 없습니다."
