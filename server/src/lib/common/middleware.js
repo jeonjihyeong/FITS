@@ -23,6 +23,11 @@ const refreshToken = async(req,res,next)=>{
     let refreshToken = req.headers.authorization.refreshToken;
     try{
         console.log("MIDDLE_WARE: WORKING");
+        res.send({
+            token:{
+                accessToken:accessToken,
+                refreshToken:refreshToken
+        }})
 
     }catch(err){
         console.log(err)
