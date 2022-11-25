@@ -43,6 +43,13 @@ instance.interceptors.response.use(
                         refreshToken:refreshToken
                     }
                 }
+            }).then((res)=>{
+                console.log("refreshing")
+                localStorage.setItem("accessToken",res.data.token.accessToken);
+                localStorage.setItem("refreshToken",res.data.token.refreshToken);
+
+            }).catch((err)=>{
+                console.log(err)
             })
         }
         return Promise.reject(error);
