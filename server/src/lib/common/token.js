@@ -38,13 +38,8 @@ module.exports={
     },
 
     // 리프레쉬 토큰
-<<<<<<< HEAD
     signRefreshToken : async()=>{
         return jwt.sign({},SECRET_KEY,{
-=======
-    refreshToken:async()=>{
-        return jwt.sign({},process.env.JWT_KEY,{
->>>>>>> 11.23
             algorithm:'HS256',
             expiresIn: '14d',
         });
