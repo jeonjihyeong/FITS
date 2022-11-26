@@ -1,6 +1,6 @@
 import http from '@/api/axios'
 
-const Note ={
+export default {
     // 글전체 목록 가지고 오기
     getNote:async()=>{
         let result;
@@ -71,10 +71,4 @@ const Note ={
         })
         return result
     }
-}
-
-
-
-export default {
-    ...Note
 }

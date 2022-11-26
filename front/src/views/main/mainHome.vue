@@ -65,6 +65,7 @@
                     :writer='"전지형"'
                     :content='"react is good library"'/></v-col>
             </v-row>
+            <notePagination></notePagination>
         </v-container>
 
         <v-container id="mobile">
@@ -120,6 +121,7 @@
                 :writer='"전지형"'
                 :content='"react is good library"'/></v-col>
         </v-row>
+        
         </v-container>
     </v-container>
 </template>
@@ -127,8 +129,9 @@
 <script>
 import TextCard from '@/components/board/textCard.vue';
 import RoomCard from '@/components/board/roomCard.vue';
+import notePagination from '@/components/board/notePagination.vue'
     export default {
-    components: { TextCard,RoomCard},
+    components: { TextCard, RoomCard, notePagination},
     data() {
         return {
         }
