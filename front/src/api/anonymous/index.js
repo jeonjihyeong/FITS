@@ -1,6 +1,6 @@
 import http from '@/api/axios'
 
-const anonymous={
+export default {
     
     // 로그인 API
     login: async(reqInfo)=>{
@@ -117,9 +117,4 @@ const anonymous={
             console.log(err);
         })
     }
-}
-
-
-export default {
-    ...anonymous
 }
