@@ -46,10 +46,10 @@ import { mapActions } from 'vuex'
             async getNote() {
                 try{
                     const result = await this.get();
-                    if(result ==='만료된 토큰입니다.'||result=='유효하지 않은 토큰입니다.'){
-                        this.logOut();
-                        this.$router.push('/');
-                    }
+                    // if(result ==='만료된 토큰입니다.'||result=='유효하지 않은 토큰입니다.'){
+                    //     this.logOut();
+                    //     this.$router.push('/');
+                    // }
                 this.allNoteInfo ={...result}
                 console.log(this.allNoteInfo)
                 console.log(result);

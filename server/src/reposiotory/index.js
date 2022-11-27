@@ -1,7 +1,7 @@
 const anonymousReposiotory = require('./anonymous')
-const noteReposiotory = require('./note')
-const commentReposiotory = require('./comment')
+const noteRepo = require('./note')
+const commentRepo = require('./comment')
 
 module.exports= {
-    anonymousReposiotory,noteReposiotory,commentReposiotory
+    anonymousReposiotory,noteRepo,commentRepo
 }
