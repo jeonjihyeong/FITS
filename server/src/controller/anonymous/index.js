@@ -25,7 +25,7 @@ const login = async(req, res,next) => {
             const SECRET_KEY = process.env.JWT_KEY; 
             console.log(SECRET_KEY)
             const accessToken = await jwt.signToken({...idData.dataValues});
-            const refreshToken = await jwt.refreshToken();
+            const refreshToken = await jwt.signRefreshToken();
             redisClient.set(idData.dataValues.email, refreshToken);
             res.send({
               token:{

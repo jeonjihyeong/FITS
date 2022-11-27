@@ -7,15 +7,16 @@ const instance = axios.create({
 instance.interceptors.request.use(
     function(config){
         const accessToken = localStorage.getItem('accessToken')
-        const refreshToken = localStorage.getItem('refreshToken')
+        // const refreshToken = localStorage.getItem('refreshToken')
         if (accessToken!==null&&accessToken!==undefined){
             config={
                 ...config,
                 headers:{
-                    authorization:{
-                        accessToken:accessToken,
-                        refreshToken:refreshToken
-                    }
+                    authorization: accessToken
+                    // {
+                    //     accessToken:accessToken,
+                    //     refreshToken:refreshToken
+                    // }
                 },
             }
         }
@@ -35,13 +36,14 @@ instance.interceptors.response.use(
         if(error.response.status===419){
             console.log(error.response.status);
             const accessToken = localStorage.getItem('accessToken')
-            const refreshToken = localStorage.getItem('refreshToken')
+            // const refreshToken = localStorage.getItem('refreshToken')
             axios.get(`${process.env.VUE_APP_SERVER_URL}/refresh`,{
                 headers:{
-                    authorization:{
-                        accessToken:accessToken,
-                        refreshToken:refreshToken
-                    }
+                    authorization:accessToken
+                    // {
+                    //     accessToken:accessToken,
+                    //     refreshToken:refreshToken
+                    // }
                 }
             }).then((res)=>{
                 console.log("refreshing")

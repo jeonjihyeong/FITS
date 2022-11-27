@@ -1,7 +1,6 @@
 const { promisify } = require('util');
 const redisClient = require('./redis.util');
 const jwt = require("jsonwebtoken")
-const SECRET_KEY = process.env.JWT_KEY; 
 
 module.exports={
     //  토큰생성
@@ -9,7 +8,7 @@ module.exports={
         try{
             return jwt.sign(payload, process.env.JWT_KEY,{
             algorithm: 'HS256',
-            expiresIn: '5h',
+            expiresIn: '1s',
             })
         }catch(err){
             console.log(err)
@@ -18,6 +17,7 @@ module.exports={
 
     // 토큰해석
     decodeToken : async(anyToken)=>{
+        console.log(anyToken)
         try{
             return jwt.decode(anyToken, process.env.JWT_KEY)
         } catch(err){
@@ -28,6 +28,7 @@ module.exports={
 
     // 토큰 검증
     verifyToken : async(anyToken)=>{
+        console.log(anyToken)
         try {
             jwt.verify(anyToken, process.env.JWT_KEY);
             return true;
@@ -39,7 +40,7 @@ module.exports={
 
     // 리프레쉬 토큰
     signRefreshToken : async()=>{
-        return jwt.sign({},SECRET_KEY,{
+        return jwt.sign({},process.env.JWT_KEY,{
             algorithm:'HS256',
             expiresIn: '14d',
         });
@@ -50,7 +51,7 @@ module.exports={
         const getAsync = promisify(redisClient.get).bind(redisClient);
 
         try {
-            const data = await getAsync(email); // refresh token 가져오기
+            const data = await getAsync('spdlqj7014@naver.com'); // refresh token 가져오기
             if (token === data) {
                 try {
                     jwt.verify(token, secret);

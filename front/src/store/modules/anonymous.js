@@ -73,6 +73,7 @@ const anonymous = {
         // 로그아웃 토큰 삭제
         async dropToken(context){
             localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
             return context.commit("dropUserInfo");
         }
 

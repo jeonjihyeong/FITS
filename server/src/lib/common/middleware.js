@@ -2,7 +2,7 @@ const token = require("./token");
 
 // 토큰확인
 const validateToken = async(req,res,next)=>{
-    let accessToken = req.headers.authorization.accessToken;
+    let accessToken = req.headers.authorization;
     console.log("MIDDLE_WARE: WORKING")
     try{
         if(!await token.verifyToken(accessToken)){
@@ -18,7 +18,7 @@ const validateToken = async(req,res,next)=>{
 }
 
 const refreshToken = async(req,res,next)=>{
-    let accessToken = req.headers.authorization.accessToken;
+    let accessToken = req.headers.authorization;
     let refreshToken = req.headers.authorization.refreshToken;
     try{
         console.log("MIDDLE_WARE: WORKING");

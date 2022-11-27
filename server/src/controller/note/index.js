@@ -1,4 +1,4 @@
-const {noteService,commentService} = require('../../reposiotory');
+const {noteRepo,commentRepo} = require('../../reposiotory');
 const jwt = require('jsonwebtoken');
 
 const write = async(req,res)=>{
@@ -6,7 +6,7 @@ const write = async(req,res)=>{
     const dataValue = req.body;
     try{
         console.log(req.decode.userIdx)
-        await noteService.writeBoard(req.decode.userIdx,dataValue.title,dataValue.content)
+        await noteRepo.writeBoard(req.decode.userIdx,dataValue.title,dataValue.content)
         res.send({data: 'Success'})
     }catch(err){
         console.log(err)
@@ -18,7 +18,7 @@ const get = async(req, res)=>{
     console.log("CONTROLLER: WORKING");
     let result;
     try{
-        result = await noteService.getBoard();
+        result = await noteRepo.getBoard();
         res.send({data:result});
     }catch(err){
         console.log(err)
@@ -30,7 +30,7 @@ const getMy = async(req, res)=>{
     console.log("CONTROLLER: WORKING");
     let result;
     try{
-        result = await noteService.getBoard(1);
+        result = await noteRepo.getBoard(1);
         res.send({data:result});
     }catch(err){
         console.log(err)
@@ -43,8 +43,8 @@ const getOne = async(req, res)=>{
     const textId = req.params.noteIdx;
     console.log("파라미터 전달 확인"+textId)
     try{
-        const result = await noteService.getText(textId);
-        const comment= await commentService.getComment(textId);
+        const result = await noteRepo.getText(textId);
+        const comment= await commentRepo.getComment(textId);
         const userInfo = req.decode
         res.send({data:result,comment:comment, accessUser:userInfo});
     }catch(err){
@@ -58,7 +58,7 @@ const deleteContent = async(req,res)=>{
     const textId = req.params.noteIdx;
     console.log(textId)
     try{
-        await noteService.deleteBoard(textId);
+        await noteRepo.deleteBoard(textId);
         res.send({message:"Success"})
     }catch(err){
         res.send({message:"Failed"})
@@ -69,7 +69,7 @@ const update = async(req,res)=>{
     console.log("CONTROLLER: WORKING");
     const boardIdx= req.params.boardIdx;
     try{
-        await noteService.updateBoard(boardIdx,req.body.title,req.body.content);
+        await noteRepo.updateBoard(boardIdx,req.body.title,req.body.content);
         res.send({message:"Success"})
     }catch(err){
         res.send({message:"Failed"})
