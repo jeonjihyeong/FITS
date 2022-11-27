@@ -7,6 +7,13 @@ const httpStatus = {
     server_error:500,
 }
 
+const invalid_request={
+    INVALID_REQUEST:{
+        message:"invalid request",
+        status:httpStatus.ok
+    }
+}
+
 const controller_error ={
     CONTROLLER_LOGIN_ERROR:{
         message :"controller error to login",
@@ -69,6 +76,7 @@ const lib_error={
 }
 
 module.exports={
+    ...invalid_request,
     ...controller_error,
     ...service_error,
     ...lib_error,
