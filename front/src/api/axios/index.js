@@ -34,7 +34,12 @@ instance.interceptors.response.use(
         return response;
     },
     function(error){
-        if(error.response.status===419){
+        const {
+            config,
+            response:{staus},
+        }=error;
+        if(staus===419){
+            const originalRequest = config;
             console.log(error.response.status);
             const accessToken = localStorage.getItem('accessToken')
             const refreshToken = localStorage.getItem('refreshToken')
@@ -42,16 +47,15 @@ instance.interceptors.response.use(
                 headers:{
                     authorization:accessToken,
                     refresh:refreshToken
-                    // {
-                    //     accessToken:accessToken,
-                    //     refreshToken:refreshToken
-                    // }
+                    
                 }
             }).then((res)=>{
                 console.log("refreshing")
                 localStorage.setItem("accessToken",res.data.token.accessToken);
                 localStorage.setItem("refreshToken",res.data.token.refreshToken);
-
+                axios.defaults.headers.common.Authorization = res.data.token.accessToken;
+                originalRequest.headers.Authorization = res.data.token.accessToken;
+                return axios(originalRequest)
             }).catch((err)=>{
                 console.log(err)
             })
