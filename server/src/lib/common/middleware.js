@@ -25,6 +25,7 @@ const refreshToken = async(req,res,next)=>{
         console.log("MIDDLE_WARE: WORKING");
         const decodeToken = token.decodeToken(accessToken);
         const varify_refresh=await token.refreshVerify(refreshToken,decodeToken.email)
+        console.log(varify_refresh)
         if (varify_refresh){
             console.log("리프레쉬 토큰 유효 - accessToken 재발급")
             const new_accessToken = await token.signToken(decodeToken)

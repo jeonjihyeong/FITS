@@ -28,7 +28,6 @@ module.exports={
 
     // 토큰 검증
     verifyToken : async(anyToken)=>{
-        console.log(anyToken)
         try {
             jwt.verify(anyToken, process.env.JWT_KEY);
             return true;
