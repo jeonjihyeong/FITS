@@ -8,7 +8,7 @@ module.exports={
         try{
             return jwt.sign(payload, process.env.JWT_KEY,{
             algorithm: 'HS256',
-            expiresIn: '1s',
+            expiresIn: '5h',
             })
         }catch(err){
             console.log(err)

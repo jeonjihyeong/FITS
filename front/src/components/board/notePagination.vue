@@ -2,9 +2,10 @@
     <div class="text-center">
       <v-pagination
         v-model="page"
-        :length="4"
+        :length="length"
         prev-icon="mdi-menu-left"
         next-icon="mdi-menu-right"
+        color="pink lighten-1"
       ></v-pagination>
     {{page}}
     </div>
@@ -14,8 +15,9 @@
     export default {
       data () {
         return {
-          page: 1,
+          page:1
         }
       },
+      props: ['length']
     }
   </script>

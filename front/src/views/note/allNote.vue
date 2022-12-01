@@ -23,16 +23,21 @@
                 :noteIdx = 'item.noteIdx'/>
             </v-col>
         </v-row>
+        <br>
+        <note-pagination
+        :length='length'></note-pagination>
     </v-container>
 </template>
 
 <script>
 import MyNoteCard from '@/components/board/myNoteCard.vue';
 import { mapActions } from 'vuex'
+import NotePagination from '@/components/board/notePagination.vue';
     export default {
         data() {
             return {
-                allNoteInfo:{}
+                allNoteInfo:{},
+                length:6,
             }
         },
         created() {
@@ -58,7 +63,7 @@ import { mapActions } from 'vuex'
                 }
             }
         },
-        components: { MyNoteCard }
+        components: { MyNoteCard, NotePagination }
 }
 </script>
 
