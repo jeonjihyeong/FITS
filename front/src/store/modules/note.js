@@ -3,7 +3,7 @@ import commentApi from '@/api/comment'
 
 export default {
     state: {
-        value: 'my value'
+        value: 'my value',
     },
     getters: {
         // value: state => {

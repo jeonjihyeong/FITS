@@ -50,7 +50,7 @@ module.exports={
         const getAsync = promisify(redisClient.get).bind(redisClient);
 
         try {
-            const data = await getAsync('spdlqj7014@naver.com'); // refresh token 가져오기
+            const data = await getAsync(email); // refresh token 가져오기
             if (token === data) {
                 try {
                     jwt.verify(token, secret);

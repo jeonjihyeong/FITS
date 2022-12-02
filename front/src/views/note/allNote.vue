@@ -24,20 +24,27 @@
             </v-col>
         </v-row>
         <br>
-        <note-pagination
-        :length='length'></note-pagination>
+    <div class="text-center">
+      <v-pagination
+        v-model="page"
+        :length="length"
+        prev-icon="mdi-menu-left"
+        next-icon="mdi-menu-right"
+        color="pink lighten-1"
+      ></v-pagination>
+    </div>
     </v-container>
 </template>
 
 <script>
 import MyNoteCard from '@/components/board/myNoteCard.vue';
 import { mapActions } from 'vuex'
-import NotePagination from '@/components/board/notePagination.vue';
     export default {
         data() {
             return {
                 allNoteInfo:{},
                 length:6,
+                page:1
             }
         },
         created() {
@@ -63,7 +70,7 @@ import NotePagination from '@/components/board/notePagination.vue';
                 }
             }
         },
-        components: { MyNoteCard, NotePagination }
+        components: { MyNoteCard}
 }
 </script>
 
