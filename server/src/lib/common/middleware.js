@@ -7,6 +7,7 @@ const validateToken = async(req,res,next)=>{
     console.log("MIDDLE_WARE: WORKING")
     try{
         if(!await token.verifyToken(accessToken)){
+            res.send({message:"InvalidToken"})
             return;
         }
         const writeUserInfo =await token.decodeToken(accessToken);
