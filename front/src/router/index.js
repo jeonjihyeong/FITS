@@ -109,7 +109,18 @@ const routes = [
   {
     path: '/user/myInfo',
     name: 'myInfo',
-    component: myInfo
+    component: myInfo,
+    beforeEnter:(to,from,next)=>{
+      console.log("로그인 상태 체크");
+      if(localStorage.getItem("accessToken")){
+        console.log("로그인 중")
+        next();
+        return;
+      }
+      console.log("로그인을 해주세요")
+      alert("로그인을 해주세요")
+      return;
+    },
   },
   {
     path: '/user/update',
