@@ -47,8 +47,11 @@ import { mapActions } from 'vuex'
                     title:this.title,
                     content:this.content
                 }
-                await this.writeNote(reqData)
-                this.$router.push('/')
+                if(confirm("글을 작성하시겠습니까?")){
+                    await this.writeNote(reqData)
+                    this.$router.push('/')
+                }
+                else return;
             }
         },
     }

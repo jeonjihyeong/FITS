@@ -60,7 +60,6 @@ import { mapActions } from 'vuex';
             try{
                 const noteIdx = this.$route.params.noteIdx;
                 const result = await this.getNote(noteIdx);
-                console.log("컴포넌트 응답 확인");
                 this.noteInfo = result.noteInfo;
                 this.commentInfo = result.comment;
             }catch(err){
