@@ -77,7 +77,7 @@ const routes = [
     },
     children:[
       {
-        path:'',
+        path:`list`,
         name: 'allNote',
         component:allNote
       },

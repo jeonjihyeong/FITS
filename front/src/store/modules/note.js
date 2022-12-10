@@ -17,8 +17,8 @@ export default {
     },
     actions: {
         // 전체 노트 가지고오기
-        async getNote(context,userIdx){
-            return await noteApi.getNote(userIdx)
+        async getNote(context,page){
+            return await noteApi.getNote(page)
         },
         // 글 작성하기(완)
         async write(context,reqData){

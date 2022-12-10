@@ -2,9 +2,9 @@ import http from '@/api/axios'
 
 export default {
     // 글전체 목록 가지고 오기
-    getNote:async()=>{
+    getNote:async(page)=>{
         let result;
-        await http.get('/note'
+        await http.get(`/note?page=${page}`
         ).then((res)=>{
             if(res.data.messgae){
                 console.log(res.data.message);
@@ -15,8 +15,7 @@ export default {
         }).catch((err)=>{
             console.log(err);
             if(err.response.data){
-                result = err.response.data.message
-                alert(result)
+                alert(err.response.data.message)
             }
         })
         return result;

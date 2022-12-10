@@ -31,8 +31,10 @@
         prev-icon="mdi-menu-left"
         next-icon="mdi-menu-right"
         color="pink lighten-1"
+        @input = "handlePage"
       ></v-pagination>
     </div>
+    {{page}}
     </v-container>
 </template>
 
@@ -44,7 +46,8 @@ import { mapActions } from 'vuex'
             return {
                 allNoteInfo:{},
                 length:6,
-                page:1
+                page:1,
+                
             }
         },
         created() {
@@ -57,7 +60,7 @@ import { mapActions } from 'vuex'
             }),
             async getNote() {
                 try{
-                    const result = await this.get();
+                    const result = await this.get(this.page);
                     // if(result ==='만료된 토큰입니다.'||result=='유효하지 않은 토큰입니다.'){
                     //     this.logOut();
                     //     this.$router.push('/');
@@ -68,6 +71,12 @@ import { mapActions } from 'vuex'
                 }catch(err){
                     console.log(err)
                 }
+            },
+            async handlePage(){
+                this.$router.push({
+                    name: "allNote",
+                    query: { page:this.page, length: 2 },
+                });
             }
         },
         components: { MyNoteCard}
