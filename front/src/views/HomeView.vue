@@ -21,7 +21,7 @@
     >
     <br><br>
     <router-link to="/"><div class="navDrawer">홈</div></router-link><br>
-    <router-link to="/note"><div class="navDrawer">전체 스터디 글</div></router-link><br>
+    <router-link :to="{name: 'allNote', query: {page: 1, length: 3}}"><div class="navDrawer">전체 스터디 글</div></router-link><br>
     <router-link to="/note/best"><div class="navDrawer">인기 스터디 글</div></router-link><br>
     <router-link to="/note/my"><div class="navDrawer">내 스터디 글</div></router-link><br>
     </v-navigation-drawer>

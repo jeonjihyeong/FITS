@@ -21,8 +21,8 @@ app.use(async (err, req, res, next) => {
   console.log("에러처리기");
   if(err.message in errorHandler){
       res.status(errorHandler[err.message].status).send({message : errorHandler[err.message].message});
-      next();  
-      return;
+      // next();
+      // return;
     }else {
       res.send({message : '시스템 오류가 발생했습니다. 잠시 후 시도해주세요.'});
       next();
