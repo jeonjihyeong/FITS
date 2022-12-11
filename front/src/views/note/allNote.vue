@@ -73,7 +73,7 @@ import { mapActions } from 'vuex'
                 }
             },
             async handlePage(){
-                this.$router.push({
+                this.$router.replace({
                     name: "allNote",
                     query: { page:this.page, length: 2 },
                 });
