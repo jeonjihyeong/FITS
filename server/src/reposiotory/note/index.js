@@ -17,14 +17,14 @@ const writeBoard=async(userIdx,title, content)=>{
 }
 
 //게시판 리스트 글 가지고 오기
-const getBoard= async(limit, offset)=>{ 
+const getBoard= async({limit, offset})=>{ 
     let result;
     try{
         result = await models['note'].findAll({
             include:models['user'].name,
             order:[['created','DESC']],
-            // limit:10,
-            // offset:0
+            limit:limit,
+            offset:offset
         })
         
     }catch(err){

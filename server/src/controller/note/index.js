@@ -1,5 +1,6 @@
 const {noteRepo,commentRepo} = require('../../reposiotory');
 const jwt = require('jsonwebtoken');
+const pagination =require('../../lib/common/pagination')
 
 const write = async(req,res)=>{
     console.log("CONTROLLER: WORKING");
@@ -16,9 +17,11 @@ const write = async(req,res)=>{
 
 const get = async(req, res)=>{
     console.log("CONTROLLER: WORKING");
+    const {page}=req.query;
     let result;
     try{
-        result = await noteRepo.getBoard();
+        const paginateData =pagination.getPage(page)
+        result = await noteRepo.getBoard(paginateData);
         res.send({data:result});
     }catch(err){
         console.log(err)
