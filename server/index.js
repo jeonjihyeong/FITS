@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const {db}= require('./src/lib/index')
 const router = require('./src/router')
 const errorHandler =require('./src/lib/common/error')
+const qs = require('qs')
 require('express-async-errors');
 
 require('dotenv').config();

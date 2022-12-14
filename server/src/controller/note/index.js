@@ -17,7 +17,8 @@ const write = async(req,res)=>{
 
 const get = async(req, res)=>{
     console.log("CONTROLLER: WORKING");
-    const {page}=req.query;
+    const {page}=req.params;
+    console.log(page)
     let result;
     try{
         const paginateData =pagination.getPage(page)
