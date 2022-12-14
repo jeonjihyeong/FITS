@@ -4,7 +4,7 @@ export default {
     // 글전체 목록 가지고 오기
     getNote:async(page)=>{
         let result;
-        await http.get(`/note?page=${page}`
+        await http.get(`/note/all/${page}`,
         ).then((res)=>{
             if(res.data.messgae){
                 console.log(res.data.message);
@@ -38,7 +38,7 @@ export default {
     // 글한개 가지고 오기
     getOneNote:async(noteIdx)=>{
         let result;
-        await http.get(`/note/${noteIdx}`
+        await http.get(`/note/view/${noteIdx}`
         ).then((res)=>{
             if(res.status ===200){
                 result = {
@@ -58,7 +58,7 @@ export default {
     // 글 삭제
     deleteNote:async(noteIdx)=>{
         let result;
-        await http.delete(`/note/${noteIdx}`
+        await http.delete(`/note/view/${noteIdx}`
         ).then((res)=>{
             if(res.status===200){
                 alert("삭제 성공")
@@ -69,5 +69,15 @@ export default {
             console.log(err)
         })
         return result
+    },
+
+    changeNote:async(noteIdx)=>{
+        let result
+        await http.put(`/note/view/${noteIdx}`
+        ).then((res)=>{
+            console.log(res);
+            result = 1
+            return result
+        })
     }
 }

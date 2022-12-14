@@ -1,12 +1,13 @@
 const { Sequelize, Op, Model}= require('sequelize');
 const { modelDefines, modelList } = require('./model');
-
+const env = process.env.NODE_ENV || 'development';
+const config = require('./config/config.json')[env];
 const models = {};
 
 // const env = process.env.NODE_ENV || 'local';
 
 const initialize = async () => {
-    const sequelize = new Sequelize( 'fits', 'postgres', 'cjswp7014@@',
+    const sequelize = new Sequelize( config.database, config.dialect, config.password,
         {
             host: 'localhost',
             dialect: 'postgres',
