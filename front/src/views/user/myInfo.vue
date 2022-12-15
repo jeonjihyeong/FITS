@@ -51,8 +51,8 @@ import {mapState, mapActions} from 'vuex';
     export default {
         computed: {
             ...mapState({
-        userInfo:state=>state.anonymous.userInfo
-      })
+            userInfo:state=>state.anonymous.userInfo
+            })
         },
         methods: {
             ...mapActions({logout:"dropToken"}),
@@ -63,7 +63,8 @@ import {mapState, mapActions} from 'vuex';
                 }catch(err){
                     console.log(err)
                 }
-            }
+            },
+            
         },
         
     }

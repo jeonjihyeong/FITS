@@ -14,16 +14,21 @@
             <v-col cols="12">
                 <v-text-field
                 label="이메일"
-                v-model="name"
+                v-model="email"
                 hide-details="auto"
                 color="pink lighten-2"/>
             </v-col>
             <v-col cols="12">
                 <v-text-field
                 label="비밀번호"
-                v-model="name"
+                type="password"
+                v-model="password"
                 hide-details="auto"
                 color="pink lighten-2"/>
+            </v-col>
+            <v-col>
+                <v-spacer/>
+                <v-btn></v-btn>
             </v-col>
             
         </v-row>
@@ -32,13 +37,25 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
     export default {
         data() {
             return {
-                name: 'gd',
-                email:'email'
+                name: "",
+                email:'',
+                pw: ''
             }
         },
+        computed: {
+            ...mapState({
+            userInfo:state=>state.anonymous.userInfo
+            })
+        },
+        created () {
+            this.name=this.userInfo.name;
+            this.email=this.userInfo.email;
+        },
+        
     }
 </script>
 
