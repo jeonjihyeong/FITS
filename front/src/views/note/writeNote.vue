@@ -12,7 +12,7 @@
                 hide-details="false"
                 class = 'writeMemoInputTitle mb-2'
             ></v-text-field>
-        </v-row>    
+        </v-row>
         <v-row>
             <v-textarea
                 outlined

@@ -1,4 +1,5 @@
 import anonymousApi from '@/api/anonymous'
+import userApi from '@/api/user'
 import jwt_decode from 'jwt-decode'
 const anonymous = {
     state:{
@@ -75,6 +76,10 @@ const anonymous = {
             localStorage.removeItem("accessToken");
             localStorage.removeItem("refreshToken");
             return context.commit("dropUserInfo");
+        },
+        //회원정보 변경
+        async changeUserData(context,newUserData){
+            return await userApi.changeUserData(newUserData);
         }
 
     }
