@@ -27,8 +27,12 @@
                 color="pink lighten-2"/>
             </v-col>
             <v-col>
-                <v-spacer/>
-                <v-btn></v-btn>
+                <v-btn 
+                    class="pink lighten-1 white--text changeUserData"
+                    @click="updateUserInfo()"
+                    >회원정보 변경
+                </v-btn>
+                
             </v-col>
             
         </v-row>
@@ -37,7 +41,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
     export default {
         data() {
             return {
@@ -55,6 +59,14 @@ import { mapState } from 'vuex';
             this.name=this.userInfo.name;
             this.email=this.userInfo.email;
         },
+        methods: {
+            ...mapActions({
+                updateUser:this.changeUserData
+            }),
+            updateUserInfo() {
+                console.log('ㅎㅇ')
+            }
+        },
         
     }
 </script>
@@ -70,5 +82,10 @@ import { mapState } from 'vuex';
 .changeUserInfo{
     width:80%;
     margin: auto;
+}
+
+.changeUserData{
+    width:100%;
+    
 }
 </style>
