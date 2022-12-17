@@ -1,5 +1,4 @@
 const {noteRepo,commentRepo} = require('../../reposiotory');
-const jwt = require('jsonwebtoken');
 const pagination =require('../../lib/common/pagination')
 
 const write = async(req,res)=>{
