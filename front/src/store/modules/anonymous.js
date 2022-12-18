@@ -78,8 +78,8 @@ const anonymous = {
             return context.commit("dropUserInfo");
         },
         //회원정보 변경
-        async changeUserData(context,newUserData){
-            return await userApi.changeUserData(newUserData);
+        async changeUserData(context,reqData){
+            return await userApi.changeUserData(reqData);
         }
 
     }

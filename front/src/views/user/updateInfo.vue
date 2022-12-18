@@ -61,10 +61,19 @@ import { mapActions, mapState } from 'vuex';
         },
         methods: {
             ...mapActions({
-                updateUser:this.changeUserData
+                updateUser:"changeUserData"
             }),
-            updateUserInfo() {
-                console.log('ㅎㅇ')
+            async updateUserInfo() {
+                try{
+                    const reqData = {
+                    name: this.name,
+                    email: this.email,
+                    pw: this.pw
+                    }
+                    await this.updateUser(reqData);
+                }catch(err){
+                    console.log(err);
+                }
             }
         },
         
