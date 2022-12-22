@@ -13,6 +13,7 @@ const writeBoard=async(userIdx,title, content)=>{
         })
     }catch(err){
         console.log(err);
+        throw new Error("REPOSITORY_WRITE_BOARD_ERROR")
     }
 }
 
@@ -29,6 +30,7 @@ const getBoard= async({limit, offset})=>{
         
     }catch(err){
         console.log(err);
+        throw new Error("REPOSITORY_GET_BOARD_ERROR")
     }
     return result;
 }
@@ -45,6 +47,7 @@ const getText = async(noteIdx)=>{
     })
     }catch(err){
         console.log(err);
+        throw new Error("REPOSITORY_WRITE_COMMENT_ERROR")
     }
     return result;
 }
@@ -59,6 +62,7 @@ const deleteBoard = async(noteIdx)=>{
         })
     }catch(err){
         console.log(err);
+        throw new Error("REPOSITORY_WRITE_COMMENT_ERROR")
     }
     return
 }
@@ -74,6 +78,7 @@ const updateBoard = async(boardIdx, title, content)=>{
         })
     }catch(err){
         console.log(err);
+        throw new Error("REPOSITORY_WRITE_COMMENT_ERROR")
     }
 }
 

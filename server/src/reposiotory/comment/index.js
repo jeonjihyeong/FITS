@@ -11,6 +11,7 @@ const writeComment=async(userIdx,noteIdx,comment)=>{
         })
     }catch(err){
         console.log(err);
+        throw new Error("REPOSITORY_WRITE_COMMENT_ERROR")
     }
 }
 
@@ -26,6 +27,7 @@ const getComment=async(noteIdx)=>{
         return result;
     }catch(err){
         console.log(err);
+        throw new Error("REPOSITORY_CHANGE_PW_ERROR")
     }
 }
 
