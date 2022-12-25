@@ -73,10 +73,11 @@ import { mapActions } from 'vuex'
                 }
             },
             async handlePage(){
-                this.$router.replace({
-                    name: "allNote",
-                    query: { page:this.page, length: 2 },
-                });
+                // this.$router.replace({
+                //     name: "allNote",
+                //     query: { page:this.page, length: 2 },
+                // });
+                this.getNote();
             }
         },
         components: { MyNoteCard}
