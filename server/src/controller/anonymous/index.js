@@ -8,6 +8,7 @@ const redisClient = require("../../lib/common/redis.util");
 // 로그인
 const login = async(req, res,next) => {
     let result;
+    
     try{
       const data=req.body;
       const idData=await anonymousReposiotory.getUserId(data.id);
@@ -35,8 +36,10 @@ const login = async(req, res,next) => {
           }
         }
       }catch(err){
-        console.log(err);
-        next(err)
+        console.log("gdgdasgdgasdfgasdfasfdff");
+        next({
+          message : 'CONTROLLER_LOGIN_ERROR'
+        })
       }
   }
 
