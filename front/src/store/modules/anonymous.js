@@ -1,6 +1,15 @@
-import anonymousApi from '@/api/anonymous'
+import {
+    login,
+    sendSignUpMail,
+    signUp,
+    sendFindIdMail,
+    sendFindPwMail,
+    changePw,
+} from '@/api/anonymous'
 import userApi from '@/api/user'
 import jwt_decode from 'jwt-decode'
+
+
 const anonymous = {
     state:{
         userInfo:{
@@ -12,11 +21,13 @@ const anonymous = {
         },
         accessToken:false,
     },
+    
     getter:{
         auth_get_token(){
             return localStorage.getItem('accessToken')
         },
     },
+
     mutations: {
         updateUserInfo(state, payload) {
             state.userInfo = {...payload};
@@ -33,12 +44,13 @@ const anonymous = {
             state.accessToken=false
         }
     },
+
     actions:{
         // 로그인
         async login(context,reqInfo){
             try{
                 console.log("store")
-                const result = await anonymousApi.login(reqInfo);
+                const result = await login(reqInfo);
                 console.log(result)
                 if(result!==0){
                     localStorage.setItem('accessToken',result.data.token.accessToken)
@@ -53,23 +65,23 @@ const anonymous = {
         },
         // 회원가입
         async signUp(context,reqInfo){
-            return await anonymousApi.signUp(reqInfo);
+            return await signUp(reqInfo);
         },
         // 회원가입 메일
         async signUpMail(context,email){
-            return await anonymousApi.sendSignUpMail(email);
+            return await sendSignUpMail(email);
         },
         // 아이디 찾기 메일
         async findIdMail(context,reqInfo){
-            return await anonymousApi.sendFindIdMail(reqInfo)
+            return await sendFindIdMail(reqInfo)
         },
         // 비밀번호 찾기 메일
         async sendfindPwMail(context,reqInfo){
-            return await anonymousApi.sendFindPwMail(reqInfo)
+            return await sendFindPwMail(reqInfo)
         },
         // 비밀번호 변경
         async changePw(context,reqInfo){
-            return await anonymousApi.changePw(reqInfo)
+            return await changePw(reqInfo)
         },
         // 로그아웃 토큰 삭제
         async dropToken(context){

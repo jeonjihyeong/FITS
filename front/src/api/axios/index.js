@@ -36,9 +36,9 @@ instance.interceptors.response.use(
     function(error){
         const {
             config,
-            response:{staus},
+            response:{status},
         }=error;
-        if(staus===419){
+        if(status===419){
             const originalRequest = config;
             console.log(error.response.status);
             const accessToken = localStorage.getItem('accessToken')
