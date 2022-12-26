@@ -7,41 +7,57 @@ const redisClient = require("../../lib/common/redis.util");
 
 // 로그인
 const login = async(req, res,next) => {
-    let result;
+    let {id,inputPw} = req.body
+    let userInfo;
     
     try{
-      const data=req.body;
-      const idData=await anonymousReposiotory.getUserId(data.id);
-      if(idData===null){
-        res.send ({message: 'idFailed'})
-      }else {
-          const decodePW = decryptionPassWord(data.pw,idData.salt);
-          const pwData=idData.dataValues.pw
-          if(decodePW!==pwData){
-              res.send({message: 'pwFailed'})
-          }else {
-            delete idData.dataValues.pw;
-            console.log(idData.dataValues.userIdx);
-            delete idData.dataValues.salt;
-            const SECRET_KEY = process.env.JWT_KEY; 
-            console.log(SECRET_KEY)
-            const accessToken = await jwt.signToken({...idData.dataValues});
-            const refreshToken = await jwt.signRefreshToken();
-            redisClient.set(idData.dataValues.email, refreshToken);
-            res.send({
-              token:{
-                accessToken:accessToken,
-                refreshToken:refreshToken,
-            }});
-          }
-        }
-      }catch(err){
-        console.log("gdgdasgdgasdfgasdfasfdff");
-        next({
-          message : 'CONTROLLER_LOGIN_ERROR'
-        })
+      userInfo=await anonymousReposiotory.getUserId(id);
+    }catch(err){
+      console.log(err);
+      if(err.message){
+        next({message:err.message})
       }
-  }
+      next({
+        message:"CONTROLLER_GET_USER_ERROR"
+      })
+    }
+      
+    const {newPw,salt}=userInfo
+
+    if(userInfo===null||userInfo===undefined){
+      res.send ({message: 'idFailed'})
+    }
+
+    let decodePW
+    try{
+      decodePW =await decryptionPassWord(inputPw,salt);
+    }catch(err){
+      next({
+        message:"decodingError"
+      })
+    }
+
+    const pwData=userInfo.dataValues.pw
+    if(decodePW!==pwData){
+        res.send({message: 'pwFailed'})
+    }
+
+    delete userInfo.dataValues.pw;
+    delete userInfo.dataValues.salt;
+    try{
+      const accessToken = await jwt.signToken({...idData.dataValues});
+      const refreshToken = await jwt.signRefreshToken();
+      redisClient.set(userInfo.dataValues.email, refreshToken);
+    }catch(err){
+      next({message:"CONTROLLER_SIGN_TOKEN_ERROR"});
+    }
+        
+    res.send({
+      token:{
+        accessToken:accessToken,
+        refreshToken:refreshToken,
+    }});
+}
 
 const login2 = async(req,res)=>{
   if(req.body===null||req.body===undefined){
