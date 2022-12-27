@@ -14,10 +14,6 @@ instance.interceptors.request.use(
                 headers:{
                     authorization: accessToken,
                     refreshToken: refreshToken
-                    // {
-                    //     accessToken:accessToken,
-                    //     refreshToken:refreshToken
-                    // }
                 },
             }
         }
@@ -30,7 +26,6 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
     function(response){
-
         return response;
     },
     function(error){

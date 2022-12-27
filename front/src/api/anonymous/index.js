@@ -45,22 +45,22 @@ export const sendSignUpMail=async(email)=>{
 
     // 회원가입 하기
 export const signUp = async(reqInfo)=>{
-    await http.post('/signUp',{
-    ...reqInfo
-    }).then((res)=>{
-        console.log(res.data.data);
-        if(res.data.data===0){
-            alert("회원가입에 실패하였습니다.")
-            return;
-        }
-        else if(res.data.data===1){
-            alert("회원가입에 성공하였습니다.")
-            location.href='/'
-            return;
-        }
-    }).catch((err)=>{
+    let result;
+    try{
+        result = await http.post('/signUp',reqInfo)
+    }catch(err){
         console.log(err)
-    })
+    }
+    console.log(result.data.data);
+    if(result.data.data===0){
+        alert("회원가입에 실패하였습니다.")
+        return 0;
+    }
+    else if(result.data.data===1){
+        alert("회원가입에 성공하였습니다.")
+        location.href='/'
+        return 1;
+    }
     return
 }
 
@@ -69,8 +69,7 @@ export const sendFindIdMail = async(reqInfo)=>{
     console.log(process.env.VUE_APP_SERVER_URL)
     let result;
     try{
-
-        result=await http.post('/findId',{...reqInfo})
+        result=await http.post('/findId',reqInfo)
     }catch(err){
         console.log(err);
     }
@@ -80,43 +79,44 @@ export const sendFindIdMail = async(reqInfo)=>{
         alert("메일을 전송하는데 실패하였습니다.")
         return;
     }
+
     alert("메일을 전송하였습니다.")
-    console.log(result.data.data);
     return
 }
 
 // 비밀번호 인증 메일
 export const sendFindPwMail=async(reqInfo)=>{
     let result;
-    await http.post('/findPw',{
-        ...reqInfo
-    }).then((res)=>{
-        if(res.data.message){
-            alert("메일을 전송하는데 실패하였습니다.")
-            console.log(res.data.message)
-            return;
-        }
-        alert("메일을 전송하였습니다.")
-        console.log(res.data.data)
-        result = res.data.data
-    }).catch((err)=>{
-        console.log(err)
-    })
+    try{
+        await http.post('/findPw',reqInfo)
+    }catch(err){
+        console.log(err);
+    }
+
+    if(res.data.message){
+        alert("메일을 전송하는데 실패하였습니다.")
+        console.log(res.data.message)
+        return;
+    }
+    alert("메일을 전송하였습니다.")
+    console.log(res.data.data)
+    result = res.data.data
     return result;
 }
 
 // 비밀번호 변경
 export const changePw=async(reqInfo)=>{
-    await http.post('/changePw',reqInfo
-    ).then((res)=>{
-        if(res.data.message){
-            alert("비밀번호를 변경하지 못하였습니다.")
-            console.log(res.data.message)
-            return;
-        }
-        alert("비밀번호를 변경하였습니다.");
-    }).catch((err)=>{
-        console.log(err);
-    })
+    try{
+        await http.post('/changePw',reqInfo)
+    }catch(err){
+        console.log(err)
+    }
+    if(res.data.message){
+        alert("비밀번호를 변경하지 못하였습니다.")
+        console.log(res.data.message)
+        return;
+    }
+    alert("비밀번호를 변경하였습니다.");
+    return;
 }
 
