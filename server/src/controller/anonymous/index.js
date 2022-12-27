@@ -17,12 +17,10 @@ const login = async(req, res,next) => {
       if(err.message){
         next({message:err.message})
       }
-      next({
-        message:"CONTROLLER_GET_USER_ERROR"
-      })
+      next({message:"CONTROLLER_GET_USER_ERROR"})
     }
       
-    const {newPw,salt}=userInfo
+    const {salt}=userInfo
 
     if(userInfo===null||userInfo===undefined){
       res.send ({message: 'idFailed'})
@@ -32,9 +30,7 @@ const login = async(req, res,next) => {
     try{
       decodePW =await decryptionPassWord(inputPw,salt);
     }catch(err){
-      next({
-        message:"decodingError"
-      })
+      next({message:"CONTROLLER_DECODING_ERROR"})
     }
 
     const pwData=userInfo.dataValues.pw

@@ -1,83 +1,81 @@
 import http from '@/api/axios'
 
-export default {
-    // 글전체 목록 가지고 오기
-    getNote:async(page)=>{
-        let result;
-        await http.get(`/note/all/${page}`,
-        ).then((res)=>{
-            if(res.data.messgae){
-                console.log(res.data.message);
-                return;
-            }
-            result = res.data.data
-            return;
-        }).catch((err)=>{
-            console.log(err);
-            if(err.response.data){
-                alert(err.response.data.message)
-            }
-        })
-        return result;
-    },
-
-    // 글작성하기
-    writeNote:async(reqData)=>{
-        await http.post('/note',reqData
-        ).then((res)=>{
-            if (res.data.message){
-                console.log(res.data.message);
-                return;
-            }
-            console.log(res.data.data);
-        }).catch((err)=>{
-            console.log(err);
-        })
-    },
-
-    // 글한개 가지고 오기
-    getOneNote:async(noteIdx)=>{
-        let result;
-        await http.get(`/note/view/${noteIdx}`
-        ).then((res)=>{
-            if(res.status ===200){
-                result = {
-                    noteInfo:res.data.data,
-                    comment:res.data.comment,
-                }
-                console.log(res.data.comment)
-                return;
-            }
-            return;
-        }).catch((err)=>{
-            console.log(err)
-        })
-        return result
-    },
-
-    // 글 삭제
-    deleteNote:async(noteIdx)=>{
-        let result;
-        await http.delete(`/note/view/${noteIdx}`
-        ).then((res)=>{
-            if(res.status===200){
-                alert("삭제 성공")
-                result='success'
-                return;
-            }
-        }).catch((err)=>{
-            console.log(err)
-        })
-        return result
-    },
-
-    changeNote:async(noteIdx)=>{
-        let result
-        await http.put(`/note/view/${noteIdx}`
-        ).then((res)=>{
-            console.log(res);
-            result = 1
-            return result
-        })
+// 글전체 목록 가지고 오기
+export const getNote=async()=>{
+    let result;
+    try{
+        result = await http.get(`/note/all/${page}`)
+    }catch(err){
+        if(err.response.data){
+            alert(err.response.data.message)
+        }
+        console.log(err);
     }
+    if(result.data.messgae){
+        console.log(res.data.message);
+        return;
+    }
+    return result.data.data;
+}
+
+
+// 글작성하기
+export const writeNote=async(reqData)=>{
+    let result;
+    try{
+        await http.post('/note',reqData)
+    }catch(err){
+        console.log(err);
+    }
+    if (result.data.message){
+        console.log(result.data.message);
+        return 0;
+    }
+    console.log(result.data.data);
+    return 1;
+}
+
+// 글한개 가지고 오기
+export const getOneNote=async(noteIdx)=>{
+    let result;
+    try{
+        result = await http.get(`/note/view/${noteIdx}`)
+    }catch(err){
+        console.log(err);
+    }
+    
+    if(res.status ===200){
+        console.log(res.data.comment)
+        return {
+            noteInfo:result.data.data,
+            comment:result.data.comment,
+            }
+    }
+    return;
+}
+
+// 글 삭제
+export const deleteNote=async(noteIdx)=>{
+    let result;
+    try{
+        await http.delete(`/note/view/${noteIdx}`)
+    }catch(err){
+        console.log(err);
+    }
+    if(res.data.message==="success"){
+        alert("삭제 성공")
+        return 1
+    }
+    return 0
+}
+
+export const changeNote=async(noteIdx)=>{
+    let result
+    try{
+        result = await http.put(`/note/view/${noteIdx}`)
+    }catch(err){
+        console.log(err);
+    }
+    console.log(result);
+    return 1
 }
