@@ -17,7 +17,7 @@ const login = async(req, res,next) => {
       if(err.message){
         next({message:err.message})
       }
-      next({message:"CONTROLLER_GET_USER_ERROR"})
+      next({message:"CONTROLLER_LOGIN_GET_USER_ERROR"})
     }
       
     const {salt}=userInfo
@@ -30,7 +30,7 @@ const login = async(req, res,next) => {
     try{
       decodePW =await decryptionPassWord(inputPw,salt);
     }catch(err){
-      next({message:"CONTROLLER_DECODING_ERROR"})
+      next({message:"CONTROLLER_LOGIN_DECODING_ERROR"})
     }
 
     const pwData=userInfo.dataValues.pw
@@ -75,28 +75,48 @@ const login2 = async(req,res)=>{
 }
 
 // 회원가입
-const signup = async(req,res)=>{
+const signup = async(req,res,next)=>{
     const data= req.body;
+    let duplicateTest;
+
     try{
-      if (await anonymousReposiotory.getUserId(data.id)!==null){
-        console.log('id가 이미 존재합니다.');
-        res.send({data: 0})
-      }
-      else{
-          const hashPw = encryptionPassWord(data.pw);
-          const payload={
-            ...data,
-            pw:hashPw,
-            salt:salt,
-          }
-          await anonymousReposiotory.saveUser(payload);
-          res.send({data: 1})
-        }
-      }catch(err){
-          console.log(err);
-          res.send({message:`ERROR: ${err}`});
-          next(err)
-      }
+      duplicateTest = await anonymousReposiotory.getUserId(data.id)
+    }catch(err){
+      console.log(err.message)
+      console.log('캐치문')
+      if(err.message) {return next(err)}
+      next({message:"CONTROLLER_SIGNUP_DUPLICATE_CHECK_ERROR"})
+    }
+
+    if (duplicateTest!==null){
+      console.log('id가 이미 존재합니다.');
+      return res.send({data: 0})
+    }
+
+    let hashPw;
+    try{
+      hashPw =await encryptionPassWord(data.pw);
+    }catch(err){
+      console.log(err.message)
+      if(err.message) {return next(err);}
+      next({message:"CONTROLLER_SIGNUP_HASHING_ERROR"})
+    }
+
+    const payload={
+      ...data,
+      pw:hashPw,
+      salt:salt,
+    }
+
+    try{
+      await anonymousReposiotory.saveUser(payload);
+    }catch(err){
+      console.log(err.message)
+      if(err.message) {return next(err);}
+      next({message:"CONTROLLER_SIGNUP_SAVE_ERROR"})
+    }
+
+    res.send({data: 1})
 }
 
 // 회원가입 메일

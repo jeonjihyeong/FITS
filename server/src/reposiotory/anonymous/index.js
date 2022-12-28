@@ -29,7 +29,6 @@ const getUserId = async(id)=>{
         })
     }catch(err){
         console.log(err.message);
-
         throw new Error('SERVICE_GET_USER_BY_ID_ERROR')
     }
     return results
