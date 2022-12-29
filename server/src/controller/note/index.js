@@ -3,14 +3,13 @@ const pagination =require('../../lib/common/pagination')
 
 const write = async(req,res)=>{
     console.log("CONTROLLER: WORKING");
-    const dataValue = req.body;
+    const {title,content} = req.body;
     try{
-        console.log(req.decode.userIdx)
-        await noteRepo.writeBoard(req.decode.userIdx,dataValue.title,dataValue.content)
+        await noteRepo.writeBoard(req.decode.userIdx,title,content)
         res.send({data: 'Success'})
     }catch(err){
-        console.log(err)
-        res.send({message:"Failed"})
+        if(err.message){next(err)}
+        next({message:"CONTROLLE_WRITE_NOTE_ERROR"})
     }
 }
 
@@ -20,12 +19,12 @@ const get = async(req, res)=>{
     console.log(page)
     let result;
     try{
-        const paginateData =pagination.getPage(page)
+        const paginateData =await pagination.getPage(page)
         result = await noteRepo.getBoard(paginateData);
-        res.send({data:result});
+        res.send({data:result,paginate:paginateData});
     }catch(err){
-        console.log(err)
-        res.send({message:"Failed"})
+        if(err.message){next(err)}
+        next({message:"CONTROLLER_GET_NOTE_ERROR"})
     }
 }
 
@@ -36,8 +35,8 @@ const getMy = async(req, res)=>{
         result = await noteRepo.getBoard(1);
         res.send({data:result});
     }catch(err){
-        console.log(err)
-        res.send({message:"Failed"})
+        if(err.message){next(err)}
+        next({message:"CONTROLLER_GET_MY_NOTE_ERROR"})
     }
 }
 
@@ -77,7 +76,6 @@ const update = async(req,res)=>{
     }catch(err){
         res.send({message:"Failed"})
     }
-    
 }
 
 module.exports={

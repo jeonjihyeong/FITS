@@ -21,7 +21,7 @@ const writeBoard=async(userIdx,title, content)=>{
 const getBoard= async({limit, offset})=>{ 
     let result;
     try{
-        result = await models['note'].findAll({
+        result = await models['note'].findAndCountAll({
             include:models['user'].name,
             order:[['created','DESC']],
             limit:limit,
