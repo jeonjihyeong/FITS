@@ -15,7 +15,7 @@ export const getNote=async(page)=>{
         console.log(result.data.message);
         return;
     }
-    return result.data.data;
+    return result.data;
 }
 
 

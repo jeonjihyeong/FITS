@@ -7,35 +7,34 @@ const redisClient = require("../../lib/common/redis.util");
 
 // 로그인
 const login = async(req, res,next) => {
-    let {id,inputPw} = req.body
+    let {id,pw} = req.body
     let userInfo;
     
     try{
       userInfo=await anonymousReposiotory.getUserId(id);
     }catch(err){
       console.log(err);
-      if(err.message){
-        next({message:err.message})
-      }
-      next({message:"CONTROLLER_LOGIN_GET_USER_ERROR"})
+      if(err.message){return next(err)}
+      return next({message:"CONTROLLER_LOGIN_GET_USER_ERROR"})
     }
       
-    const {salt}=userInfo
-
+    
     if(userInfo===null||userInfo===undefined){
-      res.send ({message: 'idFailed'})
+      return res.send ({message: 'idFailed'})
     }
+
+    const {salt}=userInfo
 
     let decodePW
     try{
-      decodePW =await decryptionPassWord(inputPw,salt);
+      decodePW =await decryptionPassWord(pw,salt);
     }catch(err){
-      next({message:"CONTROLLER_LOGIN_DECODING_ERROR"})
+      return next({message:"CONTROLLER_LOGIN_DECODING_ERROR"})
     }
 
     const pwData=userInfo.dataValues.pw
     if(decodePW!==pwData){
-        res.send({message: 'pwFailed'})
+        return res.send({message: 'pwFailed'})
     }
 
     delete userInfo.dataValues.pw;
@@ -43,13 +42,14 @@ const login = async(req, res,next) => {
 
     let accessToken,refreshToken
     try{
-      accessToken = await jwt.signToken({...idData.dataValues});
+      accessToken = await jwt.signToken({...userInfo.dataValues});
       refreshToken = await jwt.signRefreshToken();
       redisClient.set(userInfo.dataValues.email, refreshToken);
     }catch(err){
-      next({message:"CONTROLLER_SIGN_TOKEN_ERROR"});
+      console.log(err)
+      return next({message:"CONTROLLER_SIGN_TOKEN_ERROR"});
     }
-        
+
     res.send({
       token:{
         accessToken:accessToken,
@@ -143,7 +143,7 @@ const sendFindIdMail = async(req,res,next)=>{
     next({message:"CONTROLLER_SEND_FIND_ID_MAIL_CHECK_EXISTENCE_ERROR"})
   }
 
-  if(checkUserExistence===null){
+  if(checkUserExistenceByEmail===null){
     return res.send({message:"No User Data"});
   }
   const mail_data = req.body.email;
@@ -199,7 +199,7 @@ const changePw = async(req,res)=>{
       hashPw:await encryptionPassWord(req.body.new_Pw),
       salt: salt
     }
-    await anonymousReposiotory.changePassword(changePwU     serData.userIdx,inCodeNewPw);
+    await anonymousReposiotory.changePassword(changePwUserData.userIdx,inCodeNewPw);
   }catch(err){
     if(err.message){return next(err)}
     next({message:"CONTROLLER_CHANGE_PW_ERROR"})

@@ -65,7 +65,8 @@ import { mapActions } from 'vuex'
                     //     this.logOut();
                     //     this.$router.push('/');
                     // }
-                this.allNoteInfo ={...result}
+                this.allNoteInfo ={...result.data.rows}
+                this.length=Math.ceil(result.data.count/result.paginate.limit)
                 console.log(this.allNoteInfo)
                 console.log(result);
                 }catch(err){
@@ -73,10 +74,6 @@ import { mapActions } from 'vuex'
                 }
             },
             async handlePage(){
-                // this.$router.replace({
-                //     name: "allNote",
-                //     query: { page:this.page, length: 2 },
-                // });
                 this.getNote();
             }
         },
