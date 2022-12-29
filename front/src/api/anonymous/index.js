@@ -93,27 +93,27 @@ export const sendFindPwMail=async(reqInfo)=>{
         console.log(err);
     }
 
-    if(res.data.message){
+    if(result.data.message){
         alert("메일을 전송하는데 실패하였습니다.")
-        console.log(res.data.message)
+        console.log(result.data.message)
         return;
     }
     alert("메일을 전송하였습니다.")
-    console.log(res.data.data)
-    result = res.data.data
-    return result;
+    console.log(result.data.data)
+    return result.data.data;
 }
 
 // 비밀번호 변경
 export const changePw=async(reqInfo)=>{
+    let result;
     try{
-        await http.post('/changePw',reqInfo)
+        result = await http.post('/changePw',reqInfo)
     }catch(err){
         console.log(err)
     }
-    if(res.data.message){
+    if(result.data.message){
         alert("비밀번호를 변경하지 못하였습니다.")
-        console.log(res.data.message)
+        console.log(result.data.message)
         return;
     }
     alert("비밀번호를 변경하였습니다.");

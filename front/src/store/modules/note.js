@@ -1,5 +1,12 @@
-import noteApi from '@/api/note'
-import commentApi from '@/api/comment'
+import {
+    // changeNote,
+    deleteNote,
+    getNote,
+    getOneNote,
+    writeNote
+} from '@/api/note'
+
+import {writeComment} from '@/api/comment'
 
 export default {
     state: {
@@ -18,21 +25,21 @@ export default {
     actions: {
         // 전체 노트 가지고오기
         async getNote(context,page){
-            return await noteApi.getNote(page)
+            return await getNote(page)
         },
         // 글 작성하기(완)
         async write(context,reqData){
-            return await noteApi.writeNote(reqData)
+            return await writeNote(reqData)
         },
         // 게시글 하나 가지고오기
         async getOneNote(context,noteIdx){
-            return await noteApi.getOneNote(noteIdx)
+            return await getOneNote(noteIdx)
         },
         async writeComment(context,reqInfo){
-            return await commentApi.writeComment(reqInfo);
+            return await writeComment(reqInfo);
         },
         async deleteNote(context, noteIdx){
-            return await noteApi.deleteNote(noteIdx);
+            return await deleteNote(noteIdx);
         },
     }
 };

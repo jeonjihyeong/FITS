@@ -53,7 +53,7 @@ const getEmailData = async({email,name})=>{
 }
 
 // id, email, name으로 회원정보 검색
-const getPwData = async(id,email,name)=>{
+const getPwData = async({id,email,name})=>{
     let results;
     console.log("Service layer")
     try{

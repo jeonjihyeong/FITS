@@ -1,7 +1,7 @@
 import http from '@/api/axios'
 
 // 글전체 목록 가지고 오기
-export const getNote=async()=>{
+export const getNote=async(page)=>{
     let result;
     try{
         result = await http.get(`/note/all/${page}`)
@@ -12,7 +12,7 @@ export const getNote=async()=>{
         console.log(err);
     }
     if(result.data.messgae){
-        console.log(res.data.message);
+        console.log(result.data.message);
         return;
     }
     return result.data.data;
@@ -23,7 +23,7 @@ export const getNote=async()=>{
 export const writeNote=async(reqData)=>{
     let result;
     try{
-        await http.post('/note',reqData)
+        result = await http.post('/note',reqData)
     }catch(err){
         console.log(err);
     }
@@ -44,8 +44,8 @@ export const getOneNote=async(noteIdx)=>{
         console.log(err);
     }
     
-    if(res.status ===200){
-        console.log(res.data.comment)
+    if(result.status ===200){
+        console.log(result.data.comment)
         return {
             noteInfo:result.data.data,
             comment:result.data.comment,
@@ -62,7 +62,7 @@ export const deleteNote=async(noteIdx)=>{
     }catch(err){
         console.log(err);
     }
-    if(res.data.message==="success"){
+    if(result.data.message==="success"){
         alert("삭제 성공")
         return 1
     }
