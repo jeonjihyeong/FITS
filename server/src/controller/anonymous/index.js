@@ -40,9 +40,11 @@ const login = async(req, res,next) => {
 
     delete userInfo.dataValues.pw;
     delete userInfo.dataValues.salt;
+
+    let accessToken,refreshToken
     try{
-      const accessToken = await jwt.signToken({...idData.dataValues});
-      const refreshToken = await jwt.signRefreshToken();
+      accessToken = await jwt.signToken({...idData.dataValues});
+      refreshToken = await jwt.signRefreshToken();
       redisClient.set(userInfo.dataValues.email, refreshToken);
     }catch(err){
       next({message:"CONTROLLER_SIGN_TOKEN_ERROR"});
@@ -120,79 +122,89 @@ const signup = async(req,res,next)=>{
 }
 
 // 회원가입 메일
-const sendSignUpMail = async(req,res)=>{
+const sendSignUpMail = async(req,res,next)=>{
+  try{
     const mail_data = req.body.email;
     const signUpText = signUpMail()
-    try{
-        await mailSender.sendGmail(signUpText.mailText, mail_data)
-        res.send({data:signUpText.auth_key})
+      await mailSender.sendGmail(signUpText.mailText, mail_data)
     }catch(err){
-        console.log(err);
-        next(err)
+      if(err.message){return next(err)}
+      next({message:"CONTROLLER_SEND_SIGNUP_MAIL_ERROR"})
     }
+    res.send({data:signUpText.auth_key})
 }
 
 // 아이디 찾기 메일
-const sendFindIdMail = async(req,res)=>{
+const sendFindIdMail = async(req,res,next)=>{
+  let checkUserExistenceByEmail;
   try{
-    console.log("controller")
-    if(await anonymousReposiotory.getEmailData(req.body)===null){
-      res.send({message:"No User Data"});
-      console.log("No User Data")
-    }else{
-      console.log(req.body)
-      const mail_data = req.body.email;
-      const findIdMailText = findIdMail(req.body)
-      mailSender.sendGmail(findIdMailText, mail_data)
-      res.send({data:1})
-    }
-    }catch(err){
-        console.log(err);
-        next(err)
-    }
+    checkUserExistenceByEmail=await anonymousReposiotory.getEmailData(req.body)
+  }catch(err){
+    next({message:"CONTROLLER_SEND_FIND_ID_MAIL_CHECK_EXISTENCE_ERROR"})
+  }
+
+  if(checkUserExistence===null){
+    return res.send({message:"No User Data"});
+  }
+  const mail_data = req.body.email;
+  const findIdMailText = findIdMail(req.body)
+
+  try{
+    await mailSender.sendGmail(findIdMailText, mail_data)
+  }catch(err){
+    console.log(err);
+    next({message:"CONTROLLER_SEND_FIND_ID_MAIL_ERROR"})
+  }
+
+  res.send({data:1})
 }
 
 // 비밀번호 찾기 메일
 const sendFindPwMail = async(req,res)=>{
+  let checkUserExistenceByPwData;
   try{
-    console.log(req.body);
-    const pwData =  await anonymousReposiotory.getPwData(req.body.id,req.body.email,req.body.name)
-    if(pwData===null||pwData===undefined){
-      res.send({message:"No User Data"})
-      console.log("No User Data")
-    }else{
-      console.log(req.body)
-      const mail_data =req.body.email;
-      const findPwMailText = findPwMail(req.body.name)
-      mailSender.sendGmail(findPwMailText.mailText,mail_data)
-      res.send({data:findPwMailText.auth_key})
-    }
+    checkUserExistenceByPwData =  await anonymousReposiotory.getPwData(req.body)
   }catch(err){
-    console.log(err);
-    next(err)
+    if(err.message){return next(err)}
+    next({message:"CONTROLLER_SEND_FIND_PW_MAIL_CHECK_EXISTENCE_ERROR"})
   }
+  if(checkUserExistenceByPwData===null||checkUserExistenceByPwData===undefined){
+    return res.send({message:"No User Data"})
+  }
+  const findPwMailText = findPwMail(req.body.name)
+  try{
+    await mailSender.sendGmail(findPwMailText.mailText,req.body.email)
+  }catch(err){
+    if(err.message){return next(err)}
+    next({message:"CONTROLLER_SEND_FIND_PW_MAIL_ERROR"})
+  }
+  res.send({data:findPwMailText.auth_key})
 }
 
 // 비밀번호 변경하기
 const changePw = async(req,res)=>{
+  let changePwUserData;
   try{
-    console.log(req.body);
-    let changePwUserData = await anonymousReposiotory.getPwData(req.body)
-    if(changePwUserData===null||changePwUserData===undefined){
-      res.send({message:"No User Data"})
-      console.log("No user Data")
-    }else{
-      let inCodeNewPw ={
-        hashPw: encryptionPassWord(req.body.new_Pw),
-        salt: salt
-      }
-      await anonymousReposiotory.changePassword(changePwUserData.userIdx,inCodeNewPw);
-      res.send({data: 1})
-    }
+    changePwUserData = await anonymousReposiotory.getPwData(req.body)
   }catch(err){
-    console.log(err)
-    next(err)
+    if(err.message){return next(err)}
+    next({message:"CONTROLLER_CHANGE_PW_GET_USER_DATA_ERROR"})
   }
+  if(changePwUserData===null||changePwUserData===undefined){
+    console.log("No user Data")
+    return res.send({message:"No User Data"})
+  }
+  try{
+    let inCodeNewPw ={
+      hashPw:await encryptionPassWord(req.body.new_Pw),
+      salt: salt
+    }
+    await anonymousReposiotory.changePassword(changePwU     serData.userIdx,inCodeNewPw);
+  }catch(err){
+    if(err.message){return next(err)}
+    next({message:"CONTROLLER_CHANGE_PW_ERROR"})
+  }
+  res.send({data: 1})
 }
 
 module.exports={
