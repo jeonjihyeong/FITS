@@ -9,7 +9,7 @@ const write = async(req,res)=>{
         res.send({data: 'Success'})
     }catch(err){
         if(err.message){next(err)}
-        next({message:"CONTROLLE_WRITE_NOTE_ERROR"})
+        next({message:"CONTROLLER_WRITE_NOTE_ERROR"})
     }
 }
 
@@ -50,31 +50,30 @@ const getOne = async(req, res)=>{
         const userInfo = req.decode
         res.send({data:result,comment:comment, accessUser:userInfo});
     }catch(err){
-        console.log(err)
-        res.status(500).send({message:"Failed"})
+        if(err.message){next(err)}
+        next({message:"CONTROLLER_GET_ONE_NOTE_ERROR"})
     }
 }
 
 const deleteContent = async(req,res)=>{
-    console.log("CONTROLLER: WORKING");
     const textId = req.params.noteIdx;
-    console.log(textId)
     try{
         await noteRepo.deleteBoard(textId);
         res.send({message:"Success"})
     }catch(err){
-        res.send({message:"Failed"})
+        if(err.message){next(err)}
+        next({message:"CONTROLLER_DELETE_NOTE_ERROR"})
     }    
 }
 
 const update = async(req,res)=>{
-    console.log("CONTROLLER: WORKING");
     const boardIdx= req.params.boardIdx;
     try{
         await noteRepo.updateBoard(boardIdx,req.body.title,req.body.content);
         res.send({message:"Success"})
     }catch(err){
-        res.send({message:"Failed"})
+        if(err.message){next(err)}
+        next({message:"CONTROLLER_UPDATE_NOTE_ERROR"})
     }
 }
 

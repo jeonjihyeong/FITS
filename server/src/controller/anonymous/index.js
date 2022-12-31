@@ -123,9 +123,10 @@ const signup = async(req,res,next)=>{
 
 // 회원가입 메일
 const sendSignUpMail = async(req,res,next)=>{
+  let signUpText;
   try{
     const mail_data = req.body.email;
-    const signUpText = signUpMail()
+    signUpText = signUpMail()
       await mailSender.sendGmail(signUpText.mailText, mail_data)
     }catch(err){
       if(err.message){return next(err)}
