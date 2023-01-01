@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken")
 
 module.exports={
     //  토큰생성
-    signToken : async(payload) => {
+    signToken : (payload) => {
         try{
             return jwt.sign(payload, process.env.JWT_KEY,{
             algorithm: 'HS256',
@@ -38,7 +38,7 @@ module.exports={
     },
 
     // 리프레쉬 토큰
-    signRefreshToken : async()=>{
+    signRefreshToken : ()=>{
         return jwt.sign({},process.env.JWT_KEY,{
             algorithm:'HS256',
             expiresIn: '14d',

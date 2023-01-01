@@ -4,12 +4,12 @@ const crypto = require('crypto')
 const salt = Math.round((new Date().valueOf() * Math.random())) + "";
 
 // 인코딩
-const encryptionPassWord=async(InputPw)=>{
+const encryptionPassWord= async (InputPw)=>{
     let hashPassword = crypto.createHash("sha512").update(InputPw + salt).digest("hex");
     return hashPassword;
 }
 // 디코딩
-const decryptionPassWord=async(InputPw,DB_salt)=>{
+const decryptionPassWord=  (InputPw,DB_salt)=>{
     try{
         let decodePassword = crypto.createHash("sha512").update(InputPw + DB_salt).digest("hex");
         return decodePassword;

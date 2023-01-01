@@ -25,12 +25,7 @@ const login = async(req, res,next) => {
 
     const {salt}=userInfo
 
-    let decodePW
-    try{
-      decodePW =await decryptionPassWord(pw,salt);
-    }catch(err){
-      return next({message:"CONTROLLER_LOGIN_DECODING_ERROR"})
-    }
+    const decodePW = decryptionPassWord(pw,salt);
 
     const pwData=userInfo.dataValues.pw
     if(decodePW!==pwData){
@@ -42,13 +37,16 @@ const login = async(req, res,next) => {
 
     let accessToken,refreshToken
     try{
-      accessToken = await jwt.signToken({...userInfo.dataValues});
-      refreshToken = await jwt.signRefreshToken();
+      accessToken = jwt.signToken({...userInfo.dataValues});
+      refreshToken = jwt.signRefreshToken();
       redisClient.set(userInfo.dataValues.email, refreshToken);
     }catch(err){
       console.log(err)
       return next({message:"CONTROLLER_SIGN_TOKEN_ERROR"});
     }
+
+    const temp = []
+    temp.push({id: 'ss'});
 
     res.send({
       token:{
@@ -77,48 +75,23 @@ const login2 = async(req,res)=>{
 }
 
 // 회원가입
+const {checkId} = require('../../lib/common/validation');
+
 const signup = async(req,res,next)=>{
     const data= req.body;
     let duplicateTest;
+  
+    checkId(data.id);
+    //id, pw,age,email,name,nickname,salt
+    // id : 숫자 영어 포함 최소 6글자
 
     try{
-      duplicateTest = await anonymousReposiotory.getUserId(data.id)
+      
     }catch(err){
-      console.log(err.message)
-      console.log('캐치문')
-      if(err.message) {return next(err)}
-      next({message:"CONTROLLER_SIGNUP_DUPLICATE_CHECK_ERROR"})
+      console.log(err);
     }
-
-    if (duplicateTest!==null){
-      console.log('id가 이미 존재합니다.');
-      return res.send({data: 0})
-    }
-
-    let hashPw;
-    try{
-      hashPw =await encryptionPassWord(data.pw);
-    }catch(err){
-      console.log(err.message)
-      if(err.message) {return next(err);}
-      next({message:"CONTROLLER_SIGNUP_HASHING_ERROR"})
-    }
-
-    const payload={
-      ...data,
-      pw:hashPw,
-      salt:salt,
-    }
-
-    try{
-      await anonymousReposiotory.saveUser(payload);
-    }catch(err){
-      console.log(err.message)
-      if(err.message) {return next(err);}
-      next({message:"CONTROLLER_SIGNUP_SAVE_ERROR"})
-    }
-
-    res.send({data: 1})
+    
+    
 }
 
 // 회원가입 메일
