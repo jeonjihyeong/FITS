@@ -9,7 +9,7 @@ const signUpMail =()=> {
   return {mailText,auth_key}
 };
 // 아이디 찾기 메일
-const findIdMail=({name,id}) => {
+const findIdMail=async({name,id}) => {
   const mailText ={
     subject: `${name} 회원님 아이디 찾기 결과입니다.`,
     html: `<div>${name} 회원님 아이디 찾기 결과입니다.
@@ -18,7 +18,7 @@ const findIdMail=({name,id}) => {
   return mailText;
 }
 // 비밀번호 찾기 메일
-const findPwMail=(name) => {
+const findPwMail=async(name) => {
   const auth_key = randomString()
   const mailText ={
     subject: `${name} 회원님 비밀번호 찾기 결과입니다.`,

@@ -19,7 +19,7 @@ export default {
         }
         if(id.length <5){
             throw new Error('INVALID_REQUEST')
-          }
+        }
         if(id.length > 15){
             throw new Error('INVALID_REQUEST')
         }
@@ -38,13 +38,7 @@ export default {
         return
     },
     checkNickName : (nickName) => {
-        if(!nickName){
-            throw new Error('INVALID_REQUEST')
-        }
-        if(nickName.length <3){
-            throw new Error('INVALID_REQUEST')
-        }
-        if(nickName.length > 12){
+        if(!nickName || nickName.length <3 ||nickName.length > 12 ){
             throw new Error('INVALID_REQUEST')
         }
         return;

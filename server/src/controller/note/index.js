@@ -4,6 +4,9 @@ const pagination =require('../../lib/common/pagination')
 const write = async(req,res)=>{
     console.log("CONTROLLER: WORKING");
     const {title,content} = req.body;
+    if(!title || !content) {
+        next({message:"invalid form data"})
+    }
     try{
         await noteRepo.writeBoard(req.decode.userIdx,title,content)
         res.send({data: 'Success'})
@@ -32,7 +35,7 @@ const getMy = async(req, res)=>{
     console.log("CONTROLLER: WORKING");
     let result;
     try{
-        result = await noteRepo.getBoard(1);
+        result = await noteRepo.getBoard();
         res.send({data:result});
     }catch(err){
         if(err.message){next(err)}
@@ -51,7 +54,7 @@ const getOne = async(req, res)=>{
         res.send({data:result,comment:comment, accessUser:userInfo});
     }catch(err){
         if(err.message){next(err)}
-        next({message:"CONTROLLER_GET_ONE_NOTE_ERROR"})
+        next({message:"CONTROLLER_GET_ONE_NOT_ERROR"})
     }
 }
 
