@@ -1,8 +1,9 @@
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
-export interface InputUser {
-    id: string
-    pw: string
-    age: number
+export class LoginInputDto {
+    @IsString()
+    id:string;
     
+    @IsString()
+    pw:string;
 }
-
