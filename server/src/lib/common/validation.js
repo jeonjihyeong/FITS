@@ -5,34 +5,19 @@ const idForm = /^[a-zA-Z0-9]*$/ //공백제외 영어,숫자
 
 export default {
     checkEmail:(email)=>{
-        if (!email){
-            throw new Error('INVALID_REQUEST')
-        }
-        if (!emailForm.test(email)){
+        if (!email||!emailForm.test(email)){
             throw new Error('INVALID_REQUEST')
         }
         return;
     },
     checkId:(id)=>{
-        if (!id){
-            throw new Error('INVALID_REQUEST')
-        }
-        if(id.length <5){
-            throw new Error('INVALID_REQUEST')
-        }
-        if(id.length > 15){
-            throw new Error('INVALID_REQUEST')
-        }
-        if(!idForm.test(id)){
+        if (!id||id.length <5||id.length > 15||!idForm.test(id)){
             throw new Error('INVALID_REQUEST')
         }
         return;
     },
     checkPw : (pw) => {
-        if (!pw){
-            throw new Error('INVALID_REQUEST')
-        }
-        if (!passwordForm.test(pw)){
+        if (!pw||!passwordForm.test(pw)){
             throw new Error('INVALID_REQUEST')
         }
         return

@@ -1,4 +1,6 @@
 const {anonymousReposiotory} =require('../../reposiotory')
+const {checkId} = require('../../lib/common/validation');
+const {anonymousService} = require('../../service')
 const jwt=require('../../lib/common/token')
 const mailSender = require('../../lib/common/mailer')
 const {salt,encryptionPassWord,decryptionPassWord} =require('../../lib/common/hashing')
@@ -8,6 +10,7 @@ const redisClient = require("../../lib/common/redis.util");
 // 로그인
 const login = async(req, res,next) => {
     let {id,pw} = req.body
+    if(!id||!pw){throw new Error("Inavalid Request")}
     let userInfo;
     
     try{
@@ -74,19 +77,21 @@ const login2 = async(req,res)=>{
   }
 }
 
-// 회원가입
-const {checkId} = require('../../lib/common/validation');
 
 const signup = async(req,res,next)=>{
-    const data= req.body;
-    let duplicateTest;
-  
-    checkId(data.id);
-    //id, pw,age,email,name,nickname,salt
+    
+    const {id,pw,email,age,name,nickname}= req.body;
+    if(!id||!pw||!email||!age||!name||!nickname){
+      throw new Error("INVALID_REQUEST")
+    }
+
+    checkId(id);
+    checkPw(pw);
+    checkEmail(email);
     // id : 숫자 영어 포함 최소 6글자
 
     try{
-      
+      await anonymousService.signUp({id,pw,email,age,name,nickname})
     }catch(err){
       console.log(err);
     }
