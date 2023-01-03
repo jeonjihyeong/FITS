@@ -4,7 +4,7 @@ const crypto = require('crypto')
 const salt = Math.round((new Date().valueOf() * Math.random())) + "";
 
 // 인코딩
-const encryptionPassWord= async (InputPw)=>{
+const encryptionPassWord= (InputPw)=>{
     let hashPassword = crypto.createHash("sha512").update(InputPw + salt).digest("hex");
     return hashPassword;
 }
@@ -18,6 +18,7 @@ const decryptionPassWord=  (InputPw,DB_salt)=>{
     }
 }
 module.exports ={
+    salt,
     encryptionPassWord,
     decryptionPassWord,
 }
