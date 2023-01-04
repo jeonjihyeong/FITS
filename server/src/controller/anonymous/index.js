@@ -1,5 +1,5 @@
 const {anonymousReposiotory} =require('../../reposiotory')
-const {checkId} = require('../../lib/common/validation');
+const validateRequest = require('../../lib/common/validation');
 const {anonymousService} = require('../../service')
 const jwt=require('../../lib/common/token')
 const mailSender = require('../../lib/common/mailer')
@@ -9,107 +9,72 @@ const redisClient = require("../../lib/common/redis.util");
 
 // 로그인
 const login = async(req, res,next) => {
+  if(req.body===null||req.body===undefined){
+    next({message:"INVALID_REQUEST"})
+  };
+
     let {id,pw} = req.body
-    if(!id||!pw){throw new Error("Inavalid Request")}
-    let userInfo;
-    
+    if(!id||!pw){next({message:"INVALID_REQUEST"})}
+    let result;
     try{
-      userInfo=await anonymousReposiotory.getUserId(id);
+      result = await anonymousService.login({id,pw})
     }catch(err){
-      console.log(err);
       if(err.message){return next(err)}
-      return next({message:"CONTROLLER_LOGIN_GET_USER_ERROR"})
+      return next(err);
     }
-      
-    
-    if(userInfo===null||userInfo===undefined){
-      return res.send ({message: 'idFailed'})
-    }
-
-    const {salt}=userInfo
-
-    const decodePW = decryptionPassWord(pw,salt);
-
-    const pwData=userInfo.dataValues.pw
-    if(decodePW!==pwData){
-        return res.send({message: 'pwFailed'})
-    }
-
-    delete userInfo.dataValues.pw;
-    delete userInfo.dataValues.salt;
-
-    let accessToken,refreshToken
-    try{
-      accessToken = jwt.signToken({...userInfo.dataValues});
-      refreshToken = jwt.signRefreshToken();
-      redisClient.set(userInfo.dataValues.email, refreshToken);
-    }catch(err){
-      console.log(err)
-      return next({message:"CONTROLLER_SIGN_TOKEN_ERROR"});
-    }
-
-    const temp = []
-    temp.push({id: 'ss'});
-
     res.send({
       token:{
-        accessToken:accessToken,
-        refreshToken:refreshToken,
-    }});
+        ...result
+      }
+    })
+      
+    
 }
-
-const login2 = async(req,res)=>{
-  if(req.body===null||req.body===undefined){
-    return res.status(200).json({
-      status: 400,
-      message: "Error: Body(JSON)값이 비어있습니다."
-    });
-  } 
-  if(req.body.hasOwnProperty('id')===false||req.body.hasOwnProperty('pw')===false){
-    return res.status(200).json({
-      message:"Error: 이메일 또는 비밀번호가 없습니다."
-    });
-  }
-  try{
-    await anonymousReposiotory.login()
-  }catch(err){
-    console.log(err);
-  }
-}
-
 
 const signup = async(req,res,next)=>{
     
     const {id,pw,email,age,name,nickname}= req.body;
     if(!id||!pw||!email||!age||!name||!nickname){
-      throw new Error("INVALID_REQUEST")
+      next({message:"INVALID_REQUEST"})
     }
-
-    checkId(id);
-    checkPw(pw);
-    checkEmail(email);
+    try{
+      validateRequest.checkId(id);
+      validateRequest.checkPw(pw);
+      validateRequest.checkEmail(email);
+      validateRequest.checkNickName(nickname);
+    }catch(err){
+      return next(err)
+    }
     // id : 숫자 영어 포함 최소 6글자
+    let result;
 
     try{
-      await anonymousService.signUp({id,pw,email,age,name,nickname})
+      result = await anonymousService.signUp({id,pw,email,age,name,nickname})
     }catch(err){
-      console.log(err);
+      if(err.message){return next(err)}
+      return next({message:"CONTROLLER_SIGNUP_ERROR"})
     }
     
-    
+    if(!result){
+      return res.send({message:'failed'})
+    }
+    res.send({message:'success'})
 }
 
 // 회원가입 메일
 const sendSignUpMail = async(req,res,next)=>{
   let signUpText;
+  const {email} = req.body;
+  if (!email){
+    return next({message:"INVALID_REQUEST"})
+  }
+  signUpText = signUpMail()
   try{
-    const mail_data = req.body.email;
-    signUpText = signUpMail()
-      await mailSender.sendGmail(signUpText.mailText, mail_data)
-    }catch(err){
+    await mailSender.sendGmail(signUpText.mailText, email)
+  }catch(err){
       if(err.message){return next(err)}
       next({message:"CONTROLLER_SEND_SIGNUP_MAIL_ERROR"})
-    }
+  }
     res.send({data:signUpText.auth_key})
 }
 
