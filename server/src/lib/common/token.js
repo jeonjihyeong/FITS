@@ -12,6 +12,7 @@ module.exports={
             })
         }catch(err){
             console.log(err)
+            throw new Error("SIGN_TOKEN_ERROR")
         }
     },
 
