@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import {IsString } from 'class-validator';
 
 export class LoginInputDto {
     @IsString()
@@ -7,3 +7,4 @@ export class LoginInputDto {
     @IsString()
     pw:string;
 }
+
