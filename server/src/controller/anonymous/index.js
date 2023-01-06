@@ -63,44 +63,36 @@ const signup = async(req,res,next)=>{
 
 // 회원가입 메일
 const sendSignUpMail = async(req,res,next)=>{
-  let signUpText;
-  const {email} = req.body;
-  if (!email){
+  const {email}=req.body;
+  let result;
+  if(!email){
     return next({message:"INVALID_REQUEST"})
   }
-  signUpText = signUpMail()
+  const signUpText =signUpMail(req.body);
   try{
-    await mailSender.sendGmail(signUpText.mailText, email)
+    result = await anonymousReposiotory.sendMail(signUpText,email)
   }catch(err){
-      if(err.message){return next(err)}
-      next({message:"CONTROLLER_SEND_SIGNUP_MAIL_ERROR"})
+    if(err.message){return next(err)}
+    next({message:"CONTROLLER_SEND_SIGNUP_MAIL_ERROR"})
   }
-    res.send({data:signUpText.auth_key})
+  res.send({data:result})
 }
 
 // 아이디 찾기 메일
 const sendFindIdMail = async(req,res,next)=>{
-  let checkUserExistenceByEmail;
-  try{
-    checkUserExistenceByEmail=await anonymousReposiotory.getEmailData(req.body)
-  }catch(err){
-    next({message:"CONTROLLER_SEND_FIND_ID_MAIL_CHECK_EXISTENCE_ERROR"})
+  const {email,name}=req.body
+  if(!email||!name){
+    return next({message:"INVALID_TOKEN"})
   }
-
-  if(checkUserExistenceByEmail===null){
-    return res.send({message:"No User Data"});
-  }
-  const mail_data = req.body.email;
   const findIdMailText = findIdMail(req.body)
-
   try{
-    await mailSender.sendGmail(findIdMailText, mail_data)
+    anonymousReposiotory.sendFindIdMail(findIdMailText,{email,name})
   }catch(err){
-    console.log(err);
-    next({message:"CONTROLLER_SEND_FIND_ID_MAIL_ERROR"})
+    if(err.message){return next(err)}
+    next({message:"CONTROLLER_SEND_FIND_ID_MAIL"})
   }
 
-  res.send({data:1})
+
 }
 
 // 비밀번호 찾기 메일
