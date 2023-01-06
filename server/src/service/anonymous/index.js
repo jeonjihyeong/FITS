@@ -72,7 +72,43 @@ const signUp = async(bodyData)=> {
   return true
 }
 
+const sendsignUPMail=async(signUpText,email)=>{
+  
+  try{
+    await mailSender.sendGmail(signUpText.mailText, email)
+  }catch(err){
+      if(err.message){return next(err)}
+      next({message:"CONTROLLER_SEND_SIGNUP_MAIL_ERROR"})
+  }
+  return {data:signUpText.auth_key}
+}
+
+const sendFindIdMail=async(findIdMailText,{name,email})=>{
+  let checkUserExistenceByEmail;
+  
+  try{
+    checkUserExistenceByEmail=await anonymousReposiotory.getEmailData(name,email)
+  }catch(err){
+    next({message:"CONTROLLER_SEND_FIND_ID_MAIL_CHECK_EXISTENCE_ERROR"})
+  }
+
+  if(checkUserExistenceByEmail===null){
+    return res.send({message:"No User Data"});
+  }
+
+  try{
+    await mailSender.sendsignUPMail(findIdMailText, email)
+  }catch(err){
+    console.log(err);
+    next({message:"CONTROLLER_SEND_FIND_ID_MAIL_ERROR"})
+  }
+
+  res.send({data:1})
+}
+
 module.exports = {
   login,  
-  signUp
+  signUp,
+  sendsignUPMail,
+  sendFindIdMail
 }
