@@ -1,9 +1,11 @@
 const {anonymousReposiotory} = require('../../reposiotory')
 const {salt,encryptionPassWord,decryptionPassWord} =require('../../lib/common/hashing')
 const redisClient = require("../../lib/common/redis.util");
+const {signUpMail,findIdMail,findPwMail} =require('../../lib/common/setMail')
 const jwt=require('../../lib/common/token')
-const login = async({id,pw})=>{
 
+// 로그인 서비스
+const login = async({id,pw})=>{
   let userInfo;
     
   try{
@@ -42,6 +44,8 @@ const login = async({id,pw})=>{
 
 }
 
+
+// 회원가입 서비스
 const signUp = async(bodyData)=> {
   let isDuplicatedId  
   try{
@@ -72,43 +76,72 @@ const signUp = async(bodyData)=> {
   return true
 }
 
+// 회원가입 메일 서비스
 const sendsignUPMail=async(signUpText,email)=>{
-  
+  const signUpText =signUpMail();
   try{
     await mailSender.sendGmail(signUpText.mailText, email)
   }catch(err){
       if(err.message){return next(err)}
       next({message:"CONTROLLER_SEND_SIGNUP_MAIL_ERROR"})
   }
-  return {data:signUpText.auth_key}
+  return signUpText.auth_key
 }
 
-const sendFindIdMail=async(findIdMailText,{name,email})=>{
-  let checkUserExistenceByEmail;
-  
+// 아이디찾기 메일 서비스
+const sendFindIdMail=async(name,email)=>{
+  let getUserByEmail;
   try{
-    checkUserExistenceByEmail=await anonymousReposiotory.getEmailData(name,email)
+    getUserByEmail=await anonymousReposiotory.getEmailData(name,email)
   }catch(err){
     next({message:"CONTROLLER_SEND_FIND_ID_MAIL_CHECK_EXISTENCE_ERROR"})
   }
 
-  if(checkUserExistenceByEmail===null){
+  if(getUserByEmail===null){
     return res.send({message:"No User Data"});
   }
 
+  const findIdMailText = findIdMail(name,getUserByEmail.dataValues.id)
+  
   try{
     await mailSender.sendsignUPMail(findIdMailText, email)
   }catch(err){
     console.log(err);
     next({message:"CONTROLLER_SEND_FIND_ID_MAIL_ERROR"})
   }
+  return 1
+}
 
-  res.send({data:1})
+
+const sendFindPwMail=async(id,email,name)=>{
+  let getUserDataByPwData;
+    try{
+      getUserDataByPwData =  await anonymousReposiotory.getPwData(id,email,name)
+    }catch(err){
+      if(err.message){throw new Error(err.message)}
+      throw new Error("CONTROLLER_SEND_FIND_PW_MAIL_CHECK_EXISTENCE_ERROR")
+    }
+
+    if(getUserDataByPwData===null||getUserDataByPwData===undefined){
+      return res.send({message:"No User Data"})
+    }
+
+    const findPwMailText = findPwMail(name)
+
+    try{
+      await mailSender.sendGmail(findPwMailText.mailText,email)
+    }catch(err){
+      if(err.message){throw new Error(err.message)}
+      throw new Error("CONTROLLER_SEND_FIND_PW_MAIL_ERROR")
+    }
+    
+  return findPwMailText.auth_key
 }
 
 module.exports = {
   login,  
   signUp,
   sendsignUPMail,
-  sendFindIdMail
+  sendFindIdMail,
+  sendFindPwMail
 }

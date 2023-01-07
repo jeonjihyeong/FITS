@@ -1,4 +1,4 @@
-function randomString () {
+const randomString=()=>{
     const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'
     const stringLength = 6
     let randomstring = ''

@@ -68,13 +68,14 @@ const sendSignUpMail = async(req,res,next)=>{
   if(!email){
     return next({message:"INVALID_REQUEST"})
   }
-  const signUpText =signUpMail(req.body);
+
   try{
     result = await anonymousReposiotory.sendMail(signUpText,email)
   }catch(err){
     if(err.message){return next(err)}
     next({message:"CONTROLLER_SEND_SIGNUP_MAIL_ERROR"})
   }
+
   res.send({data:result})
 }
 
@@ -84,37 +85,36 @@ const sendFindIdMail = async(req,res,next)=>{
   if(!email||!name){
     return next({message:"INVALID_TOKEN"})
   }
-  const findIdMailText = findIdMail(req.body)
+
+  let result;
+
   try{
-    anonymousReposiotory.sendFindIdMail(findIdMailText,{email,name})
+    result = anonymousReposiotory.sendFindIdMail(email,name)
   }catch(err){
     if(err.message){return next(err)}
     next({message:"CONTROLLER_SEND_FIND_ID_MAIL"})
   }
 
-
+  res.send({data:result})
 }
 
 // 비밀번호 찾기 메일
-const sendFindPwMail = async(req,res)=>{
-  let checkUserExistenceByPwData;
+const sendFindPwMail = async(req,res,next)=>{
+  const {id,name,email}=req.body;
+  if(!id||!name||!email){
+    return next({message:"INVALID_REQUEST"})
+  }
+
+  let result;
+
   try{
-    checkUserExistenceByPwData =  await anonymousReposiotory.getPwData(req.body)
+    result = await anonymousService.sendFindPwMail(id,email,name)
   }catch(err){
     if(err.message){return next(err)}
-    next({message:"CONTROLLER_SEND_FIND_PW_MAIL_CHECK_EXISTENCE_ERROR"})
+    next({message:"CONTROLLER_FIND_PW_MAIL_ERROR"})
   }
-  if(checkUserExistenceByPwData===null||checkUserExistenceByPwData===undefined){
-    return res.send({message:"No User Data"})
-  }
-  const findPwMailText = findPwMail(req.body.name)
-  try{
-    await mailSender.sendGmail(findPwMailText.mailText,req.body.email)
-  }catch(err){
-    if(err.message){return next(err)}
-    next({message:"CONTROLLER_SEND_FIND_PW_MAIL_ERROR"})
-  }
-  res.send({data:findPwMailText.auth_key})
+  
+  res.send({data:result})
 }
 
 // 비밀번호 변경하기
@@ -132,7 +132,7 @@ const changePw = async(req,res)=>{
   }
   try{
     let inCodeNewPw ={
-      hashPw:await encryptionPassWord(req.body.new_Pw),
+      hashPw:encryptionPassWord(req.body.new_Pw),
       salt: salt
     }
     await anonymousReposiotory.changePassword(changePwUserData.userIdx,inCodeNewPw);

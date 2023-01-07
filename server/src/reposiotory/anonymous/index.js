@@ -35,7 +35,7 @@ const getUserId = async(id)=>{
 }
 
 // 이메일로 회원정보 가지고 오기
-const getEmailData = async({email,name})=>{
+const getEmailData = async(email,name)=>{
     let results;
     console.log("Service layer")
     try{
@@ -53,7 +53,7 @@ const getEmailData = async({email,name})=>{
 }
 
 // id, email, name으로 회원정보 검색
-const getPwData = async({id,email,name})=>{
+const getPwData = async(id,email,name)=>{
     let results;
     console.log("Service layer")
     try{
