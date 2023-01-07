@@ -21,12 +21,6 @@
                     color="pink lighten-1"
                 />
                 <v-text-field
-                    label="이메일 입력"
-                    v-model="auth_key"
-                    hide-details="auto"
-                    color="pink lighten-1"
-                />
-                <v-text-field
                 label="이메일"
                 v-model="email"
                 hide-details="auto"
