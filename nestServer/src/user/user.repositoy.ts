@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { EntityRepository } from 'typeorm';
 import { signUpUser } from './entities/sigup.entity';
 
-@Injectable()
+@EntityRepository()
 export class UserRepository{
     async findUserById(id:string){
         let res = {

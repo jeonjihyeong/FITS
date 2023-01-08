@@ -1,0 +1,11 @@
+{
+    "type": "postgres",
+    "host": "localhost",
+    "port": "5432",
+    "username": "postgres",
+    "password": "cjswp7014@@",
+    "database": "ny",
+    "synchronize": true,
+    "logging": true,
+    "entities": ["dist/**/*.entity.{ts,js}"]
+  }
