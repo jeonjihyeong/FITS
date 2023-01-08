@@ -4,6 +4,11 @@ import { SignUpInputDto } from './dto/input/signUp-input.dto';
 import { signUpUser } from './entities/sigup.entity';
 import { User } from './entities/user.entity';
 import { UserRepository } from './user.repositoy';
+
+import fs from 'fs';
+
+
+
 @Injectable()
 export class UserService {
   constructor(private readonly userRepo: UserRepository){}
@@ -45,8 +50,7 @@ export class UserService {
       return {message:"id is duplicated"}
     }
     
-    let signUpUser:signUpUser
-    signUpUser={
+    let signUpUser:signUpUser = {
       id,
       pw,
       age,
