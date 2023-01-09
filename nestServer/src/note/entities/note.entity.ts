@@ -1,13 +1,14 @@
-
-
 import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Note {
   @PrimaryGeneratedColumn('increment')
-  noteIdx: number;
+  noteIdx?: number;
 
   @Column()
-  name: string;
+  title: string;
+  
+  @Column()
+  content: string;
 
 }

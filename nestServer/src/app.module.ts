@@ -5,6 +5,7 @@ import { UserModule } from './user/user.module';
 import { NoteModule } from './note/note.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: "postgres",
@@ -16,7 +17,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     // logging : true,
     autoLoadEntities: true,
     synchronize: true,
-    entities: ["dist/**/*.entity.{ts,js}"]
+    entities: [__dirname + '/../**/*.entity.js'] 
   }),
   NoteModule  
 ],
