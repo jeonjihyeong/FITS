@@ -1,24 +1,31 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { NoteInputDto } from './dto/note-input.dto';
 import { Note } from './entities/note.entity';
+import { NoteRepository } from './note.repo';
 
 @Injectable()
 export class NoteService {
     constructor(
-        @InjectRepository(Note)
-        private noteRepo: Repository<Note>)
+        private noteRepo: NoteRepository)
     {}
 
-    async testSave() {
-        const note: Note = {
-            name: "aaa",
-            noteIdx: 9
-        }
+    async saveNote(newNoteData:NoteInputDto){
+        // const note: Note = {
+        //     ...newNoteData
+        // }
         // save 에 대해서
         // update 에 대해서
 
-        return await this.noteRepo.save(note);
+        try{
+            await this.noteRepo.writeNote(newNoteData);
+        }catch(err){
+            console.log(err);
+        }
     }
+
+    async save(noteDto: NoteInputDto): Promise<NoteInputDto | undefined> {
+        console.log("노트 서비스 레이어")
+        return await this.noteRepo.writeNote(noteDto);
+      }
 
 }
