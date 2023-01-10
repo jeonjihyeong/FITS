@@ -24,6 +24,7 @@ export class UserController {
   // 숙제 fs 로 .json파일 만들어서 set, get
   @Get('/setting')
   async getSetting(){
+    return await this.userService.getPost()
     // setting data 가져오기 
     
   }
