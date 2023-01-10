@@ -19,7 +19,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     synchronize: true,
     entities: [__dirname + '/../**/*.entity.js'] 
   }),
-  NoteModule  
+  NoteModule,
+  UserModule  
 ],
   controllers: [AppController],
   providers: [AppService],
