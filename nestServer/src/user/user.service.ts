@@ -4,8 +4,9 @@ import { SignUpInputDto } from './dto/input/signUp-input.dto';
 import { signUpUser } from './entities/sigup.entity';
 import { User } from './entities/user.entity';
 import { UserRepository } from './user.repositoy';
+import fs, { readFile, writeFile, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync } from 'fs';
 
-import fs from 'fs';
 
 
 
@@ -13,6 +14,19 @@ import fs from 'fs';
 export class UserService {
   constructor(private readonly userRepo: UserRepository){}
   
+  async setPost(data:string) {
+    const dataBuffer = readFileSync("./src/user/sample2.json")
+
+    const dataJSON = dataBuffer.toString()
+    const book = JSON.parse(dataJSON)
+
+    book.title = "The Silent Patient"
+    book.author = "Alex Michaelides"
+    const bookJSON = JSON.stringify(book)
+    writeFileSync('./src/user/sample2.json',bookJSON)
+    const result=1
+    return result
+  }
   async login(temp:LoginInputDto){
     const {id,pw}=temp;
 
