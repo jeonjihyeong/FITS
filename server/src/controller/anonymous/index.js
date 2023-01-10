@@ -70,7 +70,7 @@ const sendSignUpMail = async(req,res,next)=>{
   }
 
   try{
-    result = await anonymousReposiotory.sendMail(signUpText,email)
+    result = await anonymousReposiotory.sendMail(email)
   }catch(err){
     if(err.message){return next(err)}
     next({message:"CONTROLLER_SEND_SIGNUP_MAIL_ERROR"})
