@@ -12,21 +12,44 @@ import { existsSync, mkdirSync, readFileSync } from 'fs';
 
 @Injectable()
 export class UserService {
+  getPost() {
+    let dataBuffer:any
+    try{
+      dataBuffer=readFileSync("./src/user/userLoginInput.json",'utf-8')
+    }catch(err){
+      console.log(err);
+      return {
+        status:404,
+        message:"No such file or directory"
+      }
+    }
+    console.log(dataBuffer)
+    return dataBuffer
+  }
   constructor(private readonly userRepo: UserRepository){}
   
-  async setPost(data:string) {
-    const dataBuffer = readFileSync("./src/user/sample2.json")
-
+  async setPost(temp:LoginInputDto) {
+    const {id, pw}=temp
+    let dataBuffer:any
+    try{
+      dataBuffer=readFileSync("./src/user/userLoginInput.json",'utf-8')
+    }catch(err){
+      return {
+        status:500,
+        message: "No such file or directory"
+      }
+    }
     const dataJSON = dataBuffer.toString()
-    const book = JSON.parse(dataJSON)
+    const user = JSON.parse(dataJSON)
 
-    book.title = "The Silent Patient"
-    book.author = "Alex Michaelides"
-    const bookJSON = JSON.stringify(book)
-    writeFileSync('./src/user/sample2.json',bookJSON)
-    const result=1
+    user.id = id
+    user.pw = pw
+    const userJSON = JSON.stringify(user)
+    const result = writeFileSync('./src/user/userLoginInput.json',userJSON)
+    console.log(result)
     return result
   }
+
   async login(temp:LoginInputDto){
     const {id,pw}=temp;
 
