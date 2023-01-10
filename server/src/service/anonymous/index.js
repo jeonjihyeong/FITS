@@ -77,7 +77,7 @@ const signUp = async(bodyData)=> {
 }
 
 // 회원가입 메일 서비스
-const sendsignUPMail=async(signUpText,email)=>{
+const sendsignUPMail=async(email)=>{
   const signUpText =signUpMail();
   try{
     await mailSender.sendGmail(signUpText.mailText, email)
