@@ -118,24 +118,15 @@ const sendFindPwMail = async(req,res,next)=>{
 }
 
 // 비밀번호 변경하기
-const changePw = async(req,res)=>{
-  let changePwUserData;
-  try{
-    changePwUserData = await anonymousReposiotory.getPwData(req.body)
-  }catch(err){
-    if(err.message){return next(err)}
-    next({message:"CONTROLLER_CHANGE_PW_GET_USER_DATA_ERROR"})
+const changePw = async(req,res,next)=>{
+  let result;
+  const {id,email,name,new_Pw}=req.body;
+  if(!id||!email||!name||!new_Pw){
+    return next({message:"INVALID_REQUEST"})
   }
-  if(changePwUserData===null||changePwUserData===undefined){
-    console.log("No user Data")
-    return res.send({message:"No User Data"})
-  }
+  
   try{
-    let inCodeNewPw ={
-      hashPw:encryptionPassWord(req.body.new_Pw),
-      salt: salt
-    }
-    await anonymousReposiotory.changePassword(changePwUserData.userIdx,inCodeNewPw);
+    result = await anonymousService.changePw(id,email,name,new_Pw) 
   }catch(err){
     if(err.message){return next(err)}
     next({message:"CONTROLLER_CHANGE_PW_ERROR"})

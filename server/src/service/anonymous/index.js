@@ -1,6 +1,7 @@
 const {anonymousReposiotory} = require('../../reposiotory')
 const {salt,encryptionPassWord,decryptionPassWord} =require('../../lib/common/hashing')
 const redisClient = require("../../lib/common/redis.util");
+const mailSender = require('../../lib/common/mailer')
 const {signUpMail,findIdMail,findPwMail} =require('../../lib/common/setMail')
 const jwt=require('../../lib/common/token')
 
@@ -43,7 +44,6 @@ const login = async({id,pw})=>{
     };
 
 }
-
 
 // 회원가입 서비스
 const signUp = async(bodyData)=> {
@@ -138,10 +138,36 @@ const sendFindPwMail=async(id,email,name)=>{
   return findPwMailText.auth_key
 }
 
+const changePw = async(id,email,name,new_Pw)=>{
+  let changePwUserData;
+  try{
+    changePwUserData = await anonymousReposiotory.getPwData(id,email,name)
+  }catch(err){
+    if(err.message){throw new Error(err.message)}
+    throw new Error("SERVICE_CHANGE_PW_GET_USER_DATA_ERROR")
+  }
+  if(changePwUserData===null||changePwUserData===undefined){
+    console.log("No user Data")
+    return res.send({message:"No User Data"})
+  }
+  let inCodeNewPw ={
+    hashPw:encryptionPassWord(newPw),
+    salt: salt
+  }
+  try{
+    await anonymousReposiotory.changePassword(changePwUserData.userIdx,inCodeNewPw);
+  }catch(err){
+    if(err.message){throw new Error(err.message)}
+    throw new Error("SERVICE_CHANGE_PW_ERROR")
+  }
+  return 1
+}
+
 module.exports = {
   login,  
   signUp,
   sendsignUPMail,
   sendFindIdMail,
-  sendFindPwMail
+  sendFindPwMail,
+  changePw
 }
