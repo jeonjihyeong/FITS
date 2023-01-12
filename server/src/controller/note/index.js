@@ -1,19 +1,20 @@
 const {noteRepo,commentRepo} = require('../../reposiotory');
 const pagination =require('../../lib/common/pagination')
 
-const write = async(req,res)=>{
+const writeNote = async(req,res,next)=>{
     console.log("CONTROLLER: WORKING");
     const {title,content} = req.body;
-    if(!title || !content) {
-        next({message:"invalid form data"})
+    const {userIdx} = req.decode
+    if(!title || !content||!userIdx) {
+        next({message:"INVALID REQUEST"})
     }
     try{
-        await noteRepo.writeBoard(req.decode.userIdx,title,content)
-        res.send({data: 'Success'})
+        await noteService.writeNote(req.decode.userIdx,title,content)
     }catch(err){
         if(err.message){next(err)}
         next({message:"CONTROLLER_WRITE_NOTE_ERROR"})
     }
+    res.send({data: 'Success'})
 }
 
 const get = async(req, res)=>{
@@ -22,13 +23,12 @@ const get = async(req, res)=>{
     console.log(page)
     let result;
     try{
-        const paginateData =await pagination.getPage(page)
-        result = await noteRepo.getBoard(paginateData);
-        res.send({data:result,paginate:paginateData});
+        await noteService.getNote(page)
     }catch(err){
         if(err.message){next(err)}
         next({message:"CONTROLLER_GET_NOTE_ERROR"})
     }
+    res.send({data:result,paginate:paginateData});
 }
 
 const getMy = async(req, res)=>{
@@ -81,5 +81,5 @@ const update = async(req,res)=>{
 }
 
 module.exports={
-    write, get, getOne, deleteContent, update,getMy
+    writeNote, get, getOne, deleteContent, update,getMy
 }
