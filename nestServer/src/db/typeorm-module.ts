@@ -19,7 +19,9 @@ export class TypeOrmExModule {
         provide: repository,
         useFactory: (dataSource: DataSource): typeof repository => {
           const baseRepository = dataSource.getRepository<any>(entity);
-          return new repository(baseRepository.target, baseRepository.manager, baseRepository.queryRunner);
+          return new repository(baseRepository.target,
+                                baseRepository.manager,
+                                baseRepository.queryRunner);
         },
       });
     }

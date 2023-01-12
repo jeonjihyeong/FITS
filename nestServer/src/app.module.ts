@@ -4,10 +4,13 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { NoteModule } from './note/note.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Note } from './note/entities/note.entity';
 
 
 @Module({
-  imports: [TypeOrmModule.forRoot({
+  imports: [
+    NoteModule,
+    TypeOrmModule.forRoot({
     type: "postgres",
     host: "localhost",
     port: 5432,
@@ -17,10 +20,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     // logging : true,
     autoLoadEntities: true,
     synchronize: true,
-    entities: [__dirname + '/../**/*.entity.js'] 
+    entities:[Note]
   }),
-  NoteModule,
-  UserModule  
+  // UserModule  
 ],
   controllers: [AppController],
   providers: [AppService],

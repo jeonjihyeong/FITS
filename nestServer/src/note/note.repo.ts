@@ -10,7 +10,7 @@ export class NoteRepository extends Repository<Note>{
         console.log("레포지토리")
         let res:any;
         try{
-            res = await this.manager.save(Note, NoteInputDto)
+            res = await this.save(NoteInputDto)
         }catch(err){
             console.log(err)
         }
