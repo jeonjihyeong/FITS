@@ -1,11 +1,6 @@
 const {anonymousReposiotory} =require('../../reposiotory')
 const validateRequest = require('../../lib/common/validation');
 const {anonymousService} = require('../../service')
-const jwt=require('../../lib/common/token')
-const mailSender = require('../../lib/common/mailer')
-const {salt,encryptionPassWord,decryptionPassWord} =require('../../lib/common/hashing')
-const {signUpMail,findIdMail,findPwMail} =require('../../lib/common/setMail')
-const redisClient = require("../../lib/common/redis.util");
 
 // 로그인
 const login = async(req, res,next) => {
@@ -131,7 +126,7 @@ const changePw = async(req,res,next)=>{
     if(err.message){return next(err)}
     next({message:"CONTROLLER_CHANGE_PW_ERROR"})
   }
-  res.send({data: 1})
+  res.send({data: result})
 }
 
 module.exports={

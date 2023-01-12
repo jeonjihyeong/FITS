@@ -1,17 +1,20 @@
-const { commentService }=require("../../reposiotory");
+const { commentService }=require("../../service");
 
-const writeComment=async(req,res)=>{
-    try{
-        const reqInfo =req.body;
-        const userInfo = req.decode;
-        await commentService.writeComment(userInfo.userIdx,reqInfo.noteIdx,reqInfo.comment)
-        res.send({data:"success"})
-    }catch(err){
-        console.log(err);
-        res.status(500).json({
-            message:"comment Error"
-        })
+const writeComment=async(req,res,next)=>{
+    const {noteIdx,comment} =req.body;
+    const {userIdx} = req.decode;
+    if(!noteIdx||!userIdx||!comment){
+        return next({message:"INVALID REQUEST"})
     }
+
+    try{
+        await commentService.writeComment(userIdx,noteIdx,comment)
+    }catch(err){
+        if(err.message){return next(err)}
+        next({message:"CONTROLLER_COMMENT_ERROR"})
+    }
+
+    res.send({data:"success"})
 }
 
 
