@@ -1,5 +1,4 @@
-const {noteRepo,commentRepo} = require('../../reposiotory');
-const pagination =require('../../lib/common/pagination')
+const {noteService} = require('../../service')
 
 const writeNote = async(req,res,next)=>{
     console.log("CONTROLLER: WORKING");
@@ -17,7 +16,7 @@ const writeNote = async(req,res,next)=>{
     res.send({data: 'Success'})
 }
 
-const get = async(req, res)=>{
+const getNote = async(req, res,next)=>{
     console.log("CONTROLLER: WORKING");
     const {page}=req.params;
     console.log(page)
@@ -31,55 +30,68 @@ const get = async(req, res)=>{
     res.send({data:result,paginate:paginateData});
 }
 
-const getMy = async(req, res)=>{
+// const getMyNote = async(req, res,next)=>{
+//     console.log("CONTROLLER: WORKING");
+//     let result;
+//     try{
+//         result = await noteRepo.getBoard();
+//         res.send({data:result});
+//     }catch(err){
+//         if(err.message){next(err)}
+//         next({message:"CONTROLLER_GET_MY_NOTE_ERROR"})
+//     }
+// }
+
+const getOneNote = async(req, res)=>{
     console.log("CONTROLLER: WORKING");
+    const {noteIdx} = req.params;
+    const accessUser = req.decode
     let result;
     try{
-        result = await noteRepo.getBoard();
-        res.send({data:result});
+        result = await noteService.getOneNote(noteIdx,accessUser)
     }catch(err){
         if(err.message){next(err)}
-        next({message:"CONTROLLER_GET_MY_NOTE_ERROR"})
+        next({message:"CONTROLLER_GET_ONE_NOTE_ERROR"})
     }
+    res.send(result)
 }
 
-const getOne = async(req, res)=>{
-    console.log("CONTROLLER: WORKING");
-    const textId = req.params.noteIdx;
-    console.log("파라미터 전달 확인"+textId)
-    try{
-        const result = await noteRepo.getText(textId);
-        const comment= await commentRepo.getComment(textId);
-        const userInfo = req.decode
-        res.send({data:result,comment:comment, accessUser:userInfo});
-    }catch(err){
-        if(err.message){next(err)}
-        next({message:"CONTROLLER_GET_ONE_NOT_ERROR"})
+const deleteNoteContent = async(req,res)=>{
+    const {noteIdx} = req.params;
+    if(!noteIdx){
+        return next({message:"INVALID REQUEST"})
     }
-}
-
-const deleteContent = async(req,res)=>{
-    const textId = req.params.noteIdx;
+    let result;
     try{
-        await noteRepo.deleteBoard(textId);
-        res.send({message:"Success"})
+        result = await noteService.deleteNoteContent(noteIdx);
     }catch(err){
         if(err.message){next(err)}
         next({message:"CONTROLLER_DELETE_NOTE_ERROR"})
     }    
+    res.send(result)
 }
 
-const update = async(req,res)=>{
-    const boardIdx= req.params.boardIdx;
+const updateNote = async(req,res)=>{
+    const {noteIdx}= req.params;
+    const {title,content}= req.body
+    if(!noteIdx|!title|!content){
+        return next({message:"INVALID REQUEST"})
+    }
+    let result
     try{
-        await noteRepo.updateBoard(boardIdx,req.body.title,req.body.content);
-        res.send({message:"Success"})
+        result = await noteService.updateNote(noteIdx,title,content);
     }catch(err){
         if(err.message){next(err)}
         next({message:"CONTROLLER_UPDATE_NOTE_ERROR"})
     }
+    res.send(result)
 }
 
 module.exports={
-    writeNote, get, getOne, deleteContent, update,getMy
+    writeNote,
+    getNote,
+    getMyNote,
+    getOneNote,
+    deleteNoteContent,
+    updateNote,
 }
