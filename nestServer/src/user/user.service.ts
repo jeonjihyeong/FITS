@@ -12,6 +12,7 @@ import { existsSync, mkdirSync, readFileSync } from 'fs';
 
 @Injectable()
 export class UserService {
+  constructor(private readonly userRepo: UserRepository){}
   getPost() {
     let dataBuffer:any
     try{
@@ -26,16 +27,15 @@ export class UserService {
     console.log(dataBuffer)
     return dataBuffer
   }
-  constructor(private readonly userRepo: UserRepository){}
   
-  async setPost(temp:LoginInputDto) {
-    const {id, pw}=temp
+  async setPost(setting:LoginInputDto) {
+    const {id, pw}=setting
     let dataBuffer:any
     try{
       dataBuffer=readFileSync("./src/user/userLoginInput.json",'utf-8')
     }catch(err){
       return {
-        status:500,
+        status:404,
         message: "No such file or directory"
       }
     }
@@ -50,8 +50,8 @@ export class UserService {
     return result
   }
 
-  async login(temp:LoginInputDto){
-    const {id,pw}=temp;
+  async login(userInput:LoginInputDto){
+    const {id,pw}=userInput;
 
     let loginUser:User;
 
@@ -67,8 +67,8 @@ export class UserService {
     return {message:'Sucess'};
   }
 
-  async signUp(temp:SignUpInputDto){
-    const {id,pw,email,nickname,name,age}=temp;
+  async signUp(userInput:SignUpInputDto){
+    const {id,pw,email,nickname,name,age}=userInput;
     
     let isDuplicate:boolean;
     
