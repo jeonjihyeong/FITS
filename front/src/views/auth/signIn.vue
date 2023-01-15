@@ -33,6 +33,21 @@
                 <v-col cols="3" class="signInNav"><router-link to="/auth/signUp"><v-btn text color="pink lighten-1">회원가입</v-btn></router-link></v-col>
                 <v-col cols="2"><v-btn class="pink lighten-1 white--text mt-3 signInNav" @click="login()">로그인</v-btn></v-col>
             </v-row>
+            <v-row class="mt-5">
+                <v-col cols=12>소셜로그인</v-col>
+                <v-col cols="3">
+                    <v-img src="../../assets/kakao_login_large_narrow.png" @click="KakoLoginBtn()"></v-img> 
+                </v-col>
+                <v-col cols="3">
+                    <v-img src="../../assets/btnG_완성형.png" ></v-img> 
+                </v-col>
+                <v-col cols="3">
+                    <v-img src="../../assets/btn_google_signin_light_normal_web@2x.png"></v-img> 
+                </v-col>
+                <v-col cols="3">
+                    <v-img src="../../assets/btnG_완성형.png" ></v-img> 
+                </v-col>
+            </v-row>
         </v-container>
 
 <!------------- mobile ------------->
@@ -101,7 +116,33 @@
                     this.$router.push('/')
                     return;
                 }
-                
+            },
+            KakoLoginBtn(){
+                console.log(process.env.VUE_APP_KAKAO_KEY)
+                console.log(process.env.VUE_APP_SERVER_URL)
+                window.Kakao.init(process.env.VUE_APP_KAKAO_KEY)
+                console.log(window.Kakao)
+                window.Kakao.Auth.login({
+                    scope:'profile_nickname,account_email',
+                    success:this.getKakaoAcount
+                })
+            },
+            getKakaoAcount(){
+                window.Kakao.API.request({
+                    url:'/v2/user/me',
+                    success:res =>{
+                        const kakao_account = res.kakao_account;
+                        const nickname=kakao_account.nickname;
+                        const email = kakao_account.email;
+                        console.log(res)
+                        console.log('nickname',nickname);
+                        console.log('email',email)
+                        alert('로그인성공');
+                    },
+                    fail: error =>{
+                        console.log(error)
+                    }
+                })
             }
         },
     }
@@ -125,10 +166,10 @@
     }
 
     #mobile{
-        margin-top: 20%;
+        margin-top: 15%;
     }
     .signInContainer{
-        margin-top: 20%;
+        margin-top: 15%;
         width: 50%;
     }
     .loginText{
