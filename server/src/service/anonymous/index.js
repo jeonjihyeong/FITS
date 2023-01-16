@@ -6,9 +6,8 @@ const {signUpMail,findIdMail,findPwMail} =require('../../lib/common/setMail')
 const jwt=require('../../lib/common/token')
 
 // 로그인 서비스
-const login = async({id,pw})=>{
+const login = async({id,pw,ip})=>{
   let userInfo;
-    
   try{
     userInfo=await anonymousReposiotory.getUserId(id);
   }catch(err){
@@ -18,7 +17,7 @@ const login = async({id,pw})=>{
   }
 
   if(userInfo===null||userInfo===undefined){
-    return res.send ({message: 'idFailed'})
+    throw new Error ('idFailed')
   }
 
   const {salt}=userInfo
@@ -27,17 +26,36 @@ const login = async({id,pw})=>{
 
   const pwData=userInfo.dataValues.pw
   if(decodePW!==pwData){
-      return res.send({message: 'pwFailed'})
+      throw new Error('pwFailed')
   }
 
+  const isLogin =await redisClient.get(userInfo.dataValues.id)
+  console.log(isLogin)
+  if(isLogin===ip){
+    console.log('already login')
+  }
+  if(isLogin===null){
+    console.log('다음작업')
+  }
+  if(isLogin!==ip){
+    console.log("다른아이피에서 로그인 하였습니다. 강제로그인 필요")
+  }
   // 보안이 필요한 정보는 삭제
   delete userInfo.dataValues.pw;
   delete userInfo.dataValues.salt;
 
   const accessToken = jwt.signToken({...userInfo.dataValues});
   const refreshToken = jwt.signRefreshToken();
-    // redisClient.set(userInfo.dataValues.email, refreshToken);
-
+  console.log("redisSet")
+  try{
+    await redisClient
+    .multi()
+    .set(userInfo.dataValues.email, refreshToken)
+    .set(userInfo.dataValues.id, ip)
+    .exec()
+  }catch(err){
+    console.log(err)
+  }
     return {
         accessToken:accessToken,
         refreshToken:refreshToken,

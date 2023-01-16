@@ -28,7 +28,7 @@ instance.interceptors.response.use(
     function(response){
         return response;
     },
-    function(error){
+    async function(error){
         const {
             config,
             response:{status},
@@ -38,22 +38,23 @@ instance.interceptors.response.use(
             console.log(error.response.status);
             const accessToken = localStorage.getItem('accessToken')
             const refreshToken = localStorage.getItem('refreshToken')
-            axios.get(`${process.env.VUE_APP_SERVER_URL}/refresh`,{
-                headers:{
-                    authorization:accessToken,
-                    refresh:refreshToken
-                    
-                }
-            }).then((res)=>{
-                console.log("refreshing")
-                localStorage.setItem("accessToken",res.data.token.accessToken);
-                localStorage.setItem("refreshToken",res.data.token.refreshToken);
-                axios.defaults.headers.common.Authorization = res.data.token.accessToken;
-                originalRequest.headers.Authorization = res.data.token.accessToken;
-                return axios(originalRequest)
-            }).catch((err)=>{
-                console.log(err)
-            })
+            try{
+                await axios.get(`${process.env.VUE_APP_SERVER_URL}/refresh`,{
+                    headers:{
+                        authorization:accessToken,
+                        refresh:refreshToken
+                    }
+                })
+            }catch(err){
+                console.log(err);
+            }
+            console.log("refreshing")
+            localStorage.setItem("accessToken",res.data.token.accessToken);
+            localStorage.setItem("refreshToken",res.data.token.refreshToken);
+            axios.defaults.headers.common.Authorization = res.data.token.accessToken;
+            originalRequest.headers.Authorization = res.data.token.accessToken;
+            const res = await axios(originalRequest)
+            return res
         }
         return Promise.reject(error);
     }

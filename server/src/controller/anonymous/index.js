@@ -7,12 +7,13 @@ const login = async(req, res,next) => {
   if(req.body===null||req.body===undefined){
     next({message:"INVALID_REQUEST"})
   };
-
+  const ip = req.socket.remoteAddress
+  
     let {id,pw} = req.body
     if(!id||!pw){next({message:"INVALID_REQUEST"})}
     let result;
     try{
-      result = await anonymousService.login({id,pw})
+      result = await anonymousService.login({id,pw,ip})
     }catch(err){
       if(err.message){return next(err)}
       return next(err);

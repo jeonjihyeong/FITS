@@ -30,17 +30,17 @@ const getNote = async(req, res,next)=>{
     res.send({data:result,paginate:paginateData});
 }
 
-// const getMyNote = async(req, res,next)=>{
-//     console.log("CONTROLLER: WORKING");
-//     let result;
-//     try{
-//         result = await noteRepo.getBoard();
-//         res.send({data:result});
-//     }catch(err){
-//         if(err.message){next(err)}
-//         next({message:"CONTROLLER_GET_MY_NOTE_ERROR"})
-//     }
-// }
+const getMyNote = async(req, res,next)=>{
+    console.log("CONTROLLER: WORKING");
+    let result;
+    try{
+        result = await noteRepo.getBoard();
+        res.send({data:result});
+    }catch(err){
+        if(err.message){next(err)}
+        next({message:"CONTROLLER_GET_MY_NOTE_ERROR"})
+    }
+}
 
 const getOneNote = async(req, res)=>{
     console.log("CONTROLLER: WORKING");
