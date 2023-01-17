@@ -22,10 +22,11 @@ const getNote = async(req, res,next)=>{
     console.log(page)
     let result;
     try{
-        await noteService.getNote(page)
+        result = await noteService.getNote(page);
+        if(!result) return result;
     }catch(err){
-        if(err.message){next(err)}
-        next({message:"CONTROLLER_GET_NOTE_ERROR"})
+        logger.error("CONTROLLER_GET_NOTE_ERROR");
+        return undefined;
     }
     res.send({data:result,paginate:paginateData});
 }
@@ -77,14 +78,13 @@ const updateNote = async(req,res)=>{
     if(!noteIdx|!title|!content){
         return next({message:"INVALID REQUEST"})
     }
-    let result
     try{
-        result = await noteService.updateNote(noteIdx,title,content);
+        await noteService.updateNote(noteIdx,title,content);
     }catch(err){
-        if(err.message){next(err)}
+        if(err.message === 'aaa'){next(err + 'aaa')}
         next({message:"CONTROLLER_UPDATE_NOTE_ERROR"})
     }
-    res.send(result)
+    return true;
 }
 
 module.exports={

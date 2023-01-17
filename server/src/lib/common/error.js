@@ -1,5 +1,5 @@
 const httpStatus = {
-    ok:200,
+    ok:400,
     created:201,
     invalid_token:401,
     not_accept:406,
@@ -7,11 +7,11 @@ const httpStatus = {
     server_error:500,
 }
 
+invalid_request.INVALID_REQUEST
+
 const invalid_request={
-    INVALID_REQUEST:{
-        message:"invalid request",
-        status:httpStatus.ok
-    }
+    INVALID_REQUEST: "invalid request",
+    INVALID_REQUEST: "invalid request",
 }
 
 const controller_error ={

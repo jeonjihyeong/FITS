@@ -11,12 +11,15 @@ const encryptionPassWord= (InputPw)=>{
 // 디코딩
 const decryptionPassWord=  (InputPw,DB_salt)=>{
     try{
-        let decodePassword = crypto.createHash("sha512").update(InputPw + DB_salt).digest("hex");
+        const decodePassword = crypto.createHash("sha512").update(InputPw + DB_salt).digest("hex");
         return decodePassword;
     }catch(err){
-        throw new Error("DECODING_ERROR")
+        // TODO: Logger
+        // throw new Error("DECODING_ERROR")
+        return undefined;
     }
 }
+
 module.exports ={
     salt,
     encryptionPassWord,

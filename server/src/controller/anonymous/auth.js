@@ -8,17 +8,24 @@ const crypto = require('crypto');
 const jwt = require('../utils/jwt.util');
 const redisClient = require("../utils/redis.util");
 
+const InfoMessage = {
+    "EMPTY_JSON" : "Error: Body(JSON)값이 비어있습니다.",
+    2 :  "Error: 이메일 또는 비밀번호가 없습니다.",
+    3:  '존재하지 않는 유저입니다.',
+}
+
+
 exports.login = async (req, res) => {
     if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
         return res.status(200).json({
             status: 400,
-            message: "Error: Body(JSON)값이 비어있습니다."
+            message: InfoMessage.EMPTY_JSON
         });
     }
     if (req.body.hasOwnProperty('email') === false || req.body.hasOwnProperty('password') === false) {
         return res.status(200).json({
             status: 400,
-            message: "Error: 이메일 또는 비밀번호가 없습니다."
+            message:InfoMessage[2]
         });
     }
 
@@ -37,7 +44,7 @@ exports.login = async (req, res) => {
 
         if (!respond) {
 
-            info.message = '존재하지 않는 유저입니다.'
+            info.message =InfoMessage[3]
             return res.status(200).json({
                 status: 403,
                 info: info,
