@@ -4,7 +4,7 @@ import { SignUpInputDto } from './dto/input/signUp-input.dto';
 import { signUpUser } from './entities/sigup.entity';
 import { User } from './entities/user.entity';
 import { UserRepository } from './user.repositoy';
-import fs, { readFile, writeFile, writeFileSync } from 'fs';
+import fs, { readFile, unlink, unlinkSync, writeFile, writeFileSync } from 'fs';
 import { existsSync, mkdirSync, readFileSync } from 'fs';
 
 
@@ -13,41 +13,59 @@ import { existsSync, mkdirSync, readFileSync } from 'fs';
 @Injectable()
 export class UserService {
   constructor(private readonly userRepo: UserRepository){}
-  getPost() {
+  /* 세팅값을 받아옴 없으면 만들기?
+  세팅값을 불러올때 에러 json파일 형식이 아니라면? 근데 경로지정해서 그럴일 없음
+  json 파일 값을 특정값을 검색하면 그에 대한 리턴을 해주는 메소드(별론거 같아서 했다가 걍 지움)
+  이걸 대체 왜 만드는지를 몰라서 어떤식으로 구현을 해야하는지를 이해를 못하겠음 (목적을 모르겠어서)
+  json 형식에 대한 이해 */
+
+  getSetting() {
     let dataBuffer:any
     try{
-      dataBuffer=readFileSync("./src/user/userLoginInput.json",'utf-8')
+      dataBuffer=readFileSync("./src/user/userLoginInput4.json",'utf-8')
     }catch(err){
-      console.log(err);
-      return {
-        status:404,
-        message:"No such file or directory"
-      }
+      writeFileSync('./src/user/userLoginInput4.json',"{}")
+      dataBuffer=readFileSync("./src/user/userLoginInput4.json",'utf-8')
     }
     console.log(dataBuffer)
     return dataBuffer
   }
   
-  async setPost(setting:LoginInputDto) {
-    const {id, pw}=setting
+  /*세팅값을 요청하면 그 값을 파일로 만든다. 
+  추가적인 기능? 구현없이 에러만 처리 하는 방법?
+  예상 에러 
+  1.정상값이 안들어왔을때
+  2.파일 형식에 이상이 있을때 -해당파일을 삭제하고 같은 이름의 새로운 파일을 생성하고 재귀를 돌림(데이터가 깨져있으니까)
+  3.지정된 id와 pw 말고 다른값이 추가로 들어올때도 json 으로 생성을 하고 싶음
+  4.해당 파일이 없을때 - 새로 생성하고 거기에 담아준다.
+  5.비동기 에러
+  6.
+  */ 
+  setPost(setting:LoginInputDto) {
     let dataBuffer:any
+    const file = "./src/user/userLoginInput3.json"
     try{
-      dataBuffer=readFileSync("./src/user/userLoginInput.json",'utf-8')
+      dataBuffer=readFileSync(file,'utf-8')
     }catch(err){
-      return {
-        status:404,
-        message: "No such file or directory"
-      }
+      writeFileSync(file,"{}")
     }
+    console.log(dataBuffer)
     const dataJSON = dataBuffer.toString()
-    const user = JSON.parse(dataJSON)
-
-    user.id = id
-    user.pw = pw
-    const userJSON = JSON.stringify(user)
-    const result = writeFileSync('./src/user/userLoginInput.json',userJSON)
-    console.log(result)
-    return result
+    console.log(1)
+    try{
+      const userJson = JSON.parse(dataJSON)
+      userJson.setting = setting
+      const user = JSON.stringify(userJson)
+      writeFileSync(file,user)
+    }catch(err){
+      console.log(err)
+      unlinkSync(file)
+      writeFileSync(file,"{}")
+      console.log('지우고 새로 한번 더 ㄱㄱ')
+      this.setPost(setting)
+    }
+    
+    return ({data:'success'})
   }
 
   async login(userInput:LoginInputDto){

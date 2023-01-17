@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get} from '@nestjs/common';
+import { Controller, Post, Body, Get, Param} from '@nestjs/common';
 import { LoginInputDto } from './dto/input/login-input.dto';
 import { SignUpInputDto } from './dto/input/signUp-input.dto';
 import { UserService } from './user.service';
@@ -24,13 +24,12 @@ export class UserController {
   // 숙제 fs 로 .json파일 만들어서 set, get
   @Get('/setting')
   async getSetting(){
-    return await this.userService.getPost()
+    return await this.userService.getSetting()
     // setting data 가져오기 
-    
   }
   @Post('/setting')
   async postSetting(@Body() data: any){
-    return await this.userService.setPost(data)
+    return this.userService.setPost(data)
     
     /*
     postSetting을 하게 되면 setting.json 파일을 생성하기
