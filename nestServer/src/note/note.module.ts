@@ -12,8 +12,7 @@ import { Note } from './entities/note.entity';
     TypeOrmModule.forFeature([Note])
     // TypeOrmExModule.forCustomRepository([NoteRepository])
   ],
-  // exports:[TypeOrmModule],
-  providers: [NoteService],
+  providers: [NoteService, NoteRepository],
   controllers: [NoteController],
 })
 export class NoteModule {}

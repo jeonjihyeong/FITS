@@ -116,7 +116,7 @@
                     this.$router.push('/')
                     return;
                 }
-            },
+            }, "start": "electron ."
             KakoLoginBtn(){
                 console.log(process.env.VUE_APP_KAKAO_KEY)
                 console.log(process.env.VUE_APP_SERVER_URL)

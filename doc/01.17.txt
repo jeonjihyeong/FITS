@@ -1,0 +1,9 @@
+login 
+
+id x - logging x
+pw x - logging x
+wrong form - logging x
+connection - logging o
+
+case : service 에서 error  발생
+error code, message 전달

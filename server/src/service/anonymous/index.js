@@ -11,12 +11,11 @@ const login = async({id,pw,ip})=>{
   try{
     userInfo=await anonymousReposiotory.getUserId(id);
   }catch(err){
-    console.log(err);
     if(err.message){throw new Error(err.message)}
     throw new Error("SERVICE_GET_USER_ERROR")
   }
 
-  if(userInfo===null||userInfo===undefined){
+  if(userInfo===null|| !userInfo || !userInfo.salt){
     throw new Error ('idFailed')
   }
 
@@ -31,9 +30,7 @@ const login = async({id,pw,ip})=>{
 
   const isLogin =await redisClient.get(userInfo.dataValues.id)
   console.log(isLogin)
-  if(isLogin===ip){
-    console.log('already login')
-  }
+  if(isLogin===ip) console.log('already login')
   if(isLogin===null){
     console.log('다음작업')
   }
@@ -67,7 +64,8 @@ const login = async({id,pw,ip})=>{
 const signUp = async(bodyData)=> {
   let isDuplicatedId  
   try{
-    await anonymousReposiotory.getUserId(bodyData.id)===null?isDuplicatedId=false:isDuplicatedId=true
+    const res= await anonymousReposiotory.getUserId(bodyData.id)
+    res === null ? isDuplicatedId = false : isDuplicatedId = true;
   }catch(err){
     if(err.message) {throw new Error(err.message)}
     throw new Error("SERVICE_SIGNUP_DUPLICATE_CHECK_ERROR")
@@ -130,6 +128,7 @@ const sendFindIdMail=async(name,email)=>{
   return 1
 }
 
+getId
 
 const sendFindPwMail=async(id,email,name)=>{
   let getUserDataByPwData;
@@ -158,20 +157,24 @@ const sendFindPwMail=async(id,email,name)=>{
 
 const changePw = async(id,email,name,new_Pw)=>{
   let changePwUserData;
+
   try{
     changePwUserData = await anonymousReposiotory.getPwData(id,email,name)
   }catch(err){
     if(err.message){throw new Error(err.message)}
     throw new Error("SERVICE_CHANGE_PW_GET_USER_DATA_ERROR")
   }
+
   if(changePwUserData===null||changePwUserData===undefined){
     console.log("No user Data")
     return res.send({message:"No User Data"})
   }
+
   let inCodeNewPw ={
     hashPw:encryptionPassWord(newPw),
     salt: salt
   }
+  
   try{
     await anonymousReposiotory.changePassword(changePwUserData.userIdx,inCodeNewPw);
   }catch(err){

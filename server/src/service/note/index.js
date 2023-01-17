@@ -18,7 +18,8 @@ const getNote = async(page)=>{
         res.send({data:result,paginate:paginateData});
     }catch(err){
         if(err.message){throw new Error(err.message)}
-        throw new Error("CONTROLLER_GET_NOTE_ERROR")
+        logger.error("CONTROLLER_GET_NOTE_ERROR");
+        return undefined;
     }
 }
 

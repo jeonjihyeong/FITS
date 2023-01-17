@@ -20,3 +20,5 @@ ip가 달라서 강제로그아웃을 해야하는 경우 => redis 에 해당 va
 회원가입요청이 들어왔을때 회원가입전 Validation->회원가입이 가능하면 postgresql에 회원정보 저장.
 ->redis에 아이디값을 추가해놓고 뒤에 value를 (nil)로 바꾸어 놓는다. ->근데 만약 postgre는 성공하고 redis는
 실패하면 트렌젝션 사용해서 되돌리고(rollBack) 에러 리턴
+
+
