@@ -1,16 +1,14 @@
 const {anonymousReposiotory} =require('../../reposiotory')
 const validateRequest = require('../../lib/common/validation');
 const {anonymousService} = require('../../service')
-
 // 로그인
 const login = async(req, res,next) => {
-  if(req.body===null||req.body===undefined){
-    next({message:"INVALID_REQUEST"})
-  };
+  if(req.body===null||req.body===undefined) return next({message:"INVALID_REQUEST"})
+
   const ip = req.socket.remoteAddress
   
     let {id,pw} = req.body
-    if(!id||!pw){next({message:"INVALID_REQUEST"})}
+    if(!id||!pw) return res.send({message:"INVALID_REQUEST"})
     let result;
     try{
       result = await anonymousService.login({id,pw,ip})
@@ -18,6 +16,8 @@ const login = async(req, res,next) => {
       if(err.message){return next(err)}
       return next(err);
     }
+    if(!result)return res.send(undefined)
+
     res.send({
       token:{
         ...result

@@ -3,7 +3,8 @@ const {salt,encryptionPassWord,decryptionPassWord} =require('../../lib/common/ha
 const redisClient = require("../../lib/common/redis.util");
 const mailSender = require('../../lib/common/mailer')
 const {signUpMail,findIdMail,findPwMail} =require('../../lib/common/setMail')
-const jwt=require('../../lib/common/token')
+const jwt=require('../../lib/common/token');
+const { logger } = require('hello/lib/defaults/default');
 
 // 로그인 서비스
 const login = async({id,pw,ip})=>{
@@ -11,8 +12,9 @@ const login = async({id,pw,ip})=>{
   try{
     userInfo=await anonymousReposiotory.getUserId(id);
   }catch(err){
-    if(err.message){throw new Error(err.message)}
-    throw new Error("SERVICE_GET_USER_ERROR")
+    if(err.message)return undefined
+    logger.Error('userInfo')
+    return undefined
   }
 
   if(userInfo===null|| !userInfo || !userInfo.salt){
@@ -31,12 +33,8 @@ const login = async({id,pw,ip})=>{
   const isLogin =await redisClient.get(userInfo.dataValues.id)
   console.log(isLogin)
   if(isLogin===ip) console.log('already login')
-  if(isLogin===null){
-    console.log('다음작업')
-  }
-  if(isLogin!==ip){
-    console.log("다른아이피에서 로그인 하였습니다. 강제로그인 필요")
-  }
+  if(isLogin===null) console.log('다음작업')
+  if(isLogin!==ip) console.log("다른아이피에서 로그인 하였습니다. 강제로그인 필요")
   // 보안이 필요한 정보는 삭제
   delete userInfo.dataValues.pw;
   delete userInfo.dataValues.salt;
@@ -57,7 +55,6 @@ const login = async({id,pw,ip})=>{
         accessToken:accessToken,
         refreshToken:refreshToken,
     };
-
 }
 
 // 회원가입 서비스
@@ -128,7 +125,6 @@ const sendFindIdMail=async(name,email)=>{
   return 1
 }
 
-getId
 
 const sendFindPwMail=async(id,email,name)=>{
   let getUserDataByPwData;

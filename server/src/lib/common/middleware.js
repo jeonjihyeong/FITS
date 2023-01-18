@@ -3,17 +3,13 @@ const token = require("./token");
 // 토큰확인
 const validateToken = async(req,res,next)=>{
     let accessToken = req.headers.authorization;
-    console.log("MIDDLE_WARE: WORKING")
     try{
-        if(!await token.verifyToken(accessToken)){
-            res.send({message:"InvalidToken"})
-            return;
-        }
-        const writeUserInfo =await token.decodeToken(accessToken);
+        token.verifyToken(accessToken)
+        const writeUserInfo =token.decodeToken(accessToken);
         req.decode = writeUserInfo;
+        
         next();
     }catch(err){
-        console.log(err)
         return next(err)
     }
 }

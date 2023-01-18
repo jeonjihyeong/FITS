@@ -7,26 +7,15 @@ const httpStatus = {
     server_error:500,
 }
 
-invalid_request.INVALID_REQUEST
 
-const invalid_request={
+const connection_error={
     INVALID_REQUEST: "invalid request",
-    INVALID_REQUEST: "invalid request",
+    CONTROLLER_LOGIN_ERROR:"controller error to login",
+    CONTROLLER_ACOUNT_ERROR:"controller error to acount",
+    CONTROLLER_SEND_ACOUNT_MAIL_ERROR:"controller error to send acount mail",
 }
 
 const controller_error ={
-    CONTROLLER_LOGIN_ERROR:{
-        message :"controller error to login",
-        status:httpStatus.not_accept
-    },
-    CONTROLLER_ACOUNT_ERROR:{
-        message:"controller error to acount",
-        status:httpStatus.not_accept
-    },
-    CONTROLLER_SEND_ACOUNT_MAIL_ERROR:{
-        message:"controller error to send acount mail",
-        status:httpStatus.not_accept
-    },
     CONTROLLER_SEND_FIND_ID_MAIL_ERROR:{
         message:"controller error to send find id mail",
         status:httpStatus.not_accept
@@ -76,7 +65,7 @@ const lib_error={
 }
 
 module.exports={
-    ...invalid_request,
+    ...connection_error,
     ...controller_error,
     ...service_error,
     ...lib_error,

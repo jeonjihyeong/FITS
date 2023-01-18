@@ -3,9 +3,17 @@ const emailForm = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/ //이메일 
 const passwordForm = /^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/ //8자리이상 영문 대소문자 숫자 특수문자 한개씩 필요
 const idForm = /^[a-zA-Z0-9]*$/ //공백제외 영어,숫자
 
-const t = ''
 const signUpValdation = (id,email,pw, nickName) => {
-    checkId(id);
+    try{
+        _checkId(id);
+        _checkEmail(email);
+        _checkPw(pw);
+        _checkNickName(nickName);
+    }catch(err){
+        console.log(err);
+        return false
+    }
+    return true
 }
 
 const _checkId=(id)=>{
@@ -39,6 +47,5 @@ const _checkNickName = (nickName) => {
 }
 
 module.exports = {
-    checkEmail,checkId,checkNickName,checkPw
-
+    signUpValdation
 }
