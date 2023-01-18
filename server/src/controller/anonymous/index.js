@@ -1,63 +1,83 @@
 const {anonymousReposiotory} =require('../../reposiotory')
 const validateRequest = require('../../lib/common/validation');
-const {anonymousService} = require('../../service')
-// 로그인
-const login = async(req, res,next) => {
-  if(req.body===null||req.body===undefined) return next({message:"INVALID_REQUEST"})
+const {anonymousService} = require('../../service');
+const logger = require('../../lib/common/winston');
+const { connection_error, server_warning } = require('../../lib/common/error');
+
+
+
+/*로그인*/
+/** 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+*/
+const login = async(req, res) => {
 
   const ip = req.socket.remoteAddress
-  
     let {id,pw} = req.body
-    if(!id||!pw) return res.send({message:"INVALID_REQUEST"})
-    let result;
-    try{
-      result = await anonymousService.login(id,pw,ip)
-    }catch(err){
-      return next(err);
+
+    if(!id||!pw){
+      logger.warn(server_warning.INVALID_REQUEST)
+      return res.send()
     }
-    if(!result)return res.send(undefined)
+    
+    let tokens;
+    try{
+      tokens = await anonymousService.login(id,pw,ip)
+    }catch(err){
+      if(!err.message) logger.error(connection_error.CONTROLLER_LOGIN_ERROR)
+      return res.send();
+    }
 
     res.send({
       token:{
-        ...result
+        ...tokens
       }
     })
-      
-    
 }
 
-const signup = async(req,res,next)=>{
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
+const signup = async(req,res) => {
     
-    const {id,pw,email,age,name,nickname}= req.body;
+    const {id,pw,email,age,name,nickname} = req.body;
+
     if(!id||!pw||!email||!age||!name||!nickname){
-      next({message:"INVALID_REQUEST"})
+      logger.warn(server_warning.INVALID_REQUEST)
+      return res.send()
     }
-    try{
-      validateRequest.checkId(id);
-      validateRequest.checkPw(pw);
-      validateRequest.checkEmail(email);
-      validateRequest.checkNickName(nickname);
-    }catch(err){
-      return next(err)
-    }
-    // id : 숫자 영어 포함 최소 6글자
-    let result;
+    
+    const validateResult = validateRequest.signUpValdation(id,pw,email,nickname)
+    if(!validateResult)return res.send()
+    
+    let issignUpSuccess;
 
     try{
-      result = await anonymousService.signUp({id,pw,email,age,name,nickname})
+      issignUpSuccess = await anonymousService.signUp({id,pw,email,age,name,nickname})
     }catch(err){
-      if(err.message){return next(err)}
-      return next({message:"CONTROLLER_SIGNUP_ERROR"})
+      if(!err.message) logger.error(connection_error.CONTROLLER_LOGIN_ERROR)
+      return res.send();
     }
     
-    if(!result){
-      return res.send({message:'failed'})
+    if(issignUpSuccess="duplicateId"){
+      return res.send({message:'duplicateID'})
     }
     res.send({message:'success'})
 }
 
-// 회원가입 메일
-const sendSignUpMail = async(req,res,next)=>{
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
+/* 회원가입 메일 */
+const sendSignUpMail = async(req,res)=>{
   const {email}=req.body;
   let result;
   if(!email){
@@ -121,7 +141,10 @@ const changePw = async(req,res,next)=>{
   }
   
   try{
-    result = await anonymousService.changePw(id,email,name,new_Pw) 
+    result = await anonymousService.changePw(id,email,name,new_Pw)
+    if(result===undefined){
+      logger.error(connection_error.CONTROLLER_CHANGE_PW)
+    } 
   }catch(err){
     if(err.message){return next(err)}
     next({message:"CONTROLLER_CHANGE_PW_ERROR"})
