@@ -4,16 +4,17 @@ const redisClient = require("../../lib/common/redis.util");
 const mailSender = require('../../lib/common/mailer')
 const {signUpMail,findIdMail,findPwMail} =require('../../lib/common/setMail')
 const jwt=require('../../lib/common/token');
-const { logger } = require('hello/lib/defaults/default');
-
+const logger =require('../../lib/common/winston')
 // 로그인 서비스
-const login = async({id,pw,ip})=>{
+const login = async(id,pw,ip)=>{
   let userInfo;
+  logger.error('SERVICE_ERROR')
+  logger.warn('test')
+  logger.info('test')
   try{
     userInfo=await anonymousReposiotory.getUserId(id);
   }catch(err){
     if(err.message)return undefined
-    logger.Error('userInfo')
     return undefined
   }
 

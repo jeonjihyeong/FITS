@@ -11,9 +11,8 @@ const login = async(req, res,next) => {
     if(!id||!pw) return res.send({message:"INVALID_REQUEST"})
     let result;
     try{
-      result = await anonymousService.login({id,pw,ip})
+      result = await anonymousService.login(id,pw,ip)
     }catch(err){
-      if(err.message){return next(err)}
       return next(err);
     }
     if(!result)return res.send(undefined)
