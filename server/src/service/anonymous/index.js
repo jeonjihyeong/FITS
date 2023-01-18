@@ -5,21 +5,27 @@ const mailSender = require('../../lib/common/mailer')
 const {signUpMail,findIdMail,findPwMail} =require('../../lib/common/setMail')
 const jwt=require('../../lib/common/token');
 const logger =require('../../lib/common/winston')
+const connection_error = require('../../lib/common/error')
+
 // 로그인 서비스
 const login = async(id,pw,ip)=>{
   let userInfo;
   logger.error('SERVICE_ERROR')
   logger.warn('test')
   logger.info('test')
+
   try{
     userInfo=await anonymousReposiotory.getUserId(id);
   }catch(err){
-    if(err.message)return undefined
-    return undefined
+    /*에러가 전해져 오는 에러면  if(err.messgae)면 그대로 throw / 아니면 logger하고 에러메시지를 던짐*/
+    if(err.message)throw new Error(err.message)
+    logger.error(connection_error.SERVICE_GET_USER_DATA)
+    throw new Error(connection_error.SERVICE_GET_USER_DATA)
   }
 
   if(userInfo===null|| !userInfo || !userInfo.salt){
-    throw new Error ('idFailed')
+    logger.error('')
+    return ('idFailed')
   }
 
   const {salt}=userInfo
@@ -70,7 +76,7 @@ const signUp = async(bodyData)=> {
   }
   
   if (isDuplicatedId===true){
-    throw new Error("SERVICE_SIGNUP_DUPLICATE_USER")
+    return "duplicateId"
   }
   
   const hashPw =encryptionPassWord(bodyData.pw);
