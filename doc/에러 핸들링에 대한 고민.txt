@@ -1,0 +1,26 @@
+에러처리
+
+비즈니스 로직에서 발생하는 에러/ 통신에러/ 비정상 접근에러/토큰에러(err)처리 해야함
+error.js 구조
+validation은 에러 loggin X
+Inavalid req는 res.data.message로 보냄
+특정 ip에서 몇회이상의 잘못된 접근(기능구현 필요) - logging O
+특정 레이어에서 전달하는 부분 - logging O controller / service/ db 이런부분
+에러가 발생했을때 위쪽으로 다시 올려보낼필요가 있는지 res.send(를 리턴해버리면 어케되는지 테스트)
+
+
+
+프론트에서 처리할 방법
+
+정상: res.data.data
+비즈니스 로직 발생 에러 : res.data.message{
+	관련 에러를 예상하여 로직을 짜서 돌려줘야함
+
+
+통신에러 undefined
+비정상 접근에러 undefined
+
+토큰에러 / 401에러로 반환 
+interceptor에서 처리하기 위해서 따로 에러를 반환해야함
+
+if (res.data ===undefind) return 
