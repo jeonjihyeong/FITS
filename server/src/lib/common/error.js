@@ -14,22 +14,33 @@ const httpStatus = {
 */
 
 const server_warning={
-    INVALID_REQUEST: "Invalid request",
+    INVALID_REQUEST_WARN: "Invalid request",
+    DUPLICATE_LOGIN_WARN: "Other browser use this id",
 
 }
 
 const connection_error={
-    CONTROLLER_LOGIN_ERROR:"controller error to login",
-    CONTROLLER_ACOUNT_ERROR:"controller error to acount",
-    CONTROLLER_SEND_ACOUNT_MAIL_ERROR:"controller error to send acount mail",
+    CONTROLLER_LOGIN_ERROR:"CONTROLLER ERROR : login error",
+    CONTROLLER_SIGN_UP_ERROR:"CONTROLLER ERROR : acount error",
+    CONTROLLER_SEND_SIGN_UP_MAIL_ERROR:"CONTROLLER ERROR : send acount mail error",
+    CONTROLLER_SEND_FIND_ID_MAIL_ERROR:"CONTROLLER ERROR : send find id mail error",
+    CONTROLLER_SEND_FIND_PW_MAIL_ERROR:"CONTROLLER ERROR : send find pw mail error",
+    CONTROLLER_CHANGE_PW_ERROR:"CONTROLLER ERROR : change pw.",
 
-    SERVICE_GET_USER_DATA:"Can not get user Data to login - service layer.",
-    SERVICE_GET_USER_DATA:"Can not get user Data to login - service layer.",
-    SERVICE_GET_USER_DATA:"Can not get user Data to login - service layer.",
+
+    SERVICE_GET_USER_DATA_ERROR:"SERVICE ERROR[login] : Can not get user Data.",
+    SERVICE_GET_IP_ERROR:"SERVICE ERROR[_CheckDuplicateLogin] : Can not get Ip in redis.",
+    SERVICE_SET_LOGIN_DATA_ERROR:"SERVICE ERROR[login]: Can not set login Data in redis.",
+    SERVICE_GET_USER_ERROR:"SERVICE ERROR : Can not .",
+    SERVICE_GET_USER_DATA:"SERVICE ERROR : change pw.",
 
 
 }
 
+const logic_error={
+    LOGIN_ID_FAILED: 'Id is not correct',
+    LOGIN_PW_FAILED: 'Pw is not correct',
+}
 
 const authentication_error={
     EXPIRED_TOKEN:"만료된 토큰입니다.",
@@ -39,5 +50,6 @@ const authentication_error={
 module.exports={
     connection_error,
     server_warning,
-    authentication_error
+    authentication_error,
+    logic_error
 }

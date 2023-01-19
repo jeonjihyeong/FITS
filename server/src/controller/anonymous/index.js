@@ -17,7 +17,7 @@ const login = async(req, res) => {
   const ip = req.socket.remoteAddress
     let {id,pw} = req.body
 
-    if(!id||!pw){
+    if(!id || !pw){
       logger.warn(server_warning.INVALID_REQUEST)
       return res.send()
     }
@@ -30,6 +30,8 @@ const login = async(req, res) => {
       return res.send();
     }
 
+    if(!tokens.accessToken || !tokens.refreshToken)return res.send({message:tokens}) 
+    
     res.send({
       token:{
         ...tokens
@@ -143,7 +145,7 @@ const changePw = async(req,res,next)=>{
   try{
     result = await anonymousService.changePw(id,email,name,new_Pw)
     if(result===undefined){
-      logger.error(connection_error.CONTROLLER_CHANGE_PW)
+      logger.error(connection_error.CONTROLLER_CHANGE_PW_ERROR)
     } 
   }catch(err){
     if(err.message){return next(err)}
