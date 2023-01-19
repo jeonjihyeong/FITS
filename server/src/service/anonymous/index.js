@@ -5,50 +5,50 @@ const mailSender = require('../../lib/common/mailer')
 const {signUpMail,findIdMail,findPwMail} =require('../../lib/common/setMail')
 const jwt=require('../../lib/common/token');
 const logger =require('../../lib/common/winston')
-const connection_error = require('../../lib/common/error')
+const {server_warning,connection_error, logic_error} = require('../../lib/common/error')
 
 // 로그인 서비스
 const login = async(id,pw,ip)=>{
   let userInfo;
-  logger.error('SERVICE_ERROR')
-  logger.warn('test')
-  logger.info('test')
 
   try{
-    userInfo=await anonymousReposiotory.getUserId(id);
+    userInfo = await anonymousReposiotory.getUserId(id);
   }catch(err){
     /*에러가 전해져 오는 에러면  if(err.messgae)면 그대로 throw / 아니면 logger하고 에러메시지를 던짐*/
-    if(err.message)throw new Error(err.message)
+    if(err.message) throw new Error(err.message)
     logger.error(connection_error.SERVICE_GET_USER_DATA)
     throw new Error(connection_error.SERVICE_GET_USER_DATA)
   }
 
-  if(userInfo===null|| !userInfo || !userInfo.salt){
-    logger.error('')
-    return ('idFailed')
+  const checkLoginResult = _checkLogin(id,pw)
+
+  if(checkLoginResult===logic_error.LOGIN_ID_FAILED || checkLoginResult===logic_error.LOGIN_PW_FAILED){
+    return checkLoginResult
+  } 
+  
+  /*ip만 넣으면 체크하는 메소드 작성*/
+  /*원칙적으로 중복로그인 불가 But 강제로그아웃 + 강제로그인 메소드를 사용해서 기존 로그인을 invalid 처리 가능*/
+  const isDuplicatedLogin = await _checkDuplicateLogin(id,userInfo)
+  
+  if(isDuplicatedLogin === server_warning.DUPLICATE_LOGIN_WARN){
+    logger.warn(server_warning.DUPLICATE_LOGIN_WARN)
+    return server_warning.DUPLICATE_LOGIN_WARN
   }
+  
+  if(!isDuplicatedLogin) return
 
-  const {salt}=userInfo
-
-  const decodePW = decryptionPassWord(pw,salt);
-
-  const pwData=userInfo.dataValues.pw
-  if(decodePW!==pwData){
-      throw new Error('pwFailed')
-  }
-
-  const isLogin =await redisClient.get(userInfo.dataValues.id)
-  console.log(isLogin)
-  if(isLogin===ip) console.log('already login')
-  if(isLogin===null) console.log('다음작업')
-  if(isLogin!==ip) console.log("다른아이피에서 로그인 하였습니다. 강제로그인 필요")
   // 보안이 필요한 정보는 삭제
-  delete userInfo.dataValues.pw;
-  delete userInfo.dataValues.salt;
+  const payload = {
+    userIdx: userInfo.dataValues.userIdx,
+    id: userInfo.dataValues.id,
+    email: userInfo.dataValues.id,
+    name: userInfo.dataValues.id,
+    nickName: userInfo.dataValues.id,
+  }
 
-  const accessToken = jwt.signToken({...userInfo.dataValues});
+  const accessToken = jwt.signToken(payload);
   const refreshToken = jwt.signRefreshToken();
-  console.log("redisSet")
+
   try{
     await redisClient
     .multi()
@@ -56,12 +56,44 @@ const login = async(id,pw,ip)=>{
     .set(userInfo.dataValues.id, ip)
     .exec()
   }catch(err){
-    console.log(err)
+    logger.error(connection_error.SERVICE_SET_LOGIN_DATA_ERROR)
+    throw new Error(connection_error.SERVICE_SET_LOGIN_DATA_ERROR)
   }
+  
     return {
-        accessToken:accessToken,
-        refreshToken:refreshToken,
+        accessToken : accessToken,
+        refreshToken : refreshToken,
     };
+}
+
+const _checkLogin = async(id,pw,userInfo) => {
+  if (userInfo===null || !userInfo){
+    return logic_error.LOGIN_ID_FAILED
+  }
+
+  const {salt}=userInfo.dataValues
+  
+  if(decryptionPassWord(pw,salt)!==userInfo.dataValues.pw){
+    return logic_error.LOGIN_PW_FAILED
+  }
+  return true
+}
+
+const _checkDuplicateLogin = async(ip,userInfo) => {
+  let currentLoginIp
+  try{
+    currentLoginIp = await redisClient.get(userInfo.dataValues.id)
+  }catch(err){
+    logger.error(connection_error.SERVICE_GET_IP_ERROR)
+    return undefined
+  }
+  if(currentLoginIp === null || !currentLoginIp) return true
+
+  if(currentLoginIp !== ip){
+    logger.warn('Duplicate login')
+    return server_warning.DUPLICATE_LOGIN_WARN
+  }
+  return true
 }
 
 // 회원가입 서비스
