@@ -56,6 +56,7 @@ const login = async(id,pw,ip)=>{
     .set(userInfo.dataValues.id, ip)
     .exec()
   }catch(err){
+    if(err.message)throw new Error(err.message)
     logger.error(connection_error.SERVICE_SET_LOGIN_DATA_ERROR)
     throw new Error(connection_error.SERVICE_SET_LOGIN_DATA_ERROR)
   }
@@ -90,11 +91,13 @@ const _checkDuplicateLogin = async(ip,userInfo) => {
   if(currentLoginIp === null || !currentLoginIp) return true
 
   if(currentLoginIp !== ip){
-    logger.warn('Duplicate login')
+    logger.warn(server_warning.DUPLICATE_LOGIN_WARN)
     return server_warning.DUPLICATE_LOGIN_WARN
   }
   return true
 }
+
+
 
 // 회원가입 서비스
 const signUp = async(bodyData)=> {
@@ -104,11 +107,12 @@ const signUp = async(bodyData)=> {
     res === null ? isDuplicatedId = false : isDuplicatedId = true;
   }catch(err){
     if(err.message) {throw new Error(err.message)}
-    throw new Error("SERVICE_SIGNUP_DUPLICATE_CHECK_ERROR")
+    logger.error(connection_error.SERVICE_DUPLICATE_CHECK_ERROR)
+    throw new Error(connection_error.SERVICE_DUPLICATE_CHECK_ERROR)
   }
   
   if (isDuplicatedId===true){
-    return "duplicateId"
+    return logic_error.SIGN_UP_DUPLICATE_ID
   }
   
   const hashPw =encryptionPassWord(bodyData.pw);
@@ -123,8 +127,9 @@ const signUp = async(bodyData)=> {
     await anonymousReposiotory.saveUser(payload);
   }catch(err){
     if(err.message) {throw new Error(err.message)}
-    throw new Error("SERVICE_SIGNUP_SAVE_ERROR")
+    throw new Error(connection_error.SERVICE_SET_SIGN_UP_ERROR)
   }
+
   return true
 }
 
@@ -134,8 +139,9 @@ const sendsignUPMail=async(email)=>{
   try{
     await mailSender.sendGmail(signUpText.mailText, email)
   }catch(err){
-      if(err.message){return next(err)}
-      next({message:"CONTROLLER_SEND_SIGNUP_MAIL_ERROR"})
+      if(err.message)throw new Error(err.message)
+      logger.error(connection_error.SERVICE_SEND_SIGN_UP_MAIL_ERROR)
+      throw new Error(connection_error.SERVICE_SEND_SIGN_UP_MAIL_ERROR)
   }
   return signUpText.auth_key
 }
@@ -146,11 +152,13 @@ const sendFindIdMail=async(name,email)=>{
   try{
     getUserByEmail=await anonymousReposiotory.getEmailData(name,email)
   }catch(err){
-    next({message:"CONTROLLER_SEND_FIND_ID_MAIL_CHECK_EXISTENCE_ERROR"})
+    if(err.message)throw new Error(err.message)
+    logger.error(connection_error.SERVICE_GET_USER_DATA_BY_EMAIL_ERROR)
+    throw new Error(connection_error.SERVICE_GET_USER_DATA_BY_EMAIL_ERROR)
   }
 
   if(getUserByEmail===null){
-    return res.send({message:"No User Data"});
+    return logic_error.NOT_EXIST_USER_BY_EMAIL
   }
 
   const findIdMailText = findIdMail(name,getUserByEmail.dataValues.id)
@@ -158,8 +166,9 @@ const sendFindIdMail=async(name,email)=>{
   try{
     await mailSender.sendsignUPMail(findIdMailText, email)
   }catch(err){
-    console.log(err);
-    next({message:"CONTROLLER_SEND_FIND_ID_MAIL_ERROR"})
+    if(err.message)throw new Error(err.message)
+    logger.error(connection_error.SERVICE_SEND_FIND_ID_MAIL_ERROR)
+    throw new Error(connection_error.SERVICE_SEND_FIND_ID_MAIL_ERROR)
   }
   return 1
 }
