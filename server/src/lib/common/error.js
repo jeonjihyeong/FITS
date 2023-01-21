@@ -28,18 +28,25 @@ const connection_error={
     CONTROLLER_CHANGE_PW_ERROR:"CONTROLLER ERROR : change pw.",
 
 
-    SERVICE_GET_USER_DATA_ERROR:"SERVICE ERROR[login] : Can not get user Data.",
-    SERVICE_GET_IP_ERROR:"SERVICE ERROR[_CheckDuplicateLogin] : Can not get Ip in redis.",
-    SERVICE_SET_LOGIN_DATA_ERROR:"SERVICE ERROR[login]: Can not set login Data in redis.",
+    SERVICE_GET_USER_DATA_ERROR : "SERVICE ERROR[login] : Can not get user Data.",
+    SERVICE_GET_IP_ERROR : "SERVICE ERROR[_CheckDuplicateLogin] : Can not get Ip in redis.",
+    SERVICE_SET_LOGIN_DATA_ERROR : "SERVICE ERROR[login]: Can not set login Data in redis.",
+    SERVICE_DUPLICATE_CHECK_ERROR : "SERVICE ERROR : Can not check Duplicate Id",
+    SERVICE_SET_SIGN_UP_ERROR :"SERVICE ERROR : Can not save user in DB.",
+    SERVICE_SEND_SIGN_UP_MAIL_ERROR : "SERVICE ERROR: Can not send sign up mail.",
+    SERVICE_GET_USER_DATA_BY_EMAIL_ERROR:"SERVICE ERROR : Can not get user data by Email.",
+    
+    
     SERVICE_GET_USER_ERROR:"SERVICE ERROR : Can not .",
     SERVICE_GET_USER_DATA:"SERVICE ERROR : change pw.",
-
 
 }
 
 const logic_error={
     LOGIN_ID_FAILED: 'Id is not correct',
     LOGIN_PW_FAILED: 'Pw is not correct',
+    SIGN_UP_DUPLICATE_ID: 'This Id is already exist.',
+    NOT_EXIST_USER_BY_EMAIL: 'This is not exist user by email.'
 }
 
 const authentication_error={
