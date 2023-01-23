@@ -57,16 +57,16 @@ const signup = async(req,res) => {
     const validateResult = validateRequest.signUpValdation(id,pw,email,nickname)
     if(!validateResult)return res.send()
     
-    let issignUpSuccess;
+    let isSignUpSuccess;
 
     try{
-      issignUpSuccess = await anonymousService.signUp({id,pw,email,age,name,nickname})
+      isSignUpSuccess = await anonymousService.signUp({id,pw,email,age,name,nickname})
     }catch(err){
       if(!err.message) logger.error(connection_error.CONTROLLER_LOGIN_ERROR)
       return res.send();
     }
     
-    if(issignUpSuccess="duplicateId"){
+    if(isSignUpSuccess="duplicateId"){
       return res.send({message:'duplicateID'})
     }
     res.send({message:'success'})

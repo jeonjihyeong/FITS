@@ -34,8 +34,8 @@ const connection_error={
     SERVICE_DUPLICATE_CHECK_ERROR : "SERVICE ERROR : Can not check Duplicate Id",
     SERVICE_SET_SIGN_UP_ERROR :"SERVICE ERROR : Can not save user in DB.",
     SERVICE_SEND_SIGN_UP_MAIL_ERROR : "SERVICE ERROR: Can not send sign up mail.",
-    SERVICE_GET_USER_DATA_BY_EMAIL_ERROR:"SERVICE ERROR : Can not get user data by Email.",
-    
+    SERVICE_GET_USER_DATA_BY_EMAIL_ERROR : "SERVICE ERROR : Can not get user data by Email.",
+    SERVICE_SEND_FIND_ID_MAIL_ERROR : "SERVICE ERROR : Can not send Find id mail.",
     
     SERVICE_GET_USER_ERROR:"SERVICE ERROR : Can not .",
     SERVICE_GET_USER_DATA:"SERVICE ERROR : change pw.",

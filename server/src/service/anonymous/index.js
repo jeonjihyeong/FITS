@@ -106,7 +106,7 @@ const signUp = async(bodyData)=> {
     const res= await anonymousReposiotory.getUserId(bodyData.id)
     res === null ? isDuplicatedId = false : isDuplicatedId = true;
   }catch(err){
-    if(err.message) {throw new Error(err.message)}
+    if(err.message) throw new Error(err.message)
     logger.error(connection_error.SERVICE_DUPLICATE_CHECK_ERROR)
     throw new Error(connection_error.SERVICE_DUPLICATE_CHECK_ERROR)
   }
@@ -126,7 +126,7 @@ const signUp = async(bodyData)=> {
   try{
     await anonymousReposiotory.saveUser(payload);
   }catch(err){
-    if(err.message) {throw new Error(err.message)}
+    if(err.message) throw new Error(err.message)
     throw new Error(connection_error.SERVICE_SET_SIGN_UP_ERROR)
   }
 
