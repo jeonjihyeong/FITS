@@ -12,29 +12,29 @@ const { connection_error, server_warning } = require('../../lib/common/error');
  * @param {*} res 
  * @returns 
 */
-const login = async(req, res) => {
+const login = async(req, res,next) => {
 
   const ip = req.socket.remoteAddress
     let {id,pw} = req.body
 
     if(!id || !pw){
-      logger.warn(server_warning.INVALID_REQUEST)
+      logger.warn(server_warning.INVALID_REQUEST_WARN)
       return res.send()
     }
     
-    let tokens;
+    let loginResult;
     try{
-      tokens = await anonymousService.login(id,pw,ip)
+      loginResult = await anonymousService.login(id,pw,ip)
     }catch(err){
-      if(!err.message) logger.error(connection_error.CONTROLLER_LOGIN_ERROR)
-      return res.send();
+      if(err.message)return next(err)
+      return next({message:connection_error.CONTROLLER_LOGIN_ERROR});
     }
 
-    if(!tokens.accessToken || !tokens.refreshToken)return res.send({message:tokens}) 
+    if(!loginResult.accessToken || !loginResult.refreshToken)return res.send({message:loginResult}) 
     
     res.send({
       token:{
-        ...tokens
+        ...loginResult
       }
     })
 }
@@ -50,7 +50,7 @@ const signup = async(req,res) => {
     const {id,pw,email,age,name,nickname} = req.body;
 
     if(!id||!pw||!email||!age||!name||!nickname){
-      logger.warn(server_warning.INVALID_REQUEST)
+      logger.warn(server_warning.INVALID_REQUEST_WARN)
       return res.send()
     }
     

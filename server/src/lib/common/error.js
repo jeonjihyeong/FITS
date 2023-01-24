@@ -3,7 +3,6 @@ const httpStatus = {
     created:201,
     invalid_token:401,
     not_accept:406,
-    expired_token:419,
     server_error:500,
 }
 /*
@@ -37,8 +36,6 @@ const connection_error={
     SERVICE_GET_USER_DATA_BY_EMAIL_ERROR : "SERVICE ERROR : Can not get user data by Email.",
     SERVICE_SEND_FIND_ID_MAIL_ERROR : "SERVICE ERROR : Can not send Find id mail.",
     
-    SERVICE_GET_USER_ERROR:"SERVICE ERROR : Can not .",
-    SERVICE_GET_USER_DATA:"SERVICE ERROR : change pw.",
 
 }
 

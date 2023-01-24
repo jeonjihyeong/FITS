@@ -10,7 +10,7 @@ const {server_warning,connection_error, logic_error} = require('../../lib/common
 // 로그인 서비스
 const login = async(id,pw,ip)=>{
   let userInfo;
-
+  throw new Error()
   try{
     userInfo = await anonymousReposiotory.getUserId(id);
   }catch(err){

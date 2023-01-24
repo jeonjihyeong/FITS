@@ -5,9 +5,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser')
 const {db}= require('./src/lib/index')
 const router = require('./src/router')
-const {connection_error} =require('./src/lib/common/error')
-const qs = require('qs');
-const { logger } = require('hello/lib/defaults/default');
+const {connection_error,server_warning,authentication_error} =require('./src/lib/common/error');
+const logger = require('./src/lib/common/winston');
 require('express-async-errors');
 
 require('dotenv').config();
@@ -22,10 +21,14 @@ app.use(async (err, req, res, next) => {
   console.log(err.message);
   console.log("에러처리기");
   /*500번대에러가 나오면 추가적인 정보를 프론트로 넘기지 않고 로깅으로 관리*/
-  if(err.message in connection_error){
+  /*에러를 각 코드에서 상속하기 보단 에러 처리기에서 한번에 처리한다.*/
+  if(Object.keys(connection_error).find(key => connection_error[key] === err.message)){
       logger.error(err.message)
-      res.status(500).send(undefined);
-      return;
+      return res.status(500).send(undefined);
+  }
+  if(Object.keys(server_warning).find(key => server_warning[key] === err.message)){
+      logger.error(err.message)
+      return res.status(400).send(err.message);
   }
   logger.error(err.message)
   res.send({message : '시스템 오류가 발생했습니다. 잠시 후 시도해주세요.'});
