@@ -1,3 +1,4 @@
+const { authentication_error } = require("./error");
 const token = require("./token");
 
 // 토큰확인
@@ -7,10 +8,9 @@ const validateToken = async(req,res,next)=>{
         token.verifyToken(accessToken)
         const writeUserInfo =token.decodeToken(accessToken);
         req.decode = writeUserInfo;
-        
         next();
     }catch(err){
-        return next(err)
+        next(err)
     }
 }
 
@@ -25,7 +25,7 @@ const refreshToken = async(req,res,next)=>{
         if (varify_refresh){
             console.log("리프레쉬 토큰 유효 - accessToken 재발급")
             const new_accessToken = token.signToken(decodeToken)
-            const new_refreshToken = token.signToken()
+            const new_refreshToken = token.signRefreshToken()
             res.send({
                 token:{
                     accessToken:new_accessToken,
@@ -34,11 +34,10 @@ const refreshToken = async(req,res,next)=>{
         }
         else{
             console.log("리프레쉬 토큰 유효하지 않음 - 재로그인 필요")
-            res.send({message:"refresh Token is invalid"});
+            res.send({message:authentication_error.INVALID_REFRESH_TOKEN});
         }
     }catch(err){
         next(err)
-        console.log(err)
     }
 }
 

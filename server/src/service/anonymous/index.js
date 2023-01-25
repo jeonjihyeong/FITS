@@ -10,14 +10,12 @@ const {server_warning,connection_error, logic_error} = require('../../lib/common
 // 로그인 서비스
 const login = async(id,pw,ip)=>{
   let userInfo;
-  throw new Error()
   try{
     userInfo = await anonymousReposiotory.getUserId(id);
   }catch(err){
     /*에러가 전해져 오는 에러면  if(err.messgae)면 그대로 throw / 아니면 logger하고 에러메시지를 던짐*/
     if(err.message) throw new Error(err.message)
-    logger.error(connection_error.SERVICE_GET_USER_DATA)
-    throw new Error(connection_error.SERVICE_GET_USER_DATA)
+    throw new Error(connection_error.SERVICE_GET_USER_DATA_ERROR)
   }
 
   const checkLoginResult = _checkLogin(id,pw)
@@ -26,17 +24,17 @@ const login = async(id,pw,ip)=>{
     return checkLoginResult
   } 
   
-  /*ip만 넣으면 체크하는 메소드 작성*/
+  /*ip와 id만 넣으면 체크하는 메소드 작성*/
   /*원칙적으로 중복로그인 불가 But 강제로그아웃 + 강제로그인 메소드를 사용해서 기존 로그인을 invalid 처리 가능*/
-  const isDuplicatedLogin = await _checkDuplicateLogin(id,userInfo)
-  
-  if(isDuplicatedLogin === server_warning.DUPLICATE_LOGIN_WARN){
-    logger.warn(server_warning.DUPLICATE_LOGIN_WARN)
-    return server_warning.DUPLICATE_LOGIN_WARN
+  let isDuplicatedLogin
+  try{
+    isDuplicatedLogin = await _checkDuplicateLogin(id,userInfo)
+
+  }catch(err){
+    if(err.message)throw new Error(err.message)
+    throw new Error(connection_error.SERVICE_DUPLICATE_CHECK_ERROR)
   }
   
-  if(!isDuplicatedLogin) return
-
   // 보안이 필요한 정보는 삭제
   const payload = {
     userIdx: userInfo.dataValues.userIdx,
@@ -57,14 +55,13 @@ const login = async(id,pw,ip)=>{
     .exec()
   }catch(err){
     if(err.message)throw new Error(err.message)
-    logger.error(connection_error.SERVICE_SET_LOGIN_DATA_ERROR)
     throw new Error(connection_error.SERVICE_SET_LOGIN_DATA_ERROR)
   }
   
-    return {
-        accessToken : accessToken,
-        refreshToken : refreshToken,
-    };
+  return {
+      accessToken : accessToken,
+      refreshToken : refreshToken,
+  };
 }
 
 const _checkLogin = async(id,pw,userInfo) => {
@@ -85,29 +82,31 @@ const _checkDuplicateLogin = async(ip,userInfo) => {
   try{
     currentLoginIp = await redisClient.get(userInfo.dataValues.id)
   }catch(err){
-    logger.error(connection_error.SERVICE_GET_IP_ERROR)
-    return undefined
+    throw new Error(connection_error.SERVICE_GET_IP_ERROR)
   }
+
   if(currentLoginIp === null || !currentLoginIp) return true
 
   if(currentLoginIp !== ip){
-    logger.warn(server_warning.DUPLICATE_LOGIN_WARN)
-    return server_warning.DUPLICATE_LOGIN_WARN
+    throw new Error(server_warning.DUPLICATE_LOGIN_WARN)
   }
   return true
 }
 
 
-
-// 회원가입 서비스
+/**
+ 회원가입 서비스
+ * 
+ * @param {object} bodyData 
+ * @returns 
+ */
 const signUp = async(bodyData)=> {
   let isDuplicatedId  
   try{
-    const res= await anonymousReposiotory.getUserId(bodyData.id)
-    res === null ? isDuplicatedId = false : isDuplicatedId = true;
+    const userDataById= await anonymousReposiotory.getUserId(bodyData.id)
+    userDataById === null ? isDuplicatedId = false : isDuplicatedId = true;
   }catch(err){
     if(err.message) throw new Error(err.message)
-    logger.error(connection_error.SERVICE_DUPLICATE_CHECK_ERROR)
     throw new Error(connection_error.SERVICE_DUPLICATE_CHECK_ERROR)
   }
   
@@ -133,18 +132,23 @@ const signUp = async(bodyData)=> {
   return true
 }
 
-// 회원가입 메일 서비스
+/**
+ 회원가입 메일 서비스
+ * 
+ * @param {string} email 
+ * @returns
+ */
 const sendsignUPMail=async(email)=>{
   const signUpText =signUpMail();
   try{
     await mailSender.sendGmail(signUpText.mailText, email)
   }catch(err){
       if(err.message)throw new Error(err.message)
-      logger.error(connection_error.SERVICE_SEND_SIGN_UP_MAIL_ERROR)
       throw new Error(connection_error.SERVICE_SEND_SIGN_UP_MAIL_ERROR)
   }
   return signUpText.auth_key
 }
+
 
 // 아이디찾기 메일 서비스
 const sendFindIdMail=async(name,email)=>{
@@ -153,7 +157,6 @@ const sendFindIdMail=async(name,email)=>{
     getUserByEmail=await anonymousReposiotory.getEmailData(name,email)
   }catch(err){
     if(err.message)throw new Error(err.message)
-    logger.error(connection_error.SERVICE_GET_USER_DATA_BY_EMAIL_ERROR)
     throw new Error(connection_error.SERVICE_GET_USER_DATA_BY_EMAIL_ERROR)
   }
 
@@ -167,10 +170,9 @@ const sendFindIdMail=async(name,email)=>{
     await mailSender.sendsignUPMail(findIdMailText, email)
   }catch(err){
     if(err.message)throw new Error(err.message)
-    logger.error(connection_error.SERVICE_SEND_FIND_ID_MAIL_ERROR)
     throw new Error(connection_error.SERVICE_SEND_FIND_ID_MAIL_ERROR)
   }
-  return 1
+  return true
 }
 
 

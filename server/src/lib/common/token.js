@@ -1,6 +1,7 @@
 const { promisify } = require('util');
 const redisClient = require('./redis.util');
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const { authentication_error } = require('./error');
 
 module.exports={
     //  토큰생성
@@ -8,7 +9,7 @@ module.exports={
         try{
             return jwt.sign(payload, process.env.JWT_KEY,{
             algorithm: 'HS256',
-            expiresIn: '5s',
+            expiresIn: '5h',
             })
         }catch(err){
             console.log(err)
@@ -17,24 +18,23 @@ module.exports={
     },
 
     // 토큰해석
-    decodeToken : async(anyToken)=>{
-        console.log(anyToken)
+    decodeToken : (anyToken)=>{
         try{
             return jwt.decode(anyToken, process.env.JWT_KEY)
         } catch(err){
-            if (err.name==='TokenExpiredError')throw new Error("EXPIRED_TOKEN");
-            throw new Error("INVALID_TOKEN")
+            if (err.name==='TokenExpiredError')throw new Error(authentication_error.EXPIRED_TOKEN);
+            throw new Error(authentication_error.INVALID_TOKEN)
         }
     },
-
+    
     // 토큰 검증
-    verifyToken : async(anyToken)=>{
+    verifyToken : (anyToken)=>{
         try {
             jwt.verify(anyToken, process.env.JWT_KEY);
             return true;
         }catch(err){
-            if (err.name==='TokenExpiredError')throw new Error("EXPIRED_TOKEN");
-            throw new Error("INVALID_TOKEN")
+            if (err.name==='TokenExpiredError')throw new Error(authentication_error.EXPIRED_TOKEN);
+            throw new Error(authentication_error.INVALID_TOKEN)
         }
     },
 

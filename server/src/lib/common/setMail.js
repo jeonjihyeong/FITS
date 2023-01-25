@@ -1,4 +1,4 @@
-const {randomString} = require("./numberGenerator")
+const {randomString} = require("./utils")
 // 회원가입 메일
 const signUpMail =()=> {
   const auth_key = randomString()
