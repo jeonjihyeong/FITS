@@ -6,7 +6,7 @@ const logout=async(id)=>{
     try{
         logOutResult = await redisClient.del(id)
     }catch(err){
-        throw new Error(connection_error.SERVICE_DEL_USER_IP_ERROR)
+        throw new Error(connection_error.SERVICE_DELETE_USER_IP_ERROR)
     }
     return logOutResult
 }

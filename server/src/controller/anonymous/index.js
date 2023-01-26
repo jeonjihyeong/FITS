@@ -108,8 +108,8 @@ const sendFindIdMail = async(req,res,next)=>{
   try{
     result = anonymousReposiotory.sendFindIdMail(email,name)
   }catch(err){
-    if(err.message){return next(err)}
-    next({message:"CONTROLLER_SEND_FIND_ID_MAIL"})
+    if(err.message)return next(err)
+    next({message:connection_error.CONTROLLER_SEND_FIND_ID_MAIL_ERROR})
   }
 
   res.send({data:result})
@@ -128,7 +128,7 @@ const sendFindPwMail = async(req,res,next)=>{
     result = await anonymousService.sendFindPwMail(id,email,name)
   }catch(err){
     if(err.message){return next(err)}
-    next({message:"CONTROLLER_FIND_PW_MAIL_ERROR"})
+    next({message:connection_error.CONTROLLER_SEND_FIND_PW_MAIL_ERROR})
   }
   
   res.send({data:result})
@@ -139,7 +139,7 @@ const changePw = async(req,res,next)=>{
   let result;
   const {id,email,name,new_Pw}=req.body;
   if(!id||!email||!name||!new_Pw){
-    return next({message:"INVALID_REQUEST"})
+    return next({message:server_warning.INVALID_REQUEST_WARN})
   }
   
   try{
@@ -149,7 +149,7 @@ const changePw = async(req,res,next)=>{
     } 
   }catch(err){
     if(err.message){return next(err)}
-    next({message:"CONTROLLER_CHANGE_PW_ERROR"})
+    next({message:connection_error.CONTROLLER_CHANGE_PW_ERROR})
   }
   res.send({data: result})
 }
