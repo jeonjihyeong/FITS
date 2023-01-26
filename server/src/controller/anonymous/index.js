@@ -4,6 +4,9 @@ const {anonymousService} = require('../../service');
 const logger = require('../../lib/common/winston');
 const { connection_error, server_warning } = require('../../lib/common/error');
 
+const loggerInfo ={
+  SIGN_UP_USER: "<SERVER INFO> New user SignUp."
+}
 
 
 /*로그인*/
@@ -39,38 +42,35 @@ const login = async(req, res,next) => {
     })
 }
 
+
 /**
  * 
  * @param {*} req 
  * @param {*} res 
  * @returns 
  */
-const signup = async(req,res) => {
+const signup = async(req,res,next) => {
     
     const {id,pw,email,age,name,nickname} = req.body;
 
-    if(!id||!pw||!email||!age||!name||!nickname){
-      logger.warn(server_warning.INVALID_REQUEST_WARN)
-      return res.send()
-    }
+    if(!id||!pw||!email||!age||!name||!nickname)return next({message:server_warning.INVALID_REQUEST_WARN})
     
-    const validateResult = validateRequest.signUpValdation(id,pw,email,nickname)
-    if(!validateResult)return res.send()
+    if(!validateRequest.signUpValdation(id,pw,email,nickname)) return next({message:server_warning.INVALID_REQUEST_WARN})
     
     let isSignUpSuccess;
 
     try{
       isSignUpSuccess = await anonymousService.signUp({id,pw,email,age,name,nickname})
     }catch(err){
-      if(!err.message) logger.error(connection_error.CONTROLLER_LOGIN_ERROR)
-      return res.send();
+      if(err.message) next(err)
+      return next({message: connection_error.CONTROLLER_LOGIN_ERROR})
     }
-    
     if(isSignUpSuccess="duplicateId"){
       return res.send({message:'duplicateID'})
     }
-    res.send({message:'success'})
+    res.send({data:1})
 }
+
 
 /**
  * 
@@ -90,7 +90,7 @@ const sendSignUpMail = async(req,res)=>{
     result = await anonymousReposiotory.sendMail(email)
   }catch(err){
     if(err.message){return next(err)}
-    next({message:"CONTROLLER_SEND_SIGNUP_MAIL_ERROR"})
+    next({message:connection_error.CONTROLLER_SEND_SIGN_UP_MAIL_ERROR})
   }
 
   res.send({data:result})
