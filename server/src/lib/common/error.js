@@ -36,8 +36,7 @@ const connection_error={
     SERVICE_GET_USER_DATA_BY_EMAIL_ERROR : "<SERVICE ERROR> Can not get user data by Email.",
     SERVICE_SEND_FIND_ID_MAIL_ERROR : "<SERVICE ERROR> Can not send Find id mail.",
     
-    SERVICE_DEL_USER_IP_ERROR : "<SERVICE ERROR> Can not delete ip in redis to logout."
-
+    SERVICE_DELETE_USER_IP_ERROR : "<SERVICE ERROR> Can not delete ip in redis to logout."
 }
 
 const logic_error={
