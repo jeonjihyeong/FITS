@@ -26,9 +26,8 @@ const login = async(id,pw,ip)=>{
   
   /*ip와 id만 넣으면 체크하는 메소드 작성*/
   /*원칙적으로 중복로그인 불가 But 강제로그아웃 + 강제로그인 메소드를 사용해서 기존 로그인을 invalid 처리 가능*/
-  let isDuplicatedLogin
   try{
-    isDuplicatedLogin = await _checkDuplicateLogin(id,userInfo)
+    await _checkDuplicateLogin(id,userInfo)
 
   }catch(err){
     if(err.message)throw new Error(err.message)
@@ -96,9 +95,6 @@ const _checkDuplicateLogin = async(ip,userInfo) => {
 
 /**
  회원가입 서비스
- * 
- * @param {object} bodyData 
- * @returns 
  */
 const signUp = async(bodyData)=> {
   let isDuplicatedId  
@@ -124,6 +120,7 @@ const signUp = async(bodyData)=> {
   
   try{
     await anonymousReposiotory.saveUser(payload);
+    await redisClient.set('kkks',1)
   }catch(err){
     if(err.message) throw new Error(err.message)
     throw new Error(connection_error.SERVICE_SET_SIGN_UP_ERROR)
