@@ -1,7 +1,7 @@
 const {models, Op}= require('../../lib/db')
 
 // 게시판 글 작성하기
-const writeBoard=async(userIdx,title, content)=>{
+const saveNote=async(userIdx,title, content)=>{
     let result;
     let timestamp = new Date().getTime();
     try{
@@ -18,7 +18,7 @@ const writeBoard=async(userIdx,title, content)=>{
 }
 
 //게시판 리스트 글 가지고 오기
-const getBoard= async({limit, offset})=>{ 
+const getNote= async({limit, offset})=>{ 
     let result;
     try{
         result = await models['note'].findAndCountAll({
@@ -36,7 +36,7 @@ const getBoard= async({limit, offset})=>{
 }
 
 // 게시판 글 가지고 오기
-const getText = async(noteIdx)=>{
+const getOneNote = async(noteIdx)=>{
     let result;
     try{
         result = await models['note'].findOne({
@@ -53,7 +53,7 @@ const getText = async(noteIdx)=>{
 }
 
 // 게시판 글 삭제
-const deleteBoard = async(noteIdx)=>{
+const deleteNote = async(noteIdx)=>{
     try{
         await models['note'].destroy({
             where:{
@@ -68,7 +68,7 @@ const deleteBoard = async(noteIdx)=>{
 }
 
 // 게시판 수정
-const updateBoard = async(boardIdx, title, content)=>{
+const updateNote = async(boardIdx, title, content)=>{
     try{
         await models['note'].update({
             title:title,
@@ -83,5 +83,5 @@ const updateBoard = async(boardIdx, title, content)=>{
 }
 
 module.exports = {
-    writeBoard, getBoard, getText,deleteBoard, updateBoard
+    saveNote, getNote, getOneNote, deleteNote, updateNote
 }

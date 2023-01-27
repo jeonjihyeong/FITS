@@ -36,7 +36,19 @@ const connection_error={
     SERVICE_GET_USER_DATA_BY_EMAIL_ERROR : "<SERVICE ERROR> Can not get user data by Email.",
     SERVICE_SEND_FIND_ID_MAIL_ERROR : "<SERVICE ERROR> Can not send Find id mail.",
     
-    SERVICE_DELETE_USER_IP_ERROR : "<SERVICE ERROR> Can not delete ip in redis to logout."
+    SERVICE_DELETE_USER_IP_ERROR : "<SERVICE ERROR> Can not delete ip in redis to logout.",
+
+    REPOSITORY_SAVE_USER_ERROR : "<REPOSITORY ERROR> Can not save user in DB.",
+    REPOSITORY_GET_USER_BY_ID_ERROR : "<REPOSITORY> Can not get user data by Id.",
+    REPOSITORY_GET_USER_BY_EMAIL_ERROR : "<REPOSITORY> Can not get user data by Email.",
+    REPOSITORY_GET_PW_DATA_ERROR : "<REPOSITORY> Can not get user Pw data by Email and id.",
+    REPOSITORY_UPDATE_PW_ERROR : "<REPOSITORY> Can not update Pw.",
+    
+    REPOSITORY_SAVE_NOTE_ERROR : "<REPOSITORY ERROR> Can not save note in DB.",
+    REPOSITORY_GET_NOTE_ERROR : "<REPOSITORY> Can not get note data.",
+    REPOSITORY_GET_ONE_NOTE_ERROR : "<REPOSITORY> Can not get one note data.",
+    REPOSITORY_DELETE_NOTE_ERROR : "<REPOSITORY> Can not delete this note.",
+    REPOSITORY_UPDATE_NOTE_ERROR : "<REPOSITORY> Can not update note.",
 }
 
 const logic_error={

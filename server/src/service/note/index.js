@@ -3,7 +3,7 @@ const pagination = require("../../lib/common/pagination")
 
 const writeNote =async(userIdx,title,content)=>{
     try{
-        await noteRepo.writeBoard(userIdx,title,content)
+        await noteRepo.saveNote(userIdx,title,content)
     }catch(err){
         if(err.message){throw new Error(err.message)}
         throw new Error("SERVICE_WRITE_NOTE_ERROR")
@@ -14,7 +14,7 @@ const getNote = async(page)=>{
     let result;
     try{
         const paginateData =pagination.getPage(page)
-        result = await noteRepo.getBoard(paginateData);
+        result = await noteRepo.getNote(paginateData);
         res.send({data:result,paginate:paginateData});
     }catch(err){
         if(err.message){throw new Error(err.message)}
@@ -28,7 +28,7 @@ const getMyNote = async(page)=>{
     let result;
     try{
         const paginateData =pagination.getPage(page)
-        result = await noteRepo.getBoard(paginateData);
+        result = await noteRepo.getNote(paginateData);
         res.send({data:result,paginate:paginateData});
     }catch(err){
         if(err.message){next(err)}
@@ -54,7 +54,7 @@ const getOneNote = async(noteIdx,accessUser)=>{
 const deleteNoteContent = async(noteIdx) =>{
     
     try{
-        await noteRepo.deleteBoard(noteIdx);
+        await noteRepo.deleteNote(noteIdx);
     }catch(err){
         if(err.message){throw new Error(err.message)}
         next({message:"SERVICE_DELETE_NOTE_ ERROR"})
@@ -64,7 +64,7 @@ const deleteNoteContent = async(noteIdx) =>{
 
 const updateNote = async(noteIdx,title,content)=>{
     try{
-        await noteRepo.updateBoard(noteIdx, title, content)
+        await noteRepo.updateNote(noteIdx, title, content)
     }catch(err){
         if(err.message){throw new Error(err.message)}
         throw new Error("SERVICE_UPDATE_NOTE_ERROR")
