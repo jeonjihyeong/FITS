@@ -1,3 +1,4 @@
+const { connection_error } = require('../../lib/common/error');
 const {models, Op}= require('../../lib/db')
 
 ///회원정보 저장
@@ -13,8 +14,7 @@ const saveUser=async({id, pw,age,email,name,nickname,salt})=>{
             salt: salt,
         })
     }catch(err){
-        console.log(err);
-        throw new Error('SERVICE_SAVE_USER_ERROR')
+        throw new Error(connection_error.REPOSITORY_SAVE_USER_ERROR)
     }
 }
 
@@ -28,8 +28,7 @@ const getUserId = async(id)=>{
             }
         })
     }catch(err){
-        console.log(err.message);
-        throw new Error('SERVICE_GET_USER_BY_ID_ERROR')
+        throw new Error(connection_error.REPOSITORY_GET_USER_BY_ID_ERROR)
     }
     return results
 }
@@ -37,7 +36,6 @@ const getUserId = async(id)=>{
 // 이메일로 회원정보 가지고 오기
 const getEmailData = async(email,name)=>{
     let results;
-    console.log("Service layer")
     try{
         results =await models['user'].findOne({
             where:{
@@ -46,8 +44,7 @@ const getEmailData = async(email,name)=>{
             }
         })
     }catch(err){
-        console.log(err)
-        throw new Error('SERVICE_GET_USER_BY_EMAIL_ERROR')
+        throw new Error(connection_error.REPOSITORY_GET_USER_BY_EMAIL_ERROR)
     }
     return results
 }
@@ -55,7 +52,6 @@ const getEmailData = async(email,name)=>{
 // id, email, name으로 회원정보 검색
 const getPwData = async(id,email,name)=>{
     let results;
-    console.log("Service layer")
     try{
         results =await models['user'].findOne({
             where:{
@@ -66,14 +62,13 @@ const getPwData = async(id,email,name)=>{
         })
     }catch(err){
         console.log(err)
-        throw new Error('SERVICE_GET_PW_DATA_ERROR')
+        throw new Error(connection_error.REPOSITORY_GET_PW_DATA_ERROR)
     }
     return results
 }
 
 // 비밀번호 변경
 const changePassword=async(userIdx,{hashPw,salt})=>{
-    console.log("Service layer")
     try{
         await models['user'].update({
             pw: hashPw,
@@ -85,7 +80,7 @@ const changePassword=async(userIdx,{hashPw,salt})=>{
         })
     }catch(err){
         console.log(err)
-        throw new Error("SERVICE_CHANGE_PW_ERROR")
+        throw new Error(connection_error.REPOSITORY_UPDATE_PW_ERROR)
     }
 }
 
