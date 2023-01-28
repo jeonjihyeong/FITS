@@ -1,12 +1,13 @@
 const { noteRepo, commentRepo } = require("../../reposiotory")
 const pagination = require("../../lib/common/pagination")
+const { connection_error } = require("../../lib/common/error")
 
 const writeNote =async(userIdx,title,content)=>{
     try{
         await noteRepo.saveNote(userIdx,title,content)
     }catch(err){
-        if(err.message){throw new Error(err.message)}
-        throw new Error("SERVICE_WRITE_NOTE_ERROR")
+        if(err.message)throw new Error(err.message)
+        throw new Error(connection_error.SERVICE_WRITE_NOTE_ERROR)
     }
 }
 
@@ -17,13 +18,13 @@ const getNote = async(page)=>{
         result = await noteRepo.getNote(paginateData);
         res.send({data:result,paginate:paginateData});
     }catch(err){
-        if(err.message){throw new Error(err.message)}
-        logger.error("CONTROLLER_GET_NOTE_ERROR");
-        return undefined;
+        if(err.message)throw new Error(err.message)
+        throw new Error(connection_error.SERVICE_GET_NOTE_ERROR)
     }
 }
 
-
+/*
+미구현상태
 const getMyNote = async(page)=>{
     let result;
     try{
@@ -35,6 +36,7 @@ const getMyNote = async(page)=>{
         next({message:"CONTROLLER_GET_NOTE_ERROR"})
     }
 }
+*/
 
 const getOneNote = async(noteIdx,accessUser)=>{
     let result
@@ -46,7 +48,7 @@ const getOneNote = async(noteIdx,accessUser)=>{
         }
     }catch(err){
         if(err.message){throw new Error(err.message)}
-        throw new Error("SERVICE_GET_ONE_NOTE_ERROR")
+        throw new Error(connection_error.SERVICE_GET_ONE_NOTE_ERROR)
     }
     return result
 }
@@ -56,8 +58,8 @@ const deleteNoteContent = async(noteIdx) =>{
     try{
         await noteRepo.deleteNote(noteIdx);
     }catch(err){
-        if(err.message){throw new Error(err.message)}
-        next({message:"SERVICE_DELETE_NOTE_ ERROR"})
+        if(err.message)throw new Error(err.message)
+        throw new Error(connection_error.SERVICE_DELETE_NOTE_ERROR)
     }
     return {message:"Success"}
 }
@@ -66,8 +68,8 @@ const updateNote = async(noteIdx,title,content)=>{
     try{
         await noteRepo.updateNote(noteIdx, title, content)
     }catch(err){
-        if(err.message){throw new Error(err.message)}
-        throw new Error("SERVICE_UPDATE_NOTE_ERROR")
+        if(err.message)throw new Error(err.message)
+        throw new Error(connection_error.SERVICE_UPDATE_NOTE_ERROR)
     }
 
     return {data:"success"}
@@ -76,7 +78,6 @@ const updateNote = async(noteIdx,title,content)=>{
 module.exports = {
     writeNote,
     getNote,
-    getMyNote,
     getOneNote,
     deleteNoteContent,
     updateNote
