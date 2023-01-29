@@ -35,9 +35,11 @@ const connection_error={
     SERVICE_SEND_SIGN_UP_MAIL_ERROR : "<SERVICE ERROR> Can not send sign up mail.",
     SERVICE_GET_USER_DATA_BY_EMAIL_ERROR : "<SERVICE ERROR> Can not get user data by Email.",
     SERVICE_SEND_FIND_ID_MAIL_ERROR : "<SERVICE ERROR> Can not send Find id mail.",
-    
+    SERVICE_CHANGE_PW_ERROR : "<SERVICE ERROR> Can not change pw.",
     SERVICE_DELETE_USER_IP_ERROR : "<SERVICE ERROR> Can not delete ip in redis to logout.",
+    SERVICE_SEND_FIND_PW_MAIL_CHECK_EXISTENCE_ERROR : "<SERVICE ERROR> Can not check user existence.",
     
+
     /*노트 서비스 에러*/
     SERVICE_WRITE_NOTE_ERROR : "<SERVICE ERROR> Can not write note.",
     SERVICE_GET_NOTE_ERROR : "<SERVICE ERROR> Can not get note.",
@@ -67,7 +69,8 @@ const logic_error={
     LOGIN_ID_FAILED: 'Id is not correct',
     LOGIN_PW_FAILED: 'Pw is not correct',
     SIGN_UP_DUPLICATE_ID: 'This Id is already exist.',
-    NOT_EXIST_USER_BY_EMAIL: 'This is not exist user by email.'
+    NOT_EXIST_USER_BY_EMAIL: 'This is not exist user by email.',
+    NOT_EXIST_USER_BY_PW_DATA: 'This user is not exist.'
 }
 
 const authentication_error={

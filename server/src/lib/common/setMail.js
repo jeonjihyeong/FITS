@@ -1,4 +1,5 @@
 const {randomString} = require("./utils")
+
 // 회원가입 메일
 const signUpMail =()=> {
   const auth_key = randomString()
@@ -10,7 +11,7 @@ const signUpMail =()=> {
 };
 
 // 아이디 찾기 메일
-const findIdMail=async(name,id) => {
+const findIdMail=(name,id) => {
   const mailText ={
     subject: `${name} 회원님 아이디 찾기 결과입니다.`,
     html: `<div>${name} 회원님 아이디 찾기 결과입니다.
@@ -20,14 +21,15 @@ const findIdMail=async(name,id) => {
 }
 
 // 비밀번호 찾기 메일
-const findPwMail=async(name) => {
+const findPwMail=(name) => {
   const auth_key = randomString()
   const mailText ={
     subject: `${name} 회원님 비밀번호 찾기 결과입니다.`,
     html: `<div>${name} 회원님 비밀번호 찾기 결과입니다.</div>
-          <p>${auth_key}</p>`
+          <p>${auth_key}</p>`,
+    auth_key:auth_key
   }
-  return {mailText,auth_key};
+  return mailText;
 }
 
 
