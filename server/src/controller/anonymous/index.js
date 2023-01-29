@@ -1,3 +1,5 @@
+//@ts-check
+
 const {anonymousReposiotory} =require('../../reposiotory')
 const validateRequest = require('../../lib/common/validation');
 const {anonymousService} = require('../../service');
@@ -65,7 +67,7 @@ const signup = async(req,res,next) => {
       if(err.message) next(err)
       return next({message: connection_error.CONTROLLER_LOGIN_ERROR})
     }
-    if(isSignUpSuccess="duplicateId"){
+    if(isSignUpSuccess==="duplicateId"){
       return res.send({message:'duplicateID'})
     }
     res.send({data:1})

@@ -1,13 +1,21 @@
+// @ts-check
+
 const {anonymousReposiotory} = require('../../reposiotory')
 const {salt,encryptionPassWord,decryptionPassWord} =require('../../lib/common/hashing')
 const redisClient = require("../../lib/common/redis.util");
 const mailSender = require('../../lib/common/mailer')
 const {signUpMail,findIdMail,findPwMail} =require('../../lib/common/setMail')
 const jwt=require('../../lib/common/token');
-const logger =require('../../lib/common/winston')
 const {server_warning,connection_error, logic_error} = require('../../lib/common/error')
 
-// 로그인 서비스
+/**
+ 로그인 서비스
+ * 
+ * @param {*} id 
+ * @param {*} pw 
+ * @param {*} ip 
+ * @returns 
+ */
 const login = async(id,pw,ip)=>{
   let userInfo;
   try{
@@ -18,9 +26,9 @@ const login = async(id,pw,ip)=>{
     throw new Error(connection_error.SERVICE_GET_USER_DATA_ERROR)
   }
 
-  const checkLoginResult = _checkLogin(id,pw)
+  const checkLoginResult = _checkLogin(pw,userInfo)
 
-  if(checkLoginResult===logic_error.LOGIN_ID_FAILED || checkLoginResult===logic_error.LOGIN_PW_FAILED){
+  if(await checkLoginResult===logic_error.LOGIN_ID_FAILED ||await checkLoginResult===logic_error.LOGIN_PW_FAILED){
     return checkLoginResult
   } 
   
@@ -63,12 +71,19 @@ const login = async(id,pw,ip)=>{
   };
 }
 
-const _checkLogin = async(id,pw,userInfo) => {
+
+/**
+ * 
+ * @param {*} pw 
+ * @param {*} userInfo 
+ * @returns 
+ */
+const _checkLogin = async(pw,userInfo) => {
   if (userInfo===null || !userInfo){
     return logic_error.LOGIN_ID_FAILED
   }
 
-  const {salt}=userInfo.dataValues
+  const {salt} = userInfo.dataValues
   
   if(decryptionPassWord(pw,salt)!==userInfo.dataValues.pw){
     return logic_error.LOGIN_PW_FAILED
@@ -76,6 +91,14 @@ const _checkLogin = async(id,pw,userInfo) => {
   return true
 }
 
+
+
+/**
+ * 
+ * @param {*} ip 
+ * @param {*} userInfo 
+ * @returns 
+ */
 const _checkDuplicateLogin = async(ip,userInfo) => {
   let currentLoginIp
   try{
@@ -94,7 +117,9 @@ const _checkDuplicateLogin = async(ip,userInfo) => {
 
 
 /**
- 회원가입 서비스
+ * 
+ * @param {*} bodyData 
+ * @returns 
  */
 const signUp = async(bodyData)=> {
   let isDuplicatedId  
@@ -120,7 +145,7 @@ const signUp = async(bodyData)=> {
   
   try{
     await anonymousReposiotory.saveUser(payload);
-    await redisClient.set('kkks',1)
+    await redisClient.set(payload.id,'')
   }catch(err){
     if(err.message) throw new Error(err.message)
     throw new Error(connection_error.SERVICE_SET_SIGN_UP_ERROR)
@@ -148,6 +173,12 @@ const sendsignUPMail=async(email)=>{
 
 
 // 아이디찾기 메일 서비스
+/**
+ * 
+ * @param {*} name 
+ * @param {*} email 
+ * @returns 
+ */
 const sendFindIdMail=async(name,email)=>{
   let getUserByEmail;
   try{
@@ -173,20 +204,27 @@ const sendFindIdMail=async(name,email)=>{
 }
 
 
+/**
+ * 
+ * @param {*} id 
+ * @param {*} email 
+ * @param {*} name 
+ * @returns 
+ */
 const sendFindPwMail=async(id,email,name)=>{
   let getUserDataByPwData;
     try{
       getUserDataByPwData =  await anonymousReposiotory.getPwData(id,email,name)
     }catch(err){
       if(err.message){throw new Error(err.message)}
-      throw new Error("CONTROLLER_SEND_FIND_PW_MAIL_CHECK_EXISTENCE_ERROR")
+      throw new Error(connection_error.SERVICE_SEND_FIND_PW_MAIL_CHECK_EXISTENCE_ERROR)
     }
 
-    if(getUserDataByPwData===null||getUserDataByPwData===undefined){
-      return res.send({message:"No User Data"})
+    if(getUserDataByPwData===null||!getUserDataByPwData){
+      return logic_error.NOT_EXIST_USER_BY_PW_DATA
     }
 
-    const findPwMailText = findPwMail(name)
+    const findPwMailText =findPwMail(name)
 
     try{
       await mailSender.sendGmail(findPwMailText.mailText,email)
@@ -198,6 +236,15 @@ const sendFindPwMail=async(id,email,name)=>{
   return findPwMailText.auth_key
 }
 
+
+/**
+ * 
+ * @param {*} id 
+ * @param {*} email 
+ * @param {*} name 
+ * @param {*} new_Pw 
+ * @returns 
+ */
 const changePw = async(id,email,name,new_Pw)=>{
   let changePwUserData;
 
@@ -209,12 +256,11 @@ const changePw = async(id,email,name,new_Pw)=>{
   }
 
   if(changePwUserData===null||changePwUserData===undefined){
-    console.log("No user Data")
-    return res.send({message:"No User Data"})
+    return logic_error.NOT_EXIST_USER_BY_PW_DATA
   }
 
   let inCodeNewPw ={
-    hashPw:encryptionPassWord(newPw),
+    hashPw:encryptionPassWord(new_Pw),
     salt: salt
   }
   
@@ -222,7 +268,7 @@ const changePw = async(id,email,name,new_Pw)=>{
     await anonymousReposiotory.changePassword(changePwUserData.userIdx,inCodeNewPw);
   }catch(err){
     if(err.message){throw new Error(err.message)}
-    throw new Error("SERVICE_CHANGE_PW_ERROR")
+    throw new Error(connection_error.SERVICE_CHANGE_PW_ERROR)
   }
   return 1
 }
