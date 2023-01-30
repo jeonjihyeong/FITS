@@ -1,3 +1,5 @@
+//@ts-check
+
 const {models, Op}= require('../../lib/db')
 
 const writeComment=async(userIdx,noteIdx,comment)=>{

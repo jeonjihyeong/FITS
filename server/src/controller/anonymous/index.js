@@ -34,11 +34,13 @@ const login = async(req, res,next) => {
       if(err.message)return next(err)
       return next({message:connection_error.CONTROLLER_LOGIN_ERROR});
     }
-
+    
+    // @ts-ignore
     if(!loginResult.accessToken || !loginResult.refreshToken)return res.send({message:loginResult}) 
     
     res.send({
       token:{
+        // @ts-ignore
         ...loginResult
       }
     })
@@ -51,7 +53,7 @@ const login = async(req, res,next) => {
  * @param {*} res 
  * @returns 
  */
-const signup = async(req,res,next) => {
+const signup = async(req,res,/** @type {(arg0: { message: string; }) => void} */ next) => {
     
     const {id,pw,email,age,name,nickname} = req.body;
 
@@ -81,7 +83,7 @@ const signup = async(req,res,next) => {
  * @returns 
  */
 /* 회원가입 메일 */
-const sendSignUpMail = async(req,res)=>{
+const sendSignUpMail = async(req,res,next)=>{
   const {email}=req.body;
   let result;
   if(!email){
@@ -89,7 +91,7 @@ const sendSignUpMail = async(req,res)=>{
   }
 
   try{
-    result = await anonymousReposiotory.sendMail(email)
+    result = await anonymousService.sendsignUPMail(email)
   }catch(err){
     if(err.message){return next(err)}
     next({message:connection_error.CONTROLLER_SEND_SIGN_UP_MAIL_ERROR})
@@ -108,7 +110,7 @@ const sendFindIdMail = async(req,res,next)=>{
   let result;
 
   try{
-    result = anonymousReposiotory.sendFindIdMail(email,name)
+    result = anonymousService.sendFindIdMail(email,name)
   }catch(err){
     if(err.message)return next(err)
     next({message:connection_error.CONTROLLER_SEND_FIND_ID_MAIL_ERROR})
