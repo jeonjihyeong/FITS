@@ -64,11 +64,14 @@ const login = async(id,pw,ip)=>{
     if(err.message)throw new Error(err.message)
     throw new Error(connection_error.SERVICE_SET_LOGIN_DATA_ERROR)
   }
+  const tokenValue = {
+    accessToken : accessToken,
+    refreshToken : refreshToken
+  }
   
   return {
-      accessToken : accessToken,
-      refreshToken : refreshToken,
-  };
+    tokenValue
+  }
 }
 
 
