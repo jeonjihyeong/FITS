@@ -1,12 +1,13 @@
 // @ts-check
 
-const {anonymousReposiotory} = require('../../reposiotory')
-const {salt,encryptionPassWord,decryptionPassWord} =require('../../lib/common/hashing')
-const redisClient = require("../../lib/common/redis.util");
-const mailSender = require('../../lib/common/mailer')
-const {signUpMail,findIdMail,findPwMail} =require('../../lib/common/setMail')
-const jwt=require('../../lib/common/token');
-const {server_warning,connection_error, logic_error} = require('../../lib/common/error')
+import { anonymousReposiotory } from '../../reposiotory';
+import { salt, encryptionPassWord, decryptionPassWord } from '../../lib/common/hashing';
+import redisClient from "../../lib/common/redis.util";
+import mailSender from '../../lib/common/mailer';
+import { signUpMail, findIdMail, findPwMail } from '../../lib/common/setMail';
+import jwt from '../../lib/common/token';
+import { server_warning, connection_error, logic_error } from '../../lib/common/error';
+import { RedisCommandArgument } from '@redis/client/dist/lib/commands';
 
 /**
  로그인 서비스
@@ -16,8 +17,8 @@ const {server_warning,connection_error, logic_error} = require('../../lib/common
  * @param {*} ip 
  * @returns 
  */
-const login = async(id,pw,ip)=>{
-  let userInfo;
+const login = async(id: any,pw: any,ip: any)=>{
+  let userInfo: { dataValues: { userIdx: any; id: RedisCommandArgument; email: RedisCommandArgument; }; };
   try{
     userInfo = await anonymousReposiotory.getUserId(id);
   }catch(err){
@@ -36,7 +37,6 @@ const login = async(id,pw,ip)=>{
   /*원칙적으로 중복로그인 불가 But 강제로그아웃 + 강제로그인 메소드를 사용해서 기존 로그인을 invalid 처리 가능*/
   try{
     await _checkDuplicateLogin(id,userInfo)
-
   }catch(err){
     if(err.message)throw new Error(err.message)
     throw new Error(connection_error.SERVICE_DUPLICATE_CHECK_ERROR)
@@ -81,7 +81,7 @@ const login = async(id,pw,ip)=>{
  * @param {*} userInfo 
  * @returns 
  */
-const _checkLogin = async(pw,userInfo) => {
+const _checkLogin = async(pw: any,userInfo: any) => {
   if (userInfo===null || !userInfo){
     return logic_error.LOGIN_ID_FAILED
   }
@@ -102,8 +102,8 @@ const _checkLogin = async(pw,userInfo) => {
  * @param {*} userInfo 
  * @returns 
  */
-const _checkDuplicateLogin = async(ip,userInfo) => {
-  let currentLoginIp
+const _checkDuplicateLogin = async(ip: any,userInfo: any) => {
+  let currentLoginIp: string | null
   try{
     currentLoginIp = await redisClient.get(userInfo.dataValues.id)
   }catch(err){
@@ -124,8 +124,8 @@ const _checkDuplicateLogin = async(ip,userInfo) => {
  * @param {*} bodyData 
  * @returns 
  */
-const signUp = async(bodyData)=> {
-  let isDuplicatedId  
+const signUp = async(bodyData: any)=> {
+  let isDuplicatedId: boolean  
   try{
     const userDataById= await anonymousReposiotory.getUserId(bodyData.id)
     userDataById === null ? isDuplicatedId = false : isDuplicatedId = true;
@@ -163,7 +163,7 @@ const signUp = async(bodyData)=> {
  * @param {string} email 
  * @returns
  */
-const sendsignUPMail=async(email)=>{
+const sendsignUPMail=async(email: string)=>{
   const signUpText =signUpMail();
   try{
     await mailSender.sendGmail(signUpText.mailText, email)
@@ -182,8 +182,8 @@ const sendsignUPMail=async(email)=>{
  * @param {*} email 
  * @returns 
  */
-const sendFindIdMail=async(name,email)=>{
-  let getUserByEmail;
+const sendFindIdMail=async(name: any,email: any)=>{
+  let getUserByEmail: { dataValues: { id: any; }; } | null;
   try{
     getUserByEmail=await anonymousReposiotory.getEmailData(name,email)
   }catch(err){
@@ -214,8 +214,8 @@ const sendFindIdMail=async(name,email)=>{
  * @param {*} name 
  * @returns 
  */
-const sendFindPwMail=async(id,email,name)=>{
-  let getUserDataByPwData;
+const sendFindPwMail=async(id: any,email: any,name: any)=>{
+  let getUserDataByPwData: null;
     try{
       getUserDataByPwData =  await anonymousReposiotory.getPwData(id,email,name)
     }catch(err){
@@ -248,8 +248,8 @@ const sendFindPwMail=async(id,email,name)=>{
  * @param {*} new_Pw 
  * @returns 
  */
-const changePw = async(id,email,name,new_Pw)=>{
-  let changePwUserData;
+const changePw = async(id: any,email: any,name: any,new_Pw: any)=>{
+  let changePwUserData: { userIdx: any; } | null | undefined;
 
   try{
     changePwUserData = await anonymousReposiotory.getPwData(id,email,name)
@@ -276,7 +276,7 @@ const changePw = async(id,email,name,new_Pw)=>{
   return 1
 }
 
-module.exports = {
+export default{
   login,  
   signUp,
   sendsignUPMail,
