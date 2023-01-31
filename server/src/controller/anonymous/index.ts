@@ -1,10 +1,9 @@
 //@ts-check
 
-const {anonymousReposiotory} =require('../../reposiotory')
-const validateRequest = require('../../lib/common/validation');
-const {anonymousService} = require('../../service');
-const logger = require('../../lib/common/winston');
-const { connection_error, server_warning } = require('../../lib/common/error');
+import validateRequest from '../../lib/common/validation';
+import {anonymousService} from '../../service';
+import logger from '../../lib/common/winston';
+import { connection_error, server_warning } from '../../lib/common/error';
 
 const loggerInfo ={
   SIGN_UP_USER: "<SERVER INFO> New user SignUp."
@@ -12,22 +11,18 @@ const loggerInfo ={
 
 
 /*로그인*/
-/** 
- * @param {*} req 
- * @param {*} res 
- * @returns 
-*/
-const login = async(req, res,next) => {
+
+const login = async(req: { socket: { remoteAddress: any; }; body: { id: any; pw: any; }; }, res: { send: (arg0: { message?: any; token?: any; } | undefined) => void; },next: (arg0: { message: any; }) => any) => {
 
   const ip = req.socket.remoteAddress
     let {id,pw} = req.body
 
     if(!id || !pw){
       logger.warn(server_warning.INVALID_REQUEST_WARN)
-      return res.send()
+      return res.send(undefined)
     }
     
-    let loginResult;
+    let loginResult: { accessToken?: any; refreshToken?: any; } ;
     try{
       loginResult = await anonymousService.login(id,pw,ip)
     }catch(err){
@@ -35,25 +30,17 @@ const login = async(req, res,next) => {
       return next({message:connection_error.CONTROLLER_LOGIN_ERROR});
     }
     
-    // @ts-ignore
     if(!loginResult.accessToken || !loginResult.refreshToken)return res.send({message:loginResult}) 
     
     res.send({
       token:{
-        // @ts-ignore
         ...loginResult
       }
     })
 }
 
 
-/**
- * 
- * @param {*} req 
- * @param {*} res 
- * @returns 
- */
-const signup = async(req,res,/** @type {(arg0: { message: string; }) => void} */ next) => {
+const signup = async(req: { body: { id: any; pw: any; email: any; age: any; name: any; nickname: any; }; },res: { send: (arg0: { message?: string; data?: number; }) => void; },/** @type {(arg0: { message: string; }) => void} */ next: (arg0: { message: string; }) => void) => {
     
     const {id,pw,email,age,name,nickname} = req.body;
 
@@ -61,7 +48,7 @@ const signup = async(req,res,/** @type {(arg0: { message: string; }) => void} */
     
     if(!validateRequest.signUpValdation(id,pw,email,nickname)) return next({message:server_warning.INVALID_REQUEST_WARN})
     
-    let isSignUpSuccess;
+    let isSignUpSuccess: string | boolean;
 
     try{
       isSignUpSuccess = await anonymousService.signUp({id,pw,email,age,name,nickname})
@@ -76,16 +63,10 @@ const signup = async(req,res,/** @type {(arg0: { message: string; }) => void} */
 }
 
 
-/**
- * 
- * @param {*} req 
- * @param {*} res 
- * @returns 
- */
 /* 회원가입 메일 */
-const sendSignUpMail = async(req,res,next)=>{
+const sendSignUpMail = async(req: { body: { email: any; }; },res: { send: (arg0: { data: any; }) => void; },next: (arg0: { message: string; }) => void)=>{
   const {email}=req.body;
-  let result;
+  let result: string | undefined;
   if(!email){
     return next({message:"INVALID_REQUEST"})
   }
@@ -101,16 +82,16 @@ const sendSignUpMail = async(req,res,next)=>{
 }
 
 // 아이디 찾기 메일
-const sendFindIdMail = async(req,res,next)=>{
+const sendFindIdMail = async(req: { body: { email: any; name: any; }; },res: { send: (arg0: { data: any; }) => void; },next: (arg0: { message: string; }) => void)=>{
   const {email,name}=req.body
   if(!email||!name){
     return next({message:"INVALID_TOKEN"})
   }
 
-  let result;
+  let result: string | boolean | undefined;
 
   try{
-    result = anonymousService.sendFindIdMail(email,name)
+    result = await anonymousService.sendFindIdMail(email,name)
   }catch(err){
     if(err.message)return next(err)
     next({message:connection_error.CONTROLLER_SEND_FIND_ID_MAIL_ERROR})
@@ -120,13 +101,13 @@ const sendFindIdMail = async(req,res,next)=>{
 }
 
 // 비밀번호 찾기 메일
-const sendFindPwMail = async(req,res,next)=>{
+const sendFindPwMail = async(req: { body: { id: any; name: any; email: any; }; },res: { send: (arg0: { data: any; }) => void; },next: (arg0: { message: string; }) => void)=>{
   const {id,name,email}=req.body;
   if(!id||!name||!email){
     return next({message:"INVALID_REQUEST"})
   }
 
-  let result;
+  let result: string | undefined;
 
   try{
     result = await anonymousService.sendFindPwMail(id,email,name)
@@ -139,8 +120,8 @@ const sendFindPwMail = async(req,res,next)=>{
 }
 
 // 비밀번호 변경하기
-const changePw = async(req,res,next)=>{
-  let result;
+const changePw = async(req: { body: { id: any; email: any; name: any; new_Pw: any; }; },res: { send: (arg0: { data: any; }) => void; },next: (arg0: { message: string; }) => void)=>{
+  let result: string | number | undefined;
   const {id,email,name,new_Pw}=req.body;
   if(!id||!email||!name||!new_Pw){
     return next({message:server_warning.INVALID_REQUEST_WARN})
