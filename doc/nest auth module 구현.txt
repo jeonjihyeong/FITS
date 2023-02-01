@@ -1,0 +1,12 @@
+nest Auth 모듈 구현 방법 (nest.js) 공식문서 기준 => ()
+
+임시값을 객체로 지정하여 테스트 하는 방식으로 설명
+AuthService에서는 사용자를 검색하고 비밀번호를 체크하는 역할을 한다. 
+이를 위해서 ValidateUser()을 생성하여 passport local strategy에서 사용할 예정
+
+패스포트 모듈에서 각 전략 패턴에 따라서 비교하는 방법의 차이를 두고 그를 통해 확장가능한 구조를 가짐
+
+
+
+nest 공식문서 passport : https://docs.nestjs.com/security/authentication
+guard에 대한 자료 : https://velog.io/@junguksim/NestJS-%EB%85%B8%ED%8A%B8-2-Guards

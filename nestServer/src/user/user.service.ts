@@ -2,17 +2,21 @@ import { Injectable } from '@nestjs/common';
 import { LoginInputDto } from './dto/input/login-input.dto';
 import { SignUpInputDto } from './dto/input/signUp-input.dto';
 import { signUpUser } from './entities/sigup.entity';
-import { User } from './entities/user.entity';
-import { UserRepository } from './user.repositoy';
+import { User } from './entities/User.entity';
 import fs, { readFile, unlink, unlinkSync, writeFile, writeFileSync } from 'fs';
 import { existsSync, mkdirSync, readFileSync } from 'fs';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 
 
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepo: UserRepository){}
+  constructor(
+    @InjectRepository(User)
+    private userRepo: Repository<User>)
+{}
   /* 세팅값을 받아옴 없으면 만들기?
   세팅값을 불러올때 에러 json파일 형식이 아니라면? 근데 경로지정해서 그럴일 없음
   json 파일 값을 특정값을 검색하면 그에 대한 리턴을 해주는 메소드(별론거 같아서 했다가 걍 지움)
@@ -71,10 +75,10 @@ export class UserService {
   async login(userInput:LoginInputDto){
     const {id,pw}=userInput;
 
-    let loginUser:User;
+    let loginUser:User | undefined;
 
     try{
-      loginUser = await this.userRepo.findUserById(id);
+      loginUser = await this.userRepo.findOneBy({id})
     }catch(err){
       console.log(err);
     }
