@@ -5,6 +5,7 @@ import { UserModule } from './user/user.module';
 import { NoteModule } from './note/note.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Note } from './note/entities/note.entity';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -22,6 +23,7 @@ import { Note } from './note/entities/note.entity';
       synchronize: true,
       entities:[Note]
     }),
+    AuthModule,
   // UserModule  
 ],
   controllers: [AppController],
