@@ -1,9 +1,8 @@
-//@ts-check
 
-import validateRequest from '../../lib/common/validation';
-import {anonymousService} from '../../service';
-import logger from '../../lib/common/winston';
-import { connection_error, server_warning } from '../../lib/common/error';
+const validateRequest = require('../../lib/common/validation');
+const  {anonymousService}=require('../../service');
+const logger = require ('../../lib/common/winston');
+const { connection_error, server_warning } = require ('../../lib/common/error');
 
 const loggerInfo ={
   SIGN_UP_USER: "<SERVER INFO> New user SignUp."
@@ -12,7 +11,7 @@ const loggerInfo ={
 
 /*로그인*/
 
-const login = async(req: { socket: { remoteAddress: any; }; body: { id: any; pw: any; }; }, res: { send: (arg0: { message?: any; token?: any; } | undefined) => void; },next: (arg0: { message: any; }) => any) => {
+const login = async(req,res,next) => {
 
   const ip = req.socket.remoteAddress
     let {id,pw} = req.body
@@ -22,7 +21,7 @@ const login = async(req: { socket: { remoteAddress: any; }; body: { id: any; pw:
       return res.send(undefined)
     }
     
-    let loginResult: { accessToken?: any; refreshToken?: any; } ;
+    let loginResult;
     try{
       loginResult = await anonymousService.login(id,pw,ip)
     }catch(err){
@@ -40,7 +39,7 @@ const login = async(req: { socket: { remoteAddress: any; }; body: { id: any; pw:
 }
 
 
-const signup = async(req: { body: { id: any; pw: any; email: any; age: any; name: any; nickname: any; }; },res: { send: (arg0: { message?: string; data?: number; }) => void; },/** @type {(arg0: { message: string; }) => void} */ next: (arg0: { message: string; }) => void) => {
+const signup = async(req,res,next) => {
     
     const {id,pw,email,age,name,nickname} = req.body;
 
@@ -48,7 +47,7 @@ const signup = async(req: { body: { id: any; pw: any; email: any; age: any; name
     
     if(!validateRequest.signUpValdation(id,pw,email,nickname)) return next({message:server_warning.INVALID_REQUEST_WARN})
     
-    let isSignUpSuccess: string | boolean;
+    let isSignUpSuccess
 
     try{
       isSignUpSuccess = await anonymousService.signUp({id,pw,email,age,name,nickname})
@@ -64,9 +63,9 @@ const signup = async(req: { body: { id: any; pw: any; email: any; age: any; name
 
 
 /* 회원가입 메일 */
-const sendSignUpMail = async(req: { body: { email: any; }; },res: { send: (arg0: { data: any; }) => void; },next: (arg0: { message: string; }) => void)=>{
+const sendSignUpMail = async(req,res,next)=>{
   const {email}=req.body;
-  let result: string | undefined;
+  let result
   if(!email){
     return next({message:"INVALID_REQUEST"})
   }
@@ -82,13 +81,13 @@ const sendSignUpMail = async(req: { body: { email: any; }; },res: { send: (arg0:
 }
 
 // 아이디 찾기 메일
-const sendFindIdMail = async(req: { body: { email: any; name: any; }; },res: { send: (arg0: { data: any; }) => void; },next: (arg0: { message: string; }) => void)=>{
+const sendFindIdMail = async(req,res,next)=>{
   const {email,name}=req.body
   if(!email||!name){
-    return next({message:"INVALID_TOKEN"})
+    return next({message:"INVALID_REQUEST"})
   }
 
-  let result: string | boolean | undefined;
+  let result;
 
   try{
     result = await anonymousService.sendFindIdMail(email,name)
@@ -101,13 +100,13 @@ const sendFindIdMail = async(req: { body: { email: any; name: any; }; },res: { s
 }
 
 // 비밀번호 찾기 메일
-const sendFindPwMail = async(req: { body: { id: any; name: any; email: any; }; },res: { send: (arg0: { data: any; }) => void; },next: (arg0: { message: string; }) => void)=>{
+const sendFindPwMail = async(req,res,next)=>{
   const {id,name,email}=req.body;
   if(!id||!name||!email){
     return next({message:"INVALID_REQUEST"})
   }
 
-  let result: string | undefined;
+  let result;
 
   try{
     result = await anonymousService.sendFindPwMail(id,email,name)
@@ -120,8 +119,8 @@ const sendFindPwMail = async(req: { body: { id: any; name: any; email: any; }; }
 }
 
 // 비밀번호 변경하기
-const changePw = async(req: { body: { id: any; email: any; name: any; new_Pw: any; }; },res: { send: (arg0: { data: any; }) => void; },next: (arg0: { message: string; }) => void)=>{
-  let result: string | number | undefined;
+const changePw = async(req,res,next)=>{
+  let result;
   const {id,email,name,new_Pw}=req.body;
   if(!id||!email||!name||!new_Pw){
     return next({message:server_warning.INVALID_REQUEST_WARN})
@@ -139,7 +138,7 @@ const changePw = async(req: { body: { id: any; email: any; name: any; new_Pw: an
   res.send({data: result})
 }
 
-module.exports={
+module.exports = {
     login,
     signup,
     sendSignUpMail,
