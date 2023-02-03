@@ -8,5 +8,6 @@ AuthService에서는 사용자를 검색하고 비밀번호를 체크하는 역�
 
 
 
-nest 공식문서 passport : https://docs.nestjs.com/security/authentication
+nest 공식문서 passport : 
+
 guard에 대한 자료 : https://velog.io/@junguksim/NestJS-%EB%85%B8%ED%8A%B8-2-Guards
