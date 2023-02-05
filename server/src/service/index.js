@@ -1,7 +1,7 @@
-import anonymousService from "./anonymous"
-import userService from "./user"
+const anonymousService = require ("./anonymous");
+const userService =require("./user")
 
-export {
+module.exports = {
     anonymousService,
     userService
 }
