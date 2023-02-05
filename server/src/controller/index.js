@@ -1,8 +1,8 @@
-import anonymous from './anonymous/index.Js'
-import note from './note'
-import comment from './comment'
-import user from './user'
+const anonymous = require('./anonymous/index.js')
+const note = require ('./note')
+const comment = require('./comment')
+const user = require('./user')
 
-export {
+module.exports = {
     anonymous,note,comment,user
 }

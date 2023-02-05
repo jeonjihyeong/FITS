@@ -67,7 +67,7 @@ const sendSignUpMail = async(req,res,next)=>{
   const {email}=req.body;
   let result
   if(!email){
-    return next({message:"INVALID_REQUEST"})
+    return next({message:server_warning.INVALID_REQUEST_WARN})
   }
 
   try{

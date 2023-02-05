@@ -1,12 +1,12 @@
-const app = express()
 const port = 3000
-import express from 'express';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import { db } from './src/lib/index';
-import router from './src/router';
-import { connection_error, server_warning, authentication_error, httpStatus } from './src/lib/common/error';
-import logger from './src/lib/common/winston';
+const express = require('express');
+const app = express()
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const { db } = require('./src/lib/index');
+const router = require('./src/router');
+const { connection_error, server_warning, authentication_error, httpStatus, logic_error } = require('./src/lib/common/error');
+const logger = require('./src/lib/common/winston');
 
 require('express-async-errors');
 
@@ -18,7 +18,7 @@ app.use(cors());
     
 app.use(router.basicRouter);
     
-app.use(async function (err, req, res, next) {
+app.use((err, req, res, next) => {
   /*500번대에러가 나오면 추가적인 정보를 프론트로 넘기지 않고 로깅으로 관리*/
   /*에러를 각 코드에서 상속하기 보단 에러 처리기에서 한번에 처리한다.*/
   console.log("에러처리기 오는지 확인");
@@ -29,6 +29,11 @@ app.use(async function (err, req, res, next) {
 
   if (Object.keys(server_warning).find(key => server_warning[key] === err.message)) {
     logger.warn(err.message);
+    return res.status(httpStatus.ok).send(err.message);
+  }
+  
+  if (Object.keys(logic_error).find(key => logic_error[key] === err.message)) {
+    logger.error(err.message);
     return res.status(httpStatus.ok).send(err.message);
   }
 

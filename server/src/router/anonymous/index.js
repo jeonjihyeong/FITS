@@ -1,5 +1,5 @@
-import express from 'express';
-import { anonymous } from '../../controller';
+const express = require('express');
+const { anonymous } = require('../../controller');
 
 const anonymousRouter= express.Router();
 
@@ -13,4 +13,4 @@ anonymousRouter.post('/changePw',anonymous.changePw)
 // anonymousRouter.post('/login/naver',anonymous.kakaoLogin)
 
 
-export {anonymousRouter}
+module.exports = {anonymousRouter}
