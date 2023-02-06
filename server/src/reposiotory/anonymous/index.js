@@ -1,4 +1,3 @@
-//@ts-check
 
 const { connection_error } = require('../../lib/common/error');
 const {models, Op}= require('../../lib/db')
