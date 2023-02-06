@@ -117,18 +117,8 @@ const _setRedisIpAndRefreshToken = async(userInfo,refreshToken,ip)=>{
  * @returns 
  */
 const signUp = async(bodyData)=> {
-  let isDuplicatedId  
-  try{
-    const userDataById= await anonymousReposiotory.getUserId(bodyData.id)
-    userDataById === null ? isDuplicatedId = false : isDuplicatedId = true;
-  }catch(err){
-    if(err.message) throw new Error(err.message)
-    throw new Error(connection_error.SERVICE_DUPLICATE_CHECK_ERROR)
-  }
-  
-  if (isDuplicatedId===true){
-    return logic_error.SIGN_UP_DUPLICATE_ID
-  }
+
+  await _checkDuplicateId(bodyData)
   
   const hashPw =encryptionPassWord(bodyData.pw);
   
@@ -149,8 +139,16 @@ const signUp = async(bodyData)=> {
   return true
 }
 
-const _checkDuplicateId = async()=>{
+const _checkDuplicateId = async(bodyData)=>{
+  try{
+    const userDataById= await anonymousReposiotory.getUserId(bodyData.id)
+    userDataById === null ? isDuplicatedId = false : isDuplicatedId = true;
+  }catch(err){
+    if(err.message) throw new Error(err.message)
+    throw new Error(connection_error.SERVICE_DUPLICATE_CHECK_ERROR)
+  }
   
+  if (isDuplicatedId===true)throw new Error(logic_error.SIGN_UP_DUPLICATE_ID)
 }
 
 /**
@@ -179,6 +177,20 @@ const sendsignUPMail=async(email)=>{
  * @returns 
  */
 const sendFindIdMail=async(name, email)=>{
+  const getUserByEmail = await _checkUserExistenceAndGetUser(name,email)
+
+  const findIdMailText = findIdMail(name,getUserByEmail.dataValues.id)
+  
+  try{
+    await mailSender.sendGmail(findIdMailText, email)
+  }catch(err){
+    if(err.message)throw new Error(err.message)
+    throw new Error(connection_error.SERVICE_SEND_FIND_ID_MAIL_ERROR)
+  }
+  return true
+}
+
+const _checkUserExistenceAndGetUser = async(name,email)=>{
   let getUserByEmail
   try{
     getUserByEmail=await anonymousReposiotory.getEmailData(name,email)
@@ -188,18 +200,10 @@ const sendFindIdMail=async(name, email)=>{
   }
 
   if(getUserByEmail===null){
-    return logic_error.NOT_EXIST_USER_BY_EMAIL
+    throw new Error(logic_error.NOT_EXIST_USER_BY_EMAIL)
   }
 
-  const findIdMailText = findIdMail(name,getUserByEmail.dataValues.id)
-  
-  try{
-    await mailSender.sendsignUPMail(findIdMailText, email)
-  }catch(err){
-    if(err.message)throw new Error(err.message)
-    throw new Error(connection_error.SERVICE_SEND_FIND_ID_MAIL_ERROR)
-  }
-  return true
+  return getUserByEmail
 }
 
 
@@ -211,28 +215,32 @@ const sendFindIdMail=async(name, email)=>{
  * @returns 
  */
 const sendFindPwMail=async(id, email, name)=>{
-  let getUserDataByPwData
-    try{
-      getUserDataByPwData =  await anonymousReposiotory.getPwData(id,email,name)
-    }catch(err){
-      if(err.message){throw new Error(err.message)}
-      throw new Error(connection_error.SERVICE_SEND_FIND_PW_MAIL_CHECK_EXISTENCE_ERROR)
-    }
+  await _checkExistenceByPwData(id,email,name)
 
-    if(getUserDataByPwData===null||!getUserDataByPwData){
-      return logic_error.NOT_EXIST_USER_BY_PW_DATA
-    }
+  const findPwMailText =findPwMail(name)
 
-    const findPwMailText =findPwMail(name)
-
-    try{
-      await mailSender.sendGmail(findPwMailText.mailText,email)
-    }catch(err){
-      if(err.message){throw new Error(err.message)}
-      throw new Error("CONTROLLER_SEND_FIND_PW_MAIL_ERROR")
-    }
+  try{
+    await mailSender.sendGmail(findPwMailText.mailText,email)
+  }catch(err){
+    if(err.message){throw new Error(err.message)}
+    throw new Error(connection_error.SERVICE_SEND_FIND_PW_MAIL_ERROR)
+  }
     
   return findPwMailText.auth_key
+}
+
+const _checkExistenceByPwData = async(id,email,name)=>{
+  let getUserDataByPwData
+  try{
+    getUserDataByPwData =  await anonymousReposiotory.getPwData(id,email,name)
+  }catch(err){
+    if(err.message)throw new Error(err.message)
+    throw new Error(connection_error.SERVICE_SEND_FIND_PW_MAIL_CHECK_EXISTENCE_ERROR)
+  }
+
+  if(getUserDataByPwData===null||!getUserDataByPwData){
+    throw new Error(logic_error.NOT_EXIST_USER_BY_PW_DATA)
+  }
 }
 
 
@@ -245,18 +253,7 @@ const sendFindPwMail=async(id, email, name)=>{
  * @returns 
  */
 const changePw = async(id, email, name, new_Pw)=>{
-  let changePwUserData
-
-  try{
-    changePwUserData = await anonymousReposiotory.getPwData(id,email,name)
-  }catch(err){
-    if(err.message){throw new Error(err.message)}
-    throw new Error("SERVICE_CHANGE_PW_GET_USER_DATA_ERROR")
-  }
-
-  if(changePwUserData===null||changePwUserData===undefined){
-    return logic_error.NOT_EXIST_USER_BY_PW_DATA
-  }
+  const changePwUserData = await _getUserToChangePw(id,email,name)
 
   let inCodeNewPw ={
     hashPw:encryptionPassWord(new_Pw),
@@ -270,6 +267,23 @@ const changePw = async(id, email, name, new_Pw)=>{
     throw new Error(connection_error.SERVICE_CHANGE_PW_ERROR)
   }
   return 1
+}
+
+const _getUserToChangePw=async(id,email,name)=>{
+  let changePwUserData
+
+  try{
+    changePwUserData = await anonymousReposiotory.getPwData(id,email,name)
+  }catch(err){
+    if(err.message){throw new Error(err.message)}
+    throw new Error("SERVICE_CHANGE_PW_GET_USER_DATA_ERROR")
+  }
+
+  if(changePwUserData===null||changePwUserData===undefined){
+    throw new Error(logic_error.NOT_EXIST_USER_BY_PW_DATA)
+  }
+
+  return changePwUserData
 }
 
 module.exports = {

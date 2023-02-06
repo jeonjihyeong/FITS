@@ -1,4 +1,3 @@
-//@ts-check
 
 const {models, Op}= require('../../lib/db')
 
