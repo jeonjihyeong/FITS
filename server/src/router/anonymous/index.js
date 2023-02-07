@@ -13,4 +13,4 @@ anonymousRouter.post('/changePw',anonymous.changePw)
 // anonymousRouter.post('/login/naver',anonymous.kakaoLogin)
 
 
-module.exports = {anonymousRouter}
+module.exports = anonymousRouter

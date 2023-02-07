@@ -1,6 +1,6 @@
 const express = require('express');
 const middleware = require('../lib/common/middleware');
-const {anonymousRouter} = require('./anonymous');
+const anonymousRouter = require('./anonymous');
 const noteRouter = require('./note');
 const commentRouter = require('./comment');
 const userRouter = require('./user');
