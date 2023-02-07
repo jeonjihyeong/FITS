@@ -1,9 +1,9 @@
-const port = 3000
+const port = 3001
 const express = require('express');
 const app = express()
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { db } = require('./src/lib/index');
+const { db } = require('./src/lib/index.js');
 const router = require('./src/router');
 const { connection_error, server_warning, authentication_error, httpStatus, logic_error } = require('./src/lib/common/error');
 const logger = require('./src/lib/common/winston');

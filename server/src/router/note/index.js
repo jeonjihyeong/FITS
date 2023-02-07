@@ -5,7 +5,7 @@ const noteRouter= express.Router();
 // 게시글 작성
 noteRouter.post('/', note.writeNote);
 
-// 게시글 가져오기
+// 게시글 가져오기s
 noteRouter.get('/all/:page', note.getNote);
 
 // 내 노트 가져오기
