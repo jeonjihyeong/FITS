@@ -9,31 +9,28 @@ const loggerInfo ={
 }
 
 
-/*로그인*/
-
 const login = async(req,res,next) => {
+  const {ip} = req.socket.remoteAddress
+  let {id, pw} = req.body
+  
+  if(!id || !pw){
+    return next(server_warning.INVALID_REQUEST_WARN)
+  }
+    
+  let loginResult;
 
-  const ip = req.socket.remoteAddress
-    let {id,pw} = req.body
-
-    if(!id || !pw){
-      logger.warn(server_warning.INVALID_REQUEST_WARN)
-      return res.send(undefined)
-    }
+  try{
+    loginResult = await anonymousService.login(id,pw,ip)
+  }catch(err){
+    if(err.message)return next(err) 
+    return next({message:connection_error.CONTROLLER_LOGIN_ERROR});
+  }
     
-    let loginResult;
-    try{
-      loginResult = await anonymousService.login(id,pw,ip)
-    }catch(err){
-      if(err.message)return next(err)
-      return next({message:connection_error.CONTROLLER_LOGIN_ERROR});
-    }
+  if(!loginResult.accessToken || !loginResult.refreshToken) return res.send({message:loginResult}) 
     
-    if(!loginResult.accessToken || !loginResult.refreshToken)return res.send({message:loginResult}) 
-    
-    res.send({
-      token:{
-        ...loginResult
+  res.send({
+    token:{
+      ...loginResult
       }
     })
 }
@@ -55,9 +52,7 @@ const signup = async(req,res,next) => {
       if(err.message) next(err)
       return next({message: connection_error.CONTROLLER_LOGIN_ERROR})
     }
-    if(isSignUpSuccess==="duplicateId"){
-      return res.send({message:'duplicateID'})
-    }
+
     res.send({data:1})
 }
 
@@ -73,7 +68,7 @@ const sendSignUpMail = async(req,res,next)=>{
   try{
     result = await anonymousService.sendsignUPMail(email)
   }catch(err){
-    if(err.message){return next(err)}
+    if(err.message)return next(err)
     next({message:connection_error.CONTROLLER_SEND_SIGN_UP_MAIL_ERROR})
   }
 
@@ -84,7 +79,7 @@ const sendSignUpMail = async(req,res,next)=>{
 const sendFindIdMail = async(req,res,next)=>{
   const {email,name}=req.body
   if(!email||!name){
-    return next({message:"INVALID_REQUEST"})
+    return next({message:server_warning.INVALID_REQUEST_WARN})
   }
 
   let result;

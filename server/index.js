@@ -1,4 +1,4 @@
-const port = 3001
+const port = 3000
 const express = require('express');
 const app = express()
 const cors = require('cors');
