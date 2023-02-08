@@ -1,11 +1,11 @@
 version: "3.9"  # optional since v1.27.0
 services:
   postgresSql:
-    image: postgres:12.9-alpine
+    image: postgres:bullseye
     environment:
-      POSTGRES_DB : mfi
-      POSTGRES_USER: mfi
-      POSTGRES_PASSWORD: postgres 
+      POSTGRES_DB : fits
+      POSTGRES_USER: fits
+      POSTGRES_PASSWORD: cjswp7014@@ 
     ports:
       - "5432:5432"
     volumes:
@@ -25,18 +25,19 @@ services:
   backend:
     build:
       context: .
-      dockerfile: ./server/dockerfile
+      dockerfile: ./server/Dockerfile
     depends_on:
       - postgresSql
+      - redis
     ports:
       - 3000:3000
 
-  frontend:
-    build:
-      context: .
-      dockerfile: ./front/dockerfile
-    ports:
-      - 80:80
+  # frontend:
+  #   build:
+  #     context: .
+  #     dockerfile: ./front/dockerfile
+  #   ports:
+  #     - 80:80
 
 volumes:
   db_data:

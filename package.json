@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/jeonjihyeong/FITS/issues"
   },
-  "homepage": "https://github.com/jeonjihyeong/FITS#readme"
+  "homepage": "https://github.com/jeonjihyeong/FITS#readme",
+  "dependencies": {
+    "redis-server": "^1.2.2"
+  }
 }

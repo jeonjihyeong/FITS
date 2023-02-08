@@ -1,5 +1,3 @@
-//@ts-check
-
 const { noteRepo, commentRepo } = require("../../reposiotory")
 const pagination = require("../../lib/common/pagination")
 const { connection_error } = require("../../lib/common/error")

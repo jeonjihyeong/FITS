@@ -2,7 +2,7 @@ FROM node:16-alpine
 
 WORKDIR /app
 
-COPY ./ .
+COPY ./server .
 
 RUN npm install
 
