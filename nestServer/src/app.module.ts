@@ -10,7 +10,7 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    NoteModule,
+    // NoteModule,
     TypeOrmModule.forRoot({
       type: "postgres",
       host: "localhost",
@@ -23,8 +23,8 @@ import { AuthModule } from './auth/auth.module';
       synchronize: true,
       entities:[Note]
     }),
-    AuthModule,
-  // UserModule  
+    // AuthModule,
+  UserModule  
 ],
   controllers: [AppController],
   providers: [AppService],

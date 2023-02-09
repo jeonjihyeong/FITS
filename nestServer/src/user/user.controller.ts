@@ -16,22 +16,22 @@ export class UserController {
   async SignUp(@Body() signUpuserData:SignUpInputDto){
     return await this.userService.signUp(signUpuserData);
   }
-  @Post('/signUpMail')
-  async SignUp(@Body() signUpuserData:SignUpInputDto){
-    return await this.userService.signUp(signUpuserData);
-  }
-  @Post('/findId')
-  async SignUp(@Body() signUpuserData:SignUpInputDto){
-    return await this.userService.signUp(signUpuserData);
-  }
-  @Post('/findPw')
-  async SignUp(@Body() signUpuserData:SignUpInputDto){
-    return await this.userService.signUp(signUpuserData);
-  }
-  @Post('/changePw')
-  async SignUp(@Body() signUpuserData:SignUpInputDto){
-    return await this.userService.signUp(signUpuserData);
-  }
+  // @Post('/signUpMail')
+  // async SignUp(@Body() signUpuserData:SignUpInputDto){
+  //   return await this.userService.signUp(signUpuserData);
+  // }
+  // @Post('/findId')
+  // async SignUp(@Body() signUpuserData:SignUpInputDto){
+  //   return await this.userService.signUp(signUpuserData);
+  // }
+  // @Post('/findPw')
+  // async SignUp(@Body() signUpuserData:SignUpInputDto){
+  //   return await this.userService.signUp(signUpuserData);
+  // }
+  // @Post('/changePw')
+  // async SignUp(@Body() signUpuserData:SignUpInputDto){
+  //   return await this.userService.signUp(signUpuserData);
+  // }
 
 
 

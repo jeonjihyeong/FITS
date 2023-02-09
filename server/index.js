@@ -14,8 +14,6 @@ require('dotenv').config();
 
 app.use(bodyParser.json())
 app.use(cors());
-
-    
 app.use(router.basicRouter);
     
 app.use((err, req, res, next) => {

@@ -2,11 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { LoginInputDto } from './dto/input/login-input.dto';
 import { SignUpInputDto } from './dto/input/signUp-input.dto';
 import { signUpUser } from './entities/sigup.entity';
-import { User } from './entities/User.entity';
+import { User } from './entities/user.entity';
 import fs, { readFile, unlink, unlinkSync, writeFile, writeFileSync } from 'fs';
 import { existsSync, mkdirSync, readFileSync } from 'fs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { UserOutputDto } from './dto/output/user-output.dto';
 
 
 
@@ -75,38 +76,48 @@ export class UserService {
   async login(userInput:LoginInputDto){
     const {id,pw}=userInput;
 
-    let loginUser:User | undefined;
+    let checkLogin : UserOutputDto|string
 
     try{
-      loginUser = await this.userRepo.findOneBy({id})
+      checkLogin = await this._checkExistence(id,pw)
     }catch(err){
       console.log(err);
     }
+    console.log(checkLogin)
+    if (<string>checkLogin){
+      return {message:checkLogin}
+    }
 
-    if(loginUser===undefined) return {message:'wrong Id'}
-    if(pw!==loginUser.pw) return {message:'wrong Pw'}
-    console.log(loginUser)
+    await this._signNewAccessAndRefreshToken(<UserOutputDto>checkLogin)
+    console.log(checkLogin)
     return {message:'Sucess'};
   }
+
+  async _signNewAccessAndRefreshToken(checkLogin : UserOutputDto) {
+    
+  }
+
+  async _checkExistence(id:string, pw:string){
+    const loginUser : User|undefined = await this.userRepo.findOneBy({id:id})
+    console.log(loginUser)
+    if(loginUser===undefined||loginUser===null)return 'wrong Id'
+    if(pw!==loginUser.pw)return 'wrong Pw'
+    return loginUser;
+  }
+
 
   async signUp(userInput:SignUpInputDto){
     const {id,pw,email,nickname,name,age}=userInput;
     
-    let isDuplicate:boolean;
-    
-    
     try{
       // console.log(await this.userRepo.findUserById(id))
-      await this.userRepo.findUserById(id)===undefined?isDuplicate=false:isDuplicate=true;
+      const isDuplicate = await this._checkDuplicateId(id);
+      if(isDuplicate){
+        return {message:"duplicate id"}
+      }
     }catch(err){
       console.log(err);
       throw new Error("FIND_USER_BY_ID_ERROR")
-    }
-    
-    console.log(isDuplicate)
-    
-    if(isDuplicate){
-      return {message:"id is duplicated"}
     }
     
     let signUpUser:signUpUser = {
@@ -119,12 +130,20 @@ export class UserService {
     }
 
     try{
-      await this.userRepo.saveUser(signUpUser);
+      await this.userRepo.save(signUpUser);
     }catch(err){
       console.log(err);
       throw new Error("SAVE_USER_ERROR")
     }
-
     return {message:"success"}
   }
+
+  
+  async _checkDuplicateId(id:string):Promise<Boolean> {
+    let isDuplicate:boolean;
+    const userData = await this.userRepo.findOneBy({id})
+    !userData?isDuplicate=false:isDuplicate=true
+    return isDuplicate
+  }
 }
+
