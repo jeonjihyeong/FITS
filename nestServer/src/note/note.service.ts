@@ -27,7 +27,7 @@ export class NoteService {
     {}
 
     async saveNote({title, content}){
-        this.noteRepo.save(newNoteData)
+        this.noteRepo.save(title,content)
         return {data:"suc"}
     }
 
