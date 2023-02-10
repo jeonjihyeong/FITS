@@ -93,10 +93,7 @@ export class UserService {
     return {message:'Sucess'};
   }
 
-  async _signNewAccessAndRefreshToken(checkLogin : UserOutputDto) {
-    
-  }
-
+  
   async _checkExistence(id:string, pw:string){
     const loginUser : User|undefined = await this.userRepo.findOneBy({id:id})
     console.log(loginUser)
@@ -105,6 +102,11 @@ export class UserService {
     return loginUser;
   }
 
+  
+  async _signNewAccessAndRefreshToken(checkLogin : UserOutputDto) {
+    
+  }
+  
 
   async signUp(userInput:SignUpInputDto){
     const {id,pw,email,nickname,name,age}=userInput;

@@ -7,12 +7,9 @@ export const login=async(reqInfo)=>{
         result = await http.post('/login',reqInfo)
     }
     catch(err){
-        if(err.message === 'aaaaa'){}
-        if(err.message ===' bbbb'){}
         console.log(err);
     }
     if(!result)  { 
-        
         alert ('통신 실패 !입니다 !'); return;
     }
 
