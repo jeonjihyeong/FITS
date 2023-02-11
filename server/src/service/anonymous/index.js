@@ -1,4 +1,3 @@
-
 const { anonymousReposiotory } = require( '../../reposiotory');
 const { salt, encryptionPassWord, decryptionPassWord } = require( '../../lib/common/hashing');
 const redisClient = require( "../../lib/common/redis.util");
@@ -7,14 +6,7 @@ const { signUpMail, findIdMail, findPwMail } = require( '../../lib/common/setMai
 const jwt = require( '../../lib/common/token');
 const { server_warning, connection_error, logic_error } = require( '../../lib/common/error');
 
-/**
- 로그인 서비스
- * 
- * @param {*} id 
- * @param {*} pw 
- * @param {*} ip 
- * @returns 
- */
+
 const login = async(id,pw,ip)=>{
   let userInfo;
   try{
@@ -26,7 +18,7 @@ const login = async(id,pw,ip)=>{
   }
 
   await _checkLogin(pw,userInfo)
-  await _checkDuplicateLogin(id,userInfo)
+  // await _checkDuplicateLogin(id,userInfo)
   
   // 보안이 필요한 정보는 삭제
   const payload = {
@@ -40,7 +32,7 @@ const login = async(id,pw,ip)=>{
   const accessToken = jwt.signToken(payload);
   const refreshToken = jwt.signRefreshToken();
 
-  await _setRedisIpAndRefreshToken(userInfo, refreshToken, ip);
+  // await _setRedisIpAndRefreshToken(userInfo, refreshToken, ip);
 
   const tokenValue = {
     accessToken : accessToken,
@@ -53,12 +45,6 @@ const login = async(id,pw,ip)=>{
 }
 
 
-/**
- * 
- * @param {*} pw 
- * @param {*} userInfo 
- * @returns 
- */
 const _checkLogin = async(pw,userInfo) => {
   if (userInfo===null || !userInfo){
     throw new Error(logic_error.LOGIN_ID_FAILED)
@@ -74,12 +60,7 @@ const _checkLogin = async(pw,userInfo) => {
 
 
 
-/**
- * 
- * @param {*} ip 
- * @param {*} userInfo 
- * @returns 
- */
+
 const _checkDuplicateLogin = async(ip,userInfo) => {
   let currentLoginIp
   try{
@@ -111,11 +92,6 @@ const _setRedisIpAndRefreshToken = async(userInfo,refreshToken,ip)=>{
 }
 
 
-/**
- * 
- * @param {*} bodyData 
- * @returns 
- */
 const signUp = async(bodyData)=> {
 
   await _checkDuplicateId(bodyData)
@@ -130,7 +106,7 @@ const signUp = async(bodyData)=> {
   
   try{
     await anonymousReposiotory.saveUser(payload);
-    await redisClient.set(payload.id,'')
+    // await redisClient.set(payload.id,'')
   }catch(err){
     if(err.message) throw new Error(err.message)
     throw new Error(connection_error.SERVICE_SET_SIGN_UP_ERROR)

@@ -2,25 +2,26 @@ version: "3.9"  # optional since v1.27.0
 services:
   postgresSql:
     image: postgres:bullseye
+    ports:
+      - "3030:5432"
     environment:
+      PSQL_HOST : postgresSql
       POSTGRES_DB : fits
       POSTGRES_USER: fits
-      POSTGRES_PASSWORD: cjswp7014@@ 
-    ports:
-      - "5432:5432"
+      POSTGRES_PASSWORD: cjswp7014@@
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - postgresSql:/var/lib/postgresql/data
 
-  redis:
-      image: redis:alpine
-      command: redis-server --port 6379
-      container_name: redis_boot
-      hostname: redis_boot
-      labels:
-        - "name=redis"
-        - "mode=standalone"
-      ports:
-        - 6379:6379
+  # redis:
+  #     image: redis:alpine
+  #     command: redis-server --port 6379
+  #     container_name: redis_boot
+  #     hostname: redis_boot
+  #     labels:
+  #       - "name=redis"
+  #       - "mode=standalone"
+  #     ports:
+  #       - 6379:6379
         
   backend:
     build:
@@ -28,9 +29,10 @@ services:
       dockerfile: ./server/Dockerfile
     depends_on:
       - postgresSql
-      - redis
+      # - redis
     ports:
       - 3000:3000
+    
 
   # frontend:
   #   build:
@@ -40,4 +42,4 @@ services:
   #     - 80:80
 
 volumes:
-  db_data:
+  postgresSql:
