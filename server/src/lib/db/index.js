@@ -9,7 +9,7 @@ const models = {};
 const initialize = async () => {
     const sequelize = new Sequelize( config.database, config.dialect, config.password,
         {
-            host: 'localhost',
+            host: process.env.PSQL_HOST || "localhost",
             dialect: 'postgres',
         }
     )
