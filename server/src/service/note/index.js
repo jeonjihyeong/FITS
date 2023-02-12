@@ -1,4 +1,4 @@
-const { noteRepo, commentRepo } = require("../../reposiotory")
+const { noteRepo, commentRepo, likeRepo } = require("../../reposiotory")
 const pagination = require("../../lib/common/pagination")
 const { connection_error } = require("../../lib/common/error")
 
@@ -106,10 +106,38 @@ const updateNote = async(noteIdx,title,content)=>{
     return {data:"success"}
 }
 
+const likeNote = async(noteIdx,userIdx)=>{
+    console.log('hi2')
+    if(await _checkLikedUser(noteIdx,userIdx)){
+        return false
+    }
+    try{
+        console.log('이건가?')
+        await likeRepo.setLike(noteIdx,userIdx)
+    }catch(err){
+        throw new Error(connection_error.SERVICE_SET_LIKE)
+    }
+
+    console.log('hi3')
+    return true
+}
+
+const _checkLikedUser = async(noteIdx, userIdx)=>{
+    try{
+        const isLike = await likeRepo.getUserLike(noteIdx,userIdx)
+        if(!isLike) return false
+    }catch(err){
+        console.log(err)
+        throw new Error('can not get like')
+    }
+    return true
+}
+
 module.exports = {
     writeNote,
     getNote,
     getOneNote,
     deleteNoteContent,
-    updateNote
+    updateNote,
+    likeNote
 }

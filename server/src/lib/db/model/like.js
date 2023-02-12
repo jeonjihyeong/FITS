@@ -36,7 +36,7 @@ const create = async (sequelize) => {
             onDelete: "CASCADE"
         });
         likeTable.belongsTo(models.note, {
-            foreignKey: 'userIdx',
+            foreignKey: 'noteIdx',
             onDelete: "CASCADE"
         });
     };
