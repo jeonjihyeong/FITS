@@ -1,3 +1,4 @@
+const { server_warning } = require('../../lib/common/error');
 const {noteService} = require('../../service')
 
 const writeNote = async(req,res,next)=>{
@@ -87,6 +88,22 @@ const updateNote = async(req,res)=>{
     return true;
 }
 
+const likeNote = async(req,res,next)=>{
+    const {noteIdx}=req.params;
+    const {userIdx} = req.decode;
+    if(!noteIdx)next({message:server_warning.INVALID_REQUEST_WARN})
+    console.log('hihi')
+    try{
+        if(!await noteService.likeNote(noteIdx,userIdx)){
+            return res.send({message:'alreadyExist'})
+        }
+    }catch(err){
+        console.log(err)
+    }
+    res.send({message:"성공"})
+    return true
+}
+
 module.exports={
     writeNote,
     getNote,
@@ -94,4 +111,5 @@ module.exports={
     getOneNote,
     deleteNoteContent,
     updateNote,
+    likeNote
 }

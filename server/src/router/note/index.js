@@ -11,6 +11,9 @@ noteRouter.get('/all/:page', note.getNote);
 // 내 노트 가져오기
 noteRouter.get('/my', note.getMyNote)
 
+// 게시글 좋아요
+noteRouter.post('/view/like/:noteIdx', note.likeNote);
+
 // 게시글 view
 noteRouter.get('/view/:noteIdx', note.getOneNote);
 
@@ -19,5 +22,6 @@ noteRouter.put('view/:noteIdx',note.updateNote);
 
 // 게시글 삭제
 noteRouter.delete('view/:noteIdx',note.deleteNoteContent)
+
 
 module.exports= noteRouter
