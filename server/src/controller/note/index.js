@@ -1,4 +1,4 @@
-const { server_warning } = require('../../lib/common/error');
+const { server_warning, connection_error } = require('../../lib/common/error');
 const {noteService} = require('../../service')
 
 const writeNote = async(req,res,next)=>{
@@ -6,13 +6,13 @@ const writeNote = async(req,res,next)=>{
     const {title,content} = req.body;
     const {userIdx} = req.decode
     if(!title || !content||!userIdx) {
-        next({message:"INVALID REQUEST"})
+        next({message:server_warning.INVALID_REQUEST_WARN})
     }
     try{
         await noteService.writeNote(req.decode.userIdx,title,content)
     }catch(err){
         if(err.message){next(err)}
-        next({message:"CONTROLLER_WRITE_NOTE_ERROR"})
+        next({message:connection_error.CONTROLLER_WRITE_NOTE_ERROR})
     }
     res.send({data: 'Success'})
 }
@@ -26,10 +26,10 @@ const getNote = async(req, res,next)=>{
         result = await noteService.getNote(page);
         if(!result) return result;
     }catch(err){
-        logger.error("CONTROLLER_GET_NOTE_ERROR");
-        return undefined;
+        throw new Error(connection_error.CONTROLLER_GET_NOTE_ERROR)
     }
-    res.send({data:result,paginate:paginateData});
+    const {data, paginate} = result
+    res.send({data:data, paginate:paginate});
 }
 
 const getMyNote = async(req, res,next)=>{
