@@ -24,6 +24,9 @@ const connection_error={
     CONTROLLER_SEND_FIND_PW_MAIL_ERROR:"<CONTROLLER ERROR> Send find pw mail error",
     CONTROLLER_CHANGE_PW_ERROR:"<CONTROLLER ERROR> Change pw error",
 
+    CONTROLLER_WRITE_NOTE_ERROR:"<CONTROLLER ERROR> Write note Error",
+    CONTROLLER_GET_NOTE_ERROR:"<CONTROLLER ERROR> Get note Error",
+    
     CONTROLLER_LOGOUT_ERROR:"<CONTROLLER ERROR> Logout Error",
 
     SERVICE_GET_USER_DATA_ERROR : "<SERVICE ERROR[login]> Can not get user Data.",

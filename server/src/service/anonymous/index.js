@@ -18,7 +18,7 @@ const login = async(id,pw,ip)=>{
   }
 
   await _checkLogin(pw,userInfo)
-  // await _checkDuplicateLogin(id,userInfo)
+  await _checkDuplicateLogin(id,userInfo)
   
   // 보안이 필요한 정보는 삭제
   const payload = {
@@ -32,7 +32,7 @@ const login = async(id,pw,ip)=>{
   const accessToken = jwt.signToken(payload);
   const refreshToken = jwt.signRefreshToken();
 
-  // await _setRedisIpAndRefreshToken(userInfo, refreshToken, ip);
+  await _setRedisIpAndRefreshToken(userInfo, refreshToken, ip);
 
   const tokenValue = {
     accessToken : accessToken,
