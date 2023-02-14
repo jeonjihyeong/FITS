@@ -12,7 +12,6 @@ const login = async(id,pw,ip)=>{
   try{
     userInfo = await anonymousReposiotory.getUserId(id);
   }catch(err){
-    /*에러가 전해져 오는 에러면  if(err.messgae)면 그대로 throw / 아니면 logger하고 에러메시지를 던짐*/
     if(err.message) throw new Error(err.message)
     throw new Error(connection_error.SERVICE_GET_USER_DATA_ERROR)
   }
@@ -20,7 +19,6 @@ const login = async(id,pw,ip)=>{
   await _checkLogin(pw,userInfo)
   await _checkDuplicateLogin(id,userInfo)
   
-  // 보안이 필요한 정보는 삭제
   const payload = {
     userIdx: userInfo.dataValues.userIdx,
     id: userInfo.dataValues.id,
@@ -106,7 +104,7 @@ const signUp = async(bodyData)=> {
   
   try{
     await anonymousReposiotory.saveUser(payload);
-    // await redisClient.set(payload.id,'')
+    await redisClient.set(payload.id,'')
   }catch(err){
     if(err.message) throw new Error(err.message)
     throw new Error(connection_error.SERVICE_SET_SIGN_UP_ERROR)
@@ -127,12 +125,6 @@ const _checkDuplicateId = async(bodyData)=>{
   if (isDuplicatedId===true)throw new Error(logic_error.SIGN_UP_DUPLICATE_ID)
 }
 
-/**
- 회원가입 메일 서비스
- * 
- * @param {string} email 
- * @returns
- */
 const sendsignUPMail=async(email)=>{
   const signUpText =signUpMail();
   try{
@@ -145,13 +137,6 @@ const sendsignUPMail=async(email)=>{
 }
 
 
-// 아이디찾기 메일 서비스
-/**
- * 
- * @param {*} name 
- * @param {*} email 
- * @returns 
- */
 const sendFindIdMail=async(name, email)=>{
   const getUserByEmail = await _checkUserExistenceAndGetUser(name,email)
 
@@ -183,13 +168,6 @@ const _checkUserExistenceAndGetUser = async(name,email)=>{
 }
 
 
-/**
- * 
- * @param {*} id 
- * @param {*} email 
- * @param {*} name 
- * @returns 
- */
 const sendFindPwMail=async(id, email, name)=>{
   await _checkExistenceByPwData(id,email,name)
 
@@ -220,14 +198,6 @@ const _checkExistenceByPwData = async(id,email,name)=>{
 }
 
 
-/**
- * 
- * @param {*} id 
- * @param {*} email 
- * @param {*} name 
- * @param {*} new_Pw 
- * @returns 
- */
 const changePw = async(id, email, name, new_Pw)=>{
   const changePwUserData = await _getUserToChangePw(id,email,name)
 
@@ -239,7 +209,7 @@ const changePw = async(id, email, name, new_Pw)=>{
   try{
     await anonymousReposiotory.changePassword(changePwUserData.userIdx,inCodeNewPw);
   }catch(err){
-    if(err.message){throw new Error(err.message)}
+    if(err.message)throw new Error(err.message)
     throw new Error(connection_error.SERVICE_CHANGE_PW_ERROR)
   }
   return 1
@@ -251,13 +221,11 @@ const _getUserToChangePw=async(id,email,name)=>{
   try{
     changePwUserData = await anonymousReposiotory.getPwData(id,email,name)
   }catch(err){
-    if(err.message){throw new Error(err.message)}
-    throw new Error("SERVICE_CHANGE_PW_GET_USER_DATA_ERROR")
+    if(err.message)throw new Error(err.message)
+    throw new Error(connection_error.SERVICE_GET_CHANGE_PW_USER_ERROR)
   }
 
-  if(changePwUserData===null||changePwUserData===undefined){
-    throw new Error(logic_error.NOT_EXIST_USER_BY_PW_DATA)
-  }
+  if(!changePwUserData)throw new Error(logic_error.NOT_EXIST_USER_BY_PW_DATA)
 
   return changePwUserData
 }

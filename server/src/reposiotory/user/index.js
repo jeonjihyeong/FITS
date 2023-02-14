@@ -1,3 +1,5 @@
+const { connection_error } = require("../../lib/common/error")
+
 //회원정보 변경
 const chagneUserData =async(userIdx, newData)=>{
     try{
@@ -7,7 +9,7 @@ const chagneUserData =async(userIdx, newData)=>{
             where:{userIdx:userIdx}
         })
     }catch(err){
-        console.log(err)
+        throw new Error(connection_error.REPOSITORY_CHANGE_USER_DATA_ERROR)
     }
 }
 
