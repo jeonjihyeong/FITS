@@ -1,13 +1,8 @@
 const { noteRepo, commentRepo, likeRepo } = require("../../reposiotory")
 const pagination = require("../../lib/common/pagination")
-const { connection_error } = require("../../lib/common/error")
+const { connection_error, logic_error } = require("../../lib/common/error")
 
-/**
- * 
- * @param {*} userIdx 
- * @param {*} title 
- * @param {*} content 
- */
+
 const writeNote =async(userIdx,title,content)=>{
     try{
         await noteRepo.saveNote(userIdx,title,content)
@@ -16,11 +11,7 @@ const writeNote =async(userIdx,title,content)=>{
         throw new Error(connection_error.SERVICE_WRITE_NOTE_ERROR)
     }
 }
-/**
- * 
- * @param {*} page 
- * @returns 
- */
+
 const getNote = async(page)=>{
     let result;
     try{
@@ -48,13 +39,6 @@ const getMyNote = async(page)=>{
 }
 */
 
-
-/**
- * 
- * @param {*} noteIdx 
- * @param {*} accessUser 
- * @returns 
- */
 const getOneNote = async(noteIdx,accessUser)=>{
     let result
     try{
@@ -71,11 +55,6 @@ const getOneNote = async(noteIdx,accessUser)=>{
 }
 
 
-/**
- * 
- * @param {*} noteIdx 
- * @returns 
- */
 const deleteNoteContent = async(noteIdx) =>{
     
     try{
@@ -88,13 +67,6 @@ const deleteNoteContent = async(noteIdx) =>{
 }
 
 
-/**
- * 
- * @param {*} noteIdx 
- * @param {*} title 
- * @param {*} content 
- * @returns 
- */
 const updateNote = async(noteIdx,title,content)=>{
     try{
         await noteRepo.updateNote(noteIdx, title, content)
@@ -107,29 +79,26 @@ const updateNote = async(noteIdx,title,content)=>{
 }
 
 const likeNote = async(noteIdx,userIdx)=>{
-    console.log('hi2')
-    if(await _checkLikedUser(noteIdx,userIdx)){
-        return false
-    }
+    await _checkLikedUser(noteIdx, userIdx)
+
     try{
-        console.log('이건가?')
-        await likeRepo.setLike(noteIdx,userIdx)
+        await likeRepo.setLike(noteIdx, userIdx)
     }catch(err){
+        if(err.message)throw new Error(err.message)
         throw new Error(connection_error.SERVICE_SET_LIKE)
     }
 
-    console.log('hi3')
     return true
 }
 
 const _checkLikedUser = async(noteIdx, userIdx)=>{
     try{
         const isLike = await likeRepo.getUserLike(noteIdx,userIdx)
-        if(!isLike) return false
+        if(!isLike) throw new Error(logic_error.ALREADY_LIKE_NOTE)
     }catch(err){
-        console.log(err)
-        throw new Error('can not get like')
+        throw new Error(connection_error.SERVICE_CHECK_LIKE_ERROR)
     }
+
     return true
 }
 

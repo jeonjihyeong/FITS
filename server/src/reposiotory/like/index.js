@@ -1,3 +1,4 @@
+const { connection_error } = require('../../lib/common/error')
 const {models, Op}= require('../../lib/db')
 
 const getUserLike = async(noteIdx,userIdx)=>{
@@ -10,7 +11,7 @@ const getUserLike = async(noteIdx,userIdx)=>{
             }
         })
     }catch(err){
-        throw new Error("REPOSITORY_WRITE_COMMENT_ERROR")
+        throw new Error(connection_error.REPOSITORY_GET_LIKE_ERROR)
     }
     return results
 }
@@ -22,7 +23,7 @@ const setLike = async(noteIdx,userIdx)=>{
             noteIdx: noteIdx,
         })
     }catch(err){
-        throw new Error("REPOSITORY_WRITE_COMMENT_ERROR")
+        throw new Error(connection_error.REPOSITORY_SET_LIKE_ERROR)
     }
 }
 

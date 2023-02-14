@@ -24,9 +24,16 @@ const connection_error={
     CONTROLLER_SEND_FIND_PW_MAIL_ERROR:"<CONTROLLER ERROR> Send find pw mail error",
     CONTROLLER_CHANGE_PW_ERROR:"<CONTROLLER ERROR> Change pw error",
 
+    CONTROLLER_WRITE_COMMENT_ERROR:"<CONTROLLER ERROR> Write comment error",
+
     CONTROLLER_WRITE_NOTE_ERROR:"<CONTROLLER ERROR> Write note Error",
     CONTROLLER_GET_NOTE_ERROR:"<CONTROLLER ERROR> Get note Error",
-    
+    CONTROLLER_GET_MY_NOTE_ERROR:"<CONTROLLER ERROR> Get my note Error",
+    CONTROLLER_GET_ONE_NOTE_ERROR:"<CONTROLLER ERROR> Get note content Error",
+    CONTROLLER_DELETE_NOTE_ERROR:"<CONTROLLER ERROR> Delete note Error",
+    CONTROLLER_UPDATE_NOTE_ERROR:"<CONTROLLER ERROR> Update note Error",
+    CONTROLLER_GET_LIKE_ERROR:"<CONTROLLER ERROR> Get like Error",
+
     CONTROLLER_LOGOUT_ERROR:"<CONTROLLER ERROR> Logout Error",
 
     SERVICE_GET_USER_DATA_ERROR : "<SERVICE ERROR[login]> Can not get user Data.",
@@ -39,6 +46,7 @@ const connection_error={
     SERVICE_GET_USER_DATA_BY_EMAIL_ERROR : "<SERVICE ERROR> Can not get user data by Email.",
     SERVICE_SEND_FIND_ID_MAIL_ERROR : "<SERVICE ERROR> Can not send Find id mail.",
     SERVICE_CHANGE_PW_ERROR : "<SERVICE ERROR> Can not change pw.",
+    SERVICE_GET_CHANGE_PW_USER_ERROR : "<SERVICE ERROR> Can not change pw.",
     SERVICE_DELETE_USER_IP_ERROR : "<SERVICE ERROR> Can not delete ip in redis to logout.",
     SERVICE_SEND_FIND_PW_MAIL_CHECK_EXISTENCE_ERROR : "<SERVICE ERROR> Can not check user existence.",
     
@@ -49,6 +57,8 @@ const connection_error={
     SERVICE_GET_ONE_NOTE_ERROR : "<SERVICE ERROR> Can not get one note.",
     SERVICE_DELETE_NOTE_ERROR : "<SERVICE ERROR> Can not delete note.",
     SERVICE_UPDATE_NOTE_ERROR : "<SERVICE ERROR> Can not update note.",
+    SERVICE_CHECK_LIKE_ERROR: "<SERVICE ERROR> Can not check Lkie.",
+    SERVICE_SET_LIKE_ERROR: "<SERVICE ERROR> Can note set Like.",
 
     /*댓글 서비스 에러*/
     SERVICE_WRITE_COMMENT_ERROR : "<SERVICE ERROR> Can not write comment.",
@@ -66,9 +76,14 @@ const connection_error={
     REPOSITORY_GET_ONE_NOTE_ERROR : "<REPOSITORY> Can not get one note data.",
     REPOSITORY_DELETE_NOTE_ERROR : "<REPOSITORY> Can not delete this note.",
     REPOSITORY_UPDATE_NOTE_ERROR : "<REPOSITORY> Can not update note.",
+    REPOSITORY_GET_LIKE_ERROR: "<REPOSITORY> Can not get Like.",
+    REPOSITORY_SET_LIKE_ERROR: "<REPOSITORY> Can not set Like",
+
+    REPOSITORY_CHANGE_USER_DATA_ERROR:"<REPOSITORY> Can not change user Data."
 }
 
 const logic_error={
+    ALREADY_LIKE_NOTE: 'This note is Already like',
     LOGIN_ID_FAILED: 'Id is not correct',
     LOGIN_PW_FAILED: 'Pw is not correct',
     SIGN_UP_DUPLICATE_ID: 'This Id is already exist.',

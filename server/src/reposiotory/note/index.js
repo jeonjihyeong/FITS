@@ -1,3 +1,4 @@
+const { connection_error } = require('../../lib/common/error');
 const {models, Op}= require('../../lib/db')
 
 // 게시판 글 작성하기
@@ -13,7 +14,7 @@ const saveNote=async(userIdx,title, content)=>{
         })
     }catch(err){
         console.log(err);
-        throw new Error("REPOSITORY_WRITE_BOARD_ERROR")
+        throw new Error(connection_error.REPOSITORY_SAVE_NOTE_ERROR)
     }
 }
 
@@ -30,7 +31,7 @@ const getNote= async({limit, offset})=>{
         
     }catch(err){
         console.log(err);
-        throw new Error("REPOSITORY_GET_BOARD_ERROR")
+        throw new Error(connection_error.REPOSITORY_GET_NOTE_ERROR)
     }
     return result;
 }
@@ -47,7 +48,7 @@ const getOneNote = async(noteIdx)=>{
     })
     }catch(err){
         console.log(err);
-        throw new Error("REPOSITORY_WRITE_COMMENT_ERROR")
+        throw new Error(connection_error.REPOSITORY_GET_ONE_NOTE_ERROR)
     }
     return result;
 }
@@ -62,7 +63,7 @@ const deleteNote = async(noteIdx)=>{
         })
     }catch(err){
         console.log(err);
-        throw new Error("REPOSITORY_WRITE_COMMENT_ERROR")
+        throw new Error(connection_error.REPOSITORY_DELETE_NOTE_ERROR)
     }
     return
 }
@@ -78,7 +79,7 @@ const updateNote = async(boardIdx, title, content)=>{
         })
     }catch(err){
         console.log(err);
-        throw new Error("REPOSITORY_WRITE_COMMENT_ERROR")
+        throw new Error(connection_error.REPOSITORY_UPDATE_NOTE_ERROR)
     }
 }
 

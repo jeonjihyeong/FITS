@@ -2,7 +2,6 @@ const { server_warning, connection_error } = require('../../lib/common/error');
 const {noteService} = require('../../service')
 
 const writeNote = async(req,res,next)=>{
-    console.log("CONTROLLER: WORKING");
     const {title,content} = req.body;
     const {userIdx} = req.decode
     if(!title || !content||!userIdx) {
@@ -18,9 +17,7 @@ const writeNote = async(req,res,next)=>{
 }
 
 const getNote = async(req, res,next)=>{
-    console.log("CONTROLLER: WORKING");
     const {page}=req.params;
-    console.log(page)
     let result;
     try{
         result = await noteService.getNote(page);
@@ -32,20 +29,18 @@ const getNote = async(req, res,next)=>{
     res.send({data:data, paginate:paginate});
 }
 
-const getMyNote = async(req, res,next)=>{
-    console.log("CONTROLLER: WORKING");
-    let result;
-    try{
-        result = await noteRepo.getBoard();
-        res.send({data:result});
-    }catch(err){
-        if(err.message){next(err)}
-        next({message:"CONTROLLER_GET_MY_NOTE_ERROR"})
-    }
-}
+// const getMyNote = async(req, res,next)=>{
+//     let result;
+//     try{
+//         result = await noteRepo.getBoard();
+//         res.send({data:result});
+//     }catch(err){
+//         if(err.message){next(err)}
+//         next({message:connection_error.CONTROLLER_GET_MY_NOTE_ERROR})
+//     }
+// }
 
 const getOneNote = async(req, res)=>{
-    console.log("CONTROLLER: WORKING");
     const {noteIdx} = req.params;
     const accessUser = req.decode
     let result;
@@ -53,7 +48,7 @@ const getOneNote = async(req, res)=>{
         result = await noteService.getOneNote(noteIdx,accessUser)
     }catch(err){
         if(err.message){next(err)}
-        next({message:"CONTROLLER_GET_ONE_NOTE_ERROR"})
+        next({message:connection_error.CONTROLLER_GET_ONE_NOTE_ERROR})
     }
     res.send(result)
 }
@@ -61,14 +56,14 @@ const getOneNote = async(req, res)=>{
 const deleteNoteContent = async(req,res)=>{
     const {noteIdx} = req.params;
     if(!noteIdx){
-        return next({message:"INVALID REQUEST"})
+        return next({message:server_warning.INVALID_REQUEST_WARN})
     }
     let result;
     try{
         result = await noteService.deleteNoteContent(noteIdx);
     }catch(err){
         if(err.message){next(err)}
-        next({message:"CONTROLLER_DELETE_NOTE_ERROR"})
+        next({message:connection_error.CONTROLLER_DELETE_NOTE_ERROR})
     }    
     res.send(result)
 }
@@ -77,37 +72,34 @@ const updateNote = async(req,res)=>{
     const {noteIdx}= req.params;
     const {title,content}= req.body
     if(!noteIdx|!title|!content){
-        return next({message:"INVALID REQUEST"})
+        return next({message:server_warning.INVALID_REQUEST_WARN})
     }
     try{
         await noteService.updateNote(noteIdx,title,content);
     }catch(err){
-        if(err.message === 'aaa'){next(err + 'aaa')}
-        next({message:"CONTROLLER_UPDATE_NOTE_ERROR"})
+        if(err.message)next(err)
+        next({message:connection_error.CONTROLLER_UPDATE_NOTE_ERROR})
     }
-    return true;
+    res.send({message:"Sucess"});
 }
 
 const likeNote = async(req,res,next)=>{
     const {noteIdx}=req.params;
     const {userIdx} = req.decode;
     if(!noteIdx)next({message:server_warning.INVALID_REQUEST_WARN})
-    console.log('hihi')
     try{
-        if(!await noteService.likeNote(noteIdx,userIdx)){
-            return res.send({message:'alreadyExist'})
-        }
+        await noteService.likeNote(noteIdx,userIdx)
     }catch(err){
-        console.log(err)
+        if(err.message)next(err)
+        next({message:connection_error.CONTROLLER_GET_LIKE_ERROR})
     }
     res.send({message:"성공"})
-    return true
 }
 
 module.exports={
     writeNote,
     getNote,
-    getMyNote,
+    // getMyNote,
     getOneNote,
     deleteNoteContent,
     updateNote,

@@ -1,3 +1,4 @@
+const { connection_error } = require("../../lib/common/error")
 const {commentRepo} = require("../../repository")
 
 const writeComment =async(userIdx,noteIdx,comment)=>{
@@ -5,8 +6,9 @@ const writeComment =async(userIdx,noteIdx,comment)=>{
         await commentRepo.writeComment(userIdx,noteIdx,comment)
     }catch(err){
         if(err.message){throw new Error(err.message)}
-        throw new Error("SERVICE_WRITE_COMMENT_ERROR")
+        throw new Error(connection_error.SERVICE_WRITE_COMMENT_ERROR)
     }
+    return true
 }
 
 module.exports={
