@@ -53,8 +53,8 @@ const anonymous = {
                 const result = await login(reqInfo);
                 console.log(result)
                 if(result!==0){
-                    localStorage.setItem('accessToken',result.data.token.accessToken)
-                    localStorage.setItem('refreshToken',result.data.token.refreshToken)
+                    localStorage.setItem('accessToken', result.data.token.accessToken)
+                    localStorage.setItem('refreshToken', result.data.token.refreshToken)
                     const decodeToken = jwt_decode(result.data.token.accessToken)
                     context.commit('updateUserInfo',decodeToken)
                     return 'SUCCESS'

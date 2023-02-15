@@ -9,7 +9,7 @@ noteRouter.post('/', note.writeNote);
 noteRouter.get('/all/:page', note.getNote);
 
 // 내 노트 가져오기
-noteRouter.get('/my', note.getMyNote)
+// noteRouter.get('/my', note.getMyNote)
 
 // 게시글 좋아요
 noteRouter.post('/view/like/:noteIdx', note.likeNote);

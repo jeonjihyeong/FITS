@@ -1,5 +1,5 @@
 const { connection_error } = require("../../lib/common/error")
-const {commentRepo} = require("../../repository")
+const {commentRepo} = require("../../reposiotory")
 
 const writeComment =async(userIdx,noteIdx,comment)=>{
     try{
