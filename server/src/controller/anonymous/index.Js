@@ -26,8 +26,6 @@ const login = async(req,res,next) => {
     return next({message:connection_error.CONTROLLER_LOGIN_ERROR});
   }
     
-  if(!loginResult.accessToken || !loginResult.refreshToken) return res.send({message:loginResult}) 
-    
   res.send({
     token:{
       ...loginResult
