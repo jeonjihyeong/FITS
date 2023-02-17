@@ -27,6 +27,17 @@ const setLike = async(noteIdx,userIdx)=>{
     }
 }
 
+const countNoteLike = async(noteIdx, userIdx)=>{
+    let results
+    try{
+        results = await models['like'].findAndCountAll({
+            noteIdx
+        })
+    }catch(err){
+        
+    }
+}
+
 module.exports={
     getUserLike,
     setLike
