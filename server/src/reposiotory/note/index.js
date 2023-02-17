@@ -1,5 +1,6 @@
 const { connection_error } = require('../../lib/common/error');
 const {models, Op}= require('../../lib/db')
+const Sequelize = require('sequelize')
 
 // 게시판 글 작성하기
 const saveNote=async(userIdx,title, content)=>{
@@ -23,12 +24,13 @@ const getNote= async({limit, offset})=>{
     let result;
     try{
         result = await models['note'].findAndCountAll({
-            include:models['user'].name,
+            include:[models['user']],
+            include:[models['like']],
+            // include:[[Sequelize.fn('COUNT', Sequelize.col('models[like].likeIdx')),'likeCount']],
             order:[['created','DESC']],
             limit:limit,
             offset:offset
         })
-        
     }catch(err){
         console.log(err);
         throw new Error(connection_error.REPOSITORY_GET_NOTE_ERROR)
