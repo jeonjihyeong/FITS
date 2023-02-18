@@ -13,6 +13,20 @@ const chagneUserData =async(userIdx, newData)=>{
     }
 }
 
+const checkFollow=async(follower,following)=>{
+    try{
+        await models['follow'].findOne({
+            where:{
+                follower: follower,
+                following : following
+            }
+        })
+    }catch(err){
+
+    }
+}
+
 module.exports={
-    chagneUserData
+    chagneUserData,
+    checkFollow
 }
