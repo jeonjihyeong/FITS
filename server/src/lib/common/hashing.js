@@ -14,7 +14,6 @@ const decryptionPassWord=  (InputPw,DB_salt)=>{
         const decodePassword = crypto.createHash("sha512").update(InputPw + DB_salt).digest("hex");
         return decodePassword;
     }catch(err){
-        // TODO: Logger
         // throw new Error("DECODING_ERROR")
         return undefined;
     }
