@@ -28,7 +28,31 @@ const logout=async(req,res,next)=>{
     res.send({data:'success'})
 }
 
+const follow = async(req,res,next)=>{
+    const {follower, following}=req.params;
+    if(!follower,following)return next({message:server_warning.INVALID_REQUEST_WARN})
+
+    try{
+
+    }catch(err){
+
+    }
+}
+
+const unfollow = async(req,res,next)=>{
+    const {follower, following}=req.params;
+    if(!follower,following)return next({message:server_warning.INVALID_REQUEST_WARN})
+
+    try{
+
+    }catch(err){
+
+    }
+}
+
 module.exports={
     change,
-    logout
+    logout,
+    follow,
+    unfollow
 }
