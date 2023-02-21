@@ -20,7 +20,8 @@
             <v-col cols="6" v-for="(item, index) in allNoteInfo" :key="index">
                 <MyNoteCard 
                 :title='item.title'
-                :noteIdx = 'item.noteIdx'/>
+                :noteIdx = 'item.noteIdx'
+                :like = 'item.likes'/>
             </v-col>
         </v-row>
         <br>
