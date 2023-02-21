@@ -79,3 +79,14 @@ export const changeNote=async(noteIdx)=>{
     console.log(result);
     return 1
 }
+
+export const noteLike=async(noteIdx)=>{
+    let result
+    try{
+        result = await http.post(`/view/like/${noteIdx}`)
+    }catch(err){
+        console.log(err);
+    }
+    console.log(result);
+    return 1
+}

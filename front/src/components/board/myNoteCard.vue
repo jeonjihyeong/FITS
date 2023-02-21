@@ -12,8 +12,11 @@
         <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn icon
-                color="pink lighten-1">
-                <v-icon>mdi-heart</v-icon>
+                color="pink lighten-1"
+                @click="$event => noteLike()">
+                <v-icon v-if="heart">mdi-heart</v-icon>
+                <v-icon disabled v-if="!heart">mdi-heart</v-icon>
+                {{like.length}}
             </v-btn>
 
             <v-btn icon
@@ -30,15 +33,49 @@
 </template>
 
 <script>
+    import { mapState, mapActions } from 'vuex'
     export default {
         data() {
             return {
-                hello:"ㅎㅇㅎㅇ",
                 marker: Boolean,
-                like: Boolean,
+                heart: false,
             }
         },
-        props: ['title','noteIdx'],
+
+        created () {
+            this.checkLike(this.like);
+        },
+
+        computed: {
+            ...mapState({
+            userInfo:state=>state.anonymous.userInfo
+            })
+        },
+
+        methods: {
+            ...mapActions({
+                noteLike:'noteLike',
+            }),
+
+            async noteLike (){
+                await this.noteLike(this.noteIdx)
+            },  
+            
+            checkLike(like) {
+                if(like.length===0){
+                    return
+                }
+                let index;
+                for(index = 0 ; index<=like.length ; index++){
+                    if(like[index].userIdx===this.userInfo.userIdx){
+                        return this.heart = true
+                    }
+                    return
+                }
+                return
+            },
+        },
+        props: ['title','noteIdx','like'],
     }
 </script>
 

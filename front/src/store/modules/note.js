@@ -3,7 +3,8 @@ import {
     deleteNote,
     getNote,
     getOneNote,
-    writeNote
+    writeNote,
+    noteLike
 } from '@/api/note'
 
 import {writeComment} from '@/api/comment'
@@ -40,6 +41,9 @@ export default {
         },
         async deleteNote(context, noteIdx){
             return await deleteNote(noteIdx);
+        },
+        async noteLike(context, noteIdx){
+            return await noteLike(noteIdx);
         },
     }
 };
