@@ -13,7 +13,7 @@ noteRouter.get('/all/:page', note.getNote);
 
 // 게시글 좋아요
 noteRouter.post('/view/like/:noteIdx', note.likeNote);
-noteRouter.post('/view/unlike/:noteIdx', note.likeNote);
+noteRouter.delete('/view/unlike/:noteIdx', note.likeNote);
 
 // 게시글 view
 noteRouter.get('/view/:noteIdx', note.getOneNote);

@@ -12,10 +12,17 @@
         <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn icon
+                v-if="heart"
                 color="pink lighten-1"
                 @click="$event => noteLike()">
-                <v-icon v-if="heart">mdi-heart</v-icon>
-                <v-icon disabled v-if="!heart">mdi-heart</v-icon>
+                <v-icon>mdi-heart</v-icon>
+                {{like.length}}
+            </v-btn>
+            <v-btn icon
+                v-if="!heart"
+                color="pink lighten-1"
+                @click="$event => noteLikeCancle()">
+                <v-icon disabled>mdi-heart</v-icon>
                 {{like.length}}
             </v-btn>
 
@@ -55,11 +62,24 @@
         methods: {
             ...mapActions({
                 noteLike:'noteLike',
+                noteLikeCancle: 'noteLikeCancle'
             }),
 
             async noteLike (){
-                await this.noteLike(this.noteIdx)
-            },  
+                try{
+                    await this.noteLike(this.noteIdx)
+                }catch(err){
+                    console.log(err)
+                }
+            },
+            
+            async noteLikeCancle(){
+                try{
+                    await this.noteLikeCancle(this.noteIdx)
+                }catch(err){
+                    console.log(err)
+                }
+            },
             
             checkLike(like) {
                 if(like.length===0){

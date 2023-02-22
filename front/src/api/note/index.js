@@ -90,3 +90,14 @@ export const noteLike=async(noteIdx)=>{
     console.log(result);
     return 1
 }
+
+export const noteLikeCancle=async(noteIdx)=>{
+    let result
+    try{
+        result = await http.delete(`/view/unlike/${noteIdx}`)
+    }catch(err){
+        console.log(err);
+    }
+    console.log(result);
+    return 1
+}

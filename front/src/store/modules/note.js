@@ -4,7 +4,8 @@ import {
     getNote,
     getOneNote,
     writeNote,
-    noteLike
+    noteLike,
+    noteLikeCancle
 } from '@/api/note'
 
 import {writeComment} from '@/api/comment'
@@ -44,6 +45,9 @@ export default {
         },
         async noteLike(context, noteIdx){
             return await noteLike(noteIdx);
+        },
+        async noteLikeCancle(context, noteIdx){
+            return await noteLikeCancle(noteIdx);
         },
     }
 };
