@@ -70,7 +70,9 @@ import { mapActions } from 'vuex';
         async deleteNote(){
             try{
                 const noteIdx = this.$route.params.noteIdx;
-                if(await this.delete(noteIdx)==="success"){
+                const isDeleteSuccess = await this.delete(noteIdx)
+                if(isDeleteSuccess==="success"){
+                    alert('성공했습니다 . ')
                     this.$router.push('/')
                 }
             }catch(err){

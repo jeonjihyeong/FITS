@@ -85,7 +85,7 @@ const likeNote = async(noteIdx,userIdx)=>{
         await likeRepo.setLike(noteIdx, userIdx)
     }catch(err){
         if(err.message)throw new Error(err.message)
-        throw new Error(connection_error.SERVICE_SET_LIKE)
+        throw new Error(connection_error.SERVICE_SET_LIKE_ERROR)
     }
 
     return true

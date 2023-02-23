@@ -57,20 +57,21 @@ export const getOneNote=async(noteIdx)=>{
 // 글 삭제
 export const deleteNote=async(noteIdx)=>{
     let result;
+    console.log(noteIdx)
     try{
-        await http.delete(`/note/view/${noteIdx}`)
+        result = await http.delete(`/note/view/${noteIdx}`)
     }catch(err){
         console.log(err);
     }
     if(result.data.message==="success"){
         alert("삭제 성공")
-        return 1
+        return "success"
     }
-    return 0
+    return "false"
 }
 
 export const changeNote=async(noteIdx)=>{
-    let result
+    let result;
     try{
         result = await http.put(`/note/view/${noteIdx}`)
     }catch(err){
