@@ -65,7 +65,7 @@
                 noteLikeCancle: 'noteLikeCancle'
             }),
 
-            async noteLike (){
+            async noteLike(){
                 try{
                     await this.noteLike(this.noteIdx)
                 }catch(err){
@@ -90,7 +90,6 @@
                     if(like[index].userIdx===this.userInfo.userIdx){
                         return this.heart = true
                     }
-                    return
                 }
                 return
             },

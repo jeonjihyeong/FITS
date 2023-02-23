@@ -35,7 +35,13 @@ export default {
         },
         // 게시글 하나 가지고오기
         async getOneNote(context,noteIdx){
-            return await getOneNote(noteIdx)
+            let result;
+            try{
+                result = await getOneNote(noteIdx)
+            }catch(err){
+                console.log(err)
+            }
+            return result
         },
         async writeComment(context,reqInfo){
             return await writeComment(reqInfo);

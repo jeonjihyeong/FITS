@@ -22,17 +22,18 @@ const saveNote=async(userIdx,title, content)=>{
 //게시판 리스트 글 가지고 오기
 const getNote= async({limit, offset})=>{ 
     let result;
+    
     try{
         result = await models['note'].findAndCountAll({
             include:[models['user']],
             include:[models['like']],
             // include:[[Sequelize.fn('COUNT', Sequelize.col('models[like].likeIdx')),'likeCount']],
             order:[['created','DESC']],
-            limit:limit,
-            offset:offset
+            distinct:true,
+            limit : limit,
+            offset : offset
         })
     }catch(err){
-        console.log(err);
         throw new Error(connection_error.REPOSITORY_GET_NOTE_ERROR)
     }
     return result;
