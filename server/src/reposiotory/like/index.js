@@ -27,6 +27,19 @@ const setLike = async(noteIdx,userIdx)=>{
     }
 }
 
+const dropLike = async(noteIdx,userIdx)=>{
+    try{
+        await models['like'].delete({
+            where:{
+                userIdx: userIdx,
+                noteIdx: noteIdx,
+            }
+        })
+    }catch(err){
+        throw new Error(connection_error.REPOSITORY_DROP_LIKE_ERROR)
+    }
+}
+
 const countNoteLike = async(noteIdx, userIdx)=>{
     let results
     try{
@@ -40,5 +53,6 @@ const countNoteLike = async(noteIdx, userIdx)=>{
 
 module.exports={
     getUserLike,
-    setLike
+    setLike,
+    dropLike,
 }

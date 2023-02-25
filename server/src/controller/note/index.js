@@ -91,7 +91,23 @@ const likeNote = async(req,res,next)=>{
         await noteService.likeNote(noteIdx,userIdx)
     }catch(err){
         if(err.message)next(err)
-        next({message:connection_error.CONTROLLER_GET_LIKE_ERROR})
+        next({message:connection_error.CONTROLLER_SET_LIKE_ERROR})
+    }
+    res.send({message:"성공"})
+}
+
+
+const unLikeNote = async(req,res,next)=>{
+    const {noteIdx}=req.params;
+    const {userIdx} = req.decode;
+    
+    if(!noteIdx)next({message:server_warning.INVALID_REQUEST_WARN})
+    
+    try{
+        await noteService.unLikeNote(noteIdx,userIdx)
+    }catch(err){
+        if(err.message)next(err)
+        next({message:connection_error.CONTROLLER_DELETE_LIKE_ERROR})
     }
     res.send({message:"성공"})
 }
@@ -103,5 +119,6 @@ module.exports={
     getOneNote,
     deleteNoteContent,
     updateNote,
-    likeNote
+    likeNote,
+    unLikeNote
 }

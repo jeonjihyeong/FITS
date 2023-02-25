@@ -32,7 +32,8 @@ const connection_error={
     CONTROLLER_GET_ONE_NOTE_ERROR:"<CONTROLLER ERROR> Get note content Error",
     CONTROLLER_DELETE_NOTE_ERROR:"<CONTROLLER ERROR> Delete note Error",
     CONTROLLER_UPDATE_NOTE_ERROR:"<CONTROLLER ERROR> Update note Error",
-    CONTROLLER_GET_LIKE_ERROR:"<CONTROLLER ERROR> Get like Error",
+    CONTROLLER_SET_LIKE_ERROR:"<CONTROLLER ERROR> Set like Error",
+    CONTROLLER_DELETE_LIKE_ERROR:"<CONTROLLER ERROR> Delete like Error",
 
     CONTROLLER_LOGOUT_ERROR:"<CONTROLLER ERROR> Logout Error",
 
@@ -84,6 +85,7 @@ const connection_error={
 
 const logic_error={
     ALREADY_LIKE_NOTE: 'This note is Already like',
+    NOT_ALREADY_LIKE_NOTE: 'This note is not Already liked',
     LOGIN_ID_FAILED: 'Id is not correct',
     LOGIN_PW_FAILED: 'Pw is not correct',
     SIGN_UP_DUPLICATE_ID: 'This Id is already exist.',
