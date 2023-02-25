@@ -79,7 +79,9 @@ const updateNote = async(noteIdx,title,content)=>{
 }
 
 const likeNote = async(noteIdx,userIdx)=>{
-    await _checkLikedUser(noteIdx, userIdx)
+    if(!await _checkLikedUser(noteIdx, userIdx)){
+        throw new Error(logic_error.ALREADY_LIKE_NOTE)
+    }
 
     try{
         await likeRepo.setLike(noteIdx, userIdx)
@@ -94,9 +96,24 @@ const likeNote = async(noteIdx,userIdx)=>{
 const _checkLikedUser = async(noteIdx, userIdx)=>{
     try{
         const isLike = await likeRepo.getUserLike(noteIdx,userIdx)
-        if(!isLike) throw new Error(logic_error.ALREADY_LIKE_NOTE)
+        if(!isLike) return false
     }catch(err){
         throw new Error(connection_error.SERVICE_CHECK_LIKE_ERROR)
+    }
+
+    return true
+}
+
+const unLikeNote = async(noteIdx,userIdx)=>{
+    if(await _checkLikedUser(noteIdx, userIdx)){
+        throw new Error(logic_error.NOT_ALREADY_LIKE_NOTE)
+    }
+    
+    try{
+        await likeRepo.dropLike(noteIdx, userIdx)
+    }catch(err){
+        if(err.message)throw new Error(err.message)
+        throw new Error(connection_error.SERVICE_SET_LIKE_ERROR)
     }
 
     return true
@@ -108,5 +125,6 @@ module.exports = {
     getOneNote,
     deleteNoteContent,
     updateNote,
-    likeNote
+    likeNote,
+    unLikeNote
 }
