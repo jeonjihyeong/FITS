@@ -13,6 +13,7 @@ import myInfo from '@/views/user/myInfo.vue'
 import writeNote from '@/views/note/writeNote.vue'
 import noteLayout from '@/views/note/noteLayout.vue'
 import updateInfo from '@/views/user/updateInfo.vue'
+import userProfile from '@/views/user/userProfile.vue'
 
 Vue.use(VueRouter)
 
@@ -126,7 +127,13 @@ const routes = [
     path: '/user/update',
     name: 'updateInfo',
     component:updateInfo
-  }
+  },
+  {
+    path: '/user/profile',
+    name: 'userProfile',
+    component:userProfile
+  },
+
   
 ]
 
