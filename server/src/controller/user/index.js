@@ -29,7 +29,7 @@ const logout=async(req,res,next)=>{
 }
 
 const follow = async(req,res,next)=>{
-    const {follower, following}=req.params;
+    const {follower, following}=req.body;
     if(!follower||!following)return next({message:server_warning.INVALID_REQUEST_WARN})
     let isFollowSuccess;
     try{
@@ -42,7 +42,7 @@ const follow = async(req,res,next)=>{
 }
 
 const unfollow = async(req,res,next)=>{
-    const {follower, following}=req.params;
+    const {follower, following}=req.body;
     if(!follower||!following)return next({message:server_warning.INVALID_REQUEST_WARN})
     let isUnFollowSuccess;
     try{
@@ -55,9 +55,15 @@ const unfollow = async(req,res,next)=>{
     res.send({data:'success'})
 }
 
+const uploadProfileImage =async(req, res, next)=>{
+    const {image, userIdx} = req.body
+    res.send({data:'success'})
+}
+
 module.exports={
     change,
     logout,
     follow,
-    unfollow
+    unfollow,
+    uploadProfileImage
 }
