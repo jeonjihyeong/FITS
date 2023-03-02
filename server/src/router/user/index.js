@@ -8,6 +8,7 @@ userRouter.delete('/logout',user.logout)
 userRouter.post('/follow',user.follow)
 userRouter.post('/profile/uploads',user.uploadProfileImage)
 userRouter.post('/unfollow',user.unfollow)
+userRouter.get('/profile',user.getProfile)
 
 
 module.exports= userRouter

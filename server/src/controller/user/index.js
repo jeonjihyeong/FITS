@@ -58,6 +58,11 @@ const unfollow = async(req,res,next)=>{
 const uploadProfileImage =async(req, res, next)=>{
     const {image, userIdx} = req.body
     res.send({data:'success'})
+    // TODO: 프로필 사진 업로드 하는 API 구현
+}
+
+const getProfile = async(req,res,next)=>{
+    // TODO: 프로필 가지고 오는 API 만들기 해당 아이디의 팔로워와 팔로잉 정보 및 이미지
 }
 
 module.exports={
@@ -65,5 +70,6 @@ module.exports={
     logout,
     follow,
     unfollow,
-    uploadProfileImage
+    uploadProfileImage,
+    getProfile
 }
