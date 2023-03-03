@@ -37,13 +37,57 @@
                 스터디 노트
             </v-col>
         </v-row>
-
+        <v-row>
+            <v-spacer></v-spacer>
+            <v-btn 
+                color="pink lighten-1"
+                text
+                v-on:click="logOut()"
+                >
+                로그아웃
+            </v-btn>
+        </v-row>
     </v-container>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
     export default {
-        
+        data() {
+            return {
+                note: {}
+            }
+        },
+
+        created () {
+            this.getUserInfo;
+        },
+
+        methods: {
+            ...mapActions({
+                logout:"dropToken",
+                getUserInfo:"getUserInfo"
+            }),
+            async logOut() {
+                try{
+                    this.logout();
+                    this.$router.push('/')
+                }catch(err){
+                    console.log(err)
+                }
+            },
+
+            async getUserInfo() {
+                let userInfo
+                try{
+                    userInfo = this.getUserInfo();
+                }catch(err){
+                    console.log(err)
+                }
+                this.note = userInfo
+            }
+        },
     }
 </script>
 

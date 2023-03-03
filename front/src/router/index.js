@@ -9,7 +9,7 @@ import findPw from '@/views/auth/findPw.vue'
 import myNote from '@/views/note/myNote.vue'
 import allNote from '@/views/note/allNote.vue'
 import noteView from '@/views/note/noteView.vue'
-import myInfo from '@/views/user/myInfo.vue'
+// import myInfo from '@/views/user/myInfo.vue'
 import writeNote from '@/views/note/writeNote.vue'
 import noteLayout from '@/views/note/noteLayout.vue'
 import updateInfo from '@/views/user/updateInfo.vue'
@@ -110,7 +110,7 @@ const routes = [
   {
     path: '/user/myInfo',
     name: 'myInfo',
-    component: myInfo,
+    component: userProfile,
     beforeEnter:(to,from,next)=>{
       console.log("로그인 상태 체크");
       if(localStorage.getItem("accessToken")){
