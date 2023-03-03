@@ -6,11 +6,11 @@ import {
     sendFindPwMail,
     changePw,
 } from '@/api/anonymous'
-import userApi from '@/api/user'
+import {changeUserData} from '@/api/user'
 import jwt_decode from 'jwt-decode'
 
 
-const anonymous = {
+export default {
     state:{
         userInfo:{
             id:'',
@@ -91,10 +91,9 @@ const anonymous = {
         },
         //회원정보 변경
         async changeUserData(context,reqData){
-            return await userApi.changeUserData(reqData);
+            return await changeUserData(reqData);
         }
 
     }
 }
 
-export default anonymous

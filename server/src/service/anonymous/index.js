@@ -31,11 +31,6 @@ const login = async(id,pw,ip)=>{
   const refreshToken = jwt.signRefreshToken();
 
   await _setRedisIpAndRefreshToken(userInfo, refreshToken, ip);
-
-  const tokenValue = {
-    accessToken : accessToken,
-    refreshToken : refreshToken
-  }
   
   return {
     accessToken : accessToken,
