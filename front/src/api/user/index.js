@@ -1,6 +1,6 @@
 import http from '@/api/axios/index'
 
-export const changeUserData =async(reqData)=>{
+export const changeUserData = async(reqData)=>{
     http.put(`/user`,reqData
     ).then((res)=>{
         let result=false
