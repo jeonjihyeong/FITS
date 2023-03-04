@@ -1,7 +1,7 @@
 import http from '@/api/axios'
 
 // 글전체 목록 가지고 오기
-export const getNote=async(page)=>{
+export const getNote = async(page)=>{
     let result;
     try{
         result = await http.get(`/note/all/${page}`)
@@ -20,7 +20,7 @@ export const getNote=async(page)=>{
 
 
 // 글작성하기
-export const writeNote=async(reqData)=>{
+export const writeNote = async(reqData)=>{
     let result;
     try{
         result = await http.post('/note',reqData)
@@ -36,7 +36,7 @@ export const writeNote=async(reqData)=>{
 }
 
 // 글한개 가지고 오기
-export const getOneNote=async(noteIdx)=>{
+export const getOneNote = async(noteIdx)=>{
     let result;
     try{
         result = await http.get(`/note/view/${noteIdx}`)
@@ -55,7 +55,7 @@ export const getOneNote=async(noteIdx)=>{
 }
 
 // 글 삭제
-export const deleteNote=async(noteIdx)=>{
+export const deleteNote = async(noteIdx)=>{
     let result;
     console.log(noteIdx)
     try{
@@ -70,7 +70,7 @@ export const deleteNote=async(noteIdx)=>{
     return "false"
 }
 
-export const changeNote=async(noteIdx)=>{
+export const changeNote = async(noteIdx)=>{
     let result;
     try{
         result = await http.put(`/note/view/${noteIdx}`)
@@ -81,7 +81,7 @@ export const changeNote=async(noteIdx)=>{
     return 1
 }
 
-export const noteLike=async(noteIdx)=>{
+export const noteLike = async(noteIdx)=>{
     let result
     try{
         result = await http.post(`/view/like/${noteIdx}`)
