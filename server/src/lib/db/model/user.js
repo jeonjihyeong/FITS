@@ -46,10 +46,14 @@ const create = async (sequelize) => {
             {foreignKey: 'userIdx',
         });
         userTable.hasMany(models.follow, 
-            {foreignKey: 'following',
+            {
+                foreignKey: 'userIdx',
+                as: "following"
         });
         userTable.hasMany(models.follow, 
-            {foreignKey: 'follower',
+            {
+                foreignKey: 'userIdx',
+                as: "follower"
         });
         userTable.hasMany(models.like, 
             {foreignKey: 'userIdx',

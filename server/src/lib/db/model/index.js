@@ -10,7 +10,7 @@ const modelList = [
 
 module.exports = {
     modelDefines : {
-        user, note, comment,follow,like
+        user, note, comment, follow ,like
     },
     modelList
 }

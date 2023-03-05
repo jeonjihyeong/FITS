@@ -16,6 +16,8 @@ const login = async(id,pw,ip)=>{
     throw new Error(connection_error.SERVICE_GET_USER_DATA_ERROR)
   }
 
+  console.log(userInfo)
+
   await _checkLogin(pw,userInfo)
   await _checkDuplicateLogin(id,userInfo)
   

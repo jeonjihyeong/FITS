@@ -61,7 +61,15 @@ const uploadProfileImage =async(req, res, next)=>{
     // TODO: 프로필 사진 업로드 하는 API 구현
 }
 
-const getProfile = async(req,res,next)=>{
+const getUserProfile = async(req,res,next)=>{
+    const {userIdx} = req.params
+    let userProfile;
+    try{
+        userProfile = await userService.getUserProfile(userIdx)
+    }catch(err){
+        if(err.message)return next(err)
+        next({message:connection_error.CONTROLLER_GET_PROFILE_ERROR})
+    }
     // TODO: 프로필 가지고 오는 API 만들기 해당 아이디의 팔로워와 팔로잉 정보 및 이미지
 }
 
@@ -71,5 +79,5 @@ module.exports={
     follow,
     unfollow,
     uploadProfileImage,
-    getProfile
+    getUserProfile
 }

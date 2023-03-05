@@ -15,14 +15,16 @@ const create = async (sequelize) => {
             references: {
                 model: 'user',
                 key: 'userIdx',
-            }
+            },
+            allowNull: false,
         },
         follower: {
             type: DataTypes.INTEGER,
             references: {
                 model: 'user',
                 key: 'userIdx',
-            }
+            },
+            allowNull: false,
         },
     }, {
         // Other model options go here   timestamps: false,
