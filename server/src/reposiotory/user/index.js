@@ -22,11 +22,39 @@ const checkFollow=async(follower,following)=>{
             }
         })
     }catch(err){
-
+        throw new Error(connection_error.REPOSITORY_CHECK_FOLLOW_ERROR)
     }
 }
 
+const getUserProfile=async(userIdx)=>{
+    try{
+        await models['follow'].findOne({
+            where:{
+                follower: 8,
+                following : 9
+            }
+        })
+    }catch(err){
+        console.log(err)
+        throw new Error(connection_error.REPOSITORY_CHANGE_USER_DATA_ERROR)
+    }
+}
+
+const getUserFollower=async(userIdx)=>{
+    console.log('1')
+}
+
+const getUserFollowing=async(userIdx)=>{
+    console.log('2')
+}
+
+
+
+
 module.exports={
     chagneUserData,
-    checkFollow
+    checkFollow,
+    getUserProfile,
+    getUserFollower,
+    getUserFollowing
 }
