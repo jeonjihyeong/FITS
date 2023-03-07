@@ -29,6 +29,7 @@ const getUserId = async(id)=>{
             }
         })
     }catch(err){
+        console.error(err)
         throw new Error(connection_error.REPOSITORY_GET_USER_BY_ID_ERROR)
     }
     return results
@@ -87,5 +88,9 @@ const changePassword=async(userIdx,{hashPw,salt})=>{
 
 
 module.exports={
-    saveUser,getUserId,getEmailData,getPwData,changePassword
+    saveUser,
+    getUserId,
+    getEmailData,
+    getPwData,
+    changePassword
 }

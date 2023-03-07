@@ -22,7 +22,6 @@ const saveNote=async(userIdx,title, content)=>{
 //게시판 리스트 글 가지고 오기
 const getNote= async({limit, offset})=>{ 
     let result;
-    
     try{
         result = await models['note'].findAndCountAll({
             include:[models['user']],
@@ -35,6 +34,28 @@ const getNote= async({limit, offset})=>{
         })
     }catch(err){
         throw new Error(connection_error.REPOSITORY_GET_NOTE_ERROR)
+    }
+    return result;
+}
+
+//게시판 리스트 글 가지고 오기
+const getMyNote= async({limit, offset},userIdx)=>{ 
+    let result;
+    try{
+        result = await models['note'].findAndCountAll({
+            include:[models['user']],
+            include:[models['like']],
+            // include:[[Sequelize.fn('COUNT', Sequelize.col('models[like].likeIdx')),'likeCount']],
+            order:[['created','DESC']],
+            distinct:true,
+            limit : limit,
+            offset : offset,
+            where :{
+                userIdx
+            }
+        })
+    }catch(err){
+        throw new Error(connection_error.REPOSITORY_GET_MY_NOTE_ERROR)
     }
     return result;
 }
@@ -87,5 +108,10 @@ const updateNote = async(boardIdx, title, content)=>{
 }
 
 module.exports = {
-    saveNote, getNote, getOneNote, deleteNote, updateNote
+    saveNote,
+    getNote,
+    getMyNote,
+    getOneNote,
+    deleteNote,
+    updateNote
 }

@@ -33,15 +33,13 @@ const create = async (sequelize) => {
     });
 
     followTable.associate = function (models) {
-        followTable.belongsToMany(models.user, {
-            through: models.user,
-            foreignKey: 'following',
+        followTable.belongsTo(models.user, {
+            foreignKey: 'userIdx',
             onDelete: "CASCADE"
         });
         
-        followTable.belongsToMany(models.user, {
-            through: models.user,
-            foreignKey: 'follower',
+        followTable.belongsTo(models.user, {
+            foreignKey: 'userIdx',
             onDelete: "CASCADE"
         });
     };
