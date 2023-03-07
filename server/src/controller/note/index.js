@@ -21,24 +21,26 @@ const getNote = async(req, res,next)=>{
     let result;
     try{
         result = await noteService.getNote(page);
-        if(!result) return result;
     }catch(err){
-        throw new Error(connection_error.CONTROLLER_GET_NOTE_ERROR)
+        if(err.message) return next(err)
+        next({message:connection_error.CONTROLLER_GET_NOTE_ERROR})
     }
     const {data, paginate} = result
     res.send({data:data, paginate:paginate});
 }
 
-// const getMyNote = async(req, res,next)=>{
-//     let result;
-//     try{
-//         result = await noteRepo.getBoard();
-//         res.send({data:result});
-//     }catch(err){
-//         if(err.message){next(err)}
-//         next({message:connection_error.CONTROLLER_GET_MY_NOTE_ERROR})
-//     }
-// }
+const getMyNote = async(req, res,next)=>{
+    const {page, userIdx}=req.query
+    let result;
+    try{
+        result = await noteRepo.getMyNote(page,userIdx);
+    }catch(err){
+        if(err.message) return next(err)
+        next({message:connection_error.CONTROLLER_GET_MY_NOTE_ERROR})
+    }
+    const {data, paginate} = result
+    res.send({data:data, paginate:paginate});
+}
 
 const getOneNote = async(req, res)=>{
     const {noteIdx} = req.params;
@@ -80,7 +82,7 @@ const updateNote = async(req,res)=>{
         if(err.message)next(err)
         next({message:connection_error.CONTROLLER_UPDATE_NOTE_ERROR})
     }
-    res.send({message:"Sucess"});
+    res.send({message:"성공"});
 }
 
 const likeNote = async(req,res,next)=>{
@@ -115,7 +117,7 @@ const unLikeNote = async(req,res,next)=>{
 module.exports={
     writeNote,
     getNote,
-    // getMyNote,
+    getMyNote,
     getOneNote,
     deleteNoteContent,
     updateNote,

@@ -24,20 +24,18 @@ const getNote = async(page)=>{
     }
 }
 
-/*
-미구현상태
-const getMyNote = async(page)=>{
+const getMyNote = async(page, userIdx)=>{
     let result;
     try{
         const paginateData =pagination.getPage(page)
-        result = await noteRepo.getNote(paginateData);
+        result = await noteRepo.getMyNote(paginateData);
         res.send({data:result,paginate:paginateData});
     }catch(err){
-        if(err.message){next(err)}
-        next({message:"CONTROLLER_GET_NOTE_ERROR"})
+        if(err.message)throw new Error(err.message)
+        throw new Error(connection_error.SERVICE_GET_MY_NOTE_ERROR)
     }
 }
-*/
+
 
 const getOneNote = async(noteIdx,accessUser)=>{
     let result
