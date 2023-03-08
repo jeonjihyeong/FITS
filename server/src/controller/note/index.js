@@ -18,9 +18,17 @@ const writeNote = async(req,res,next)=>{
 
 const getNote = async(req, res,next)=>{
     const {page}=req.params;
+    const {title, id} = req.query
+    console.log(id)
+    const searchOption = {
+        title:title,
+        id:id
+    }
+    // TODO: searchOption 을 쿼리로 추가 하나의 객체로 묶기 or 
+    //미리 지정해놓고 서버에서 객체로 묶어서 where 로 find
     let result;
     try{
-        result = await noteService.getNote(page);
+        result = await noteService.getNote(page,searchOption);
     }catch(err){
         if(err.message) return next(err)
         next({message:connection_error.CONTROLLER_GET_NOTE_ERROR})
