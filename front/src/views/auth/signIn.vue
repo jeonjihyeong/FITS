@@ -35,18 +35,16 @@
             </v-row>
             <v-row class="mt-5">
                 <v-col cols=12>소셜로그인</v-col>
-                <v-col cols="3">
+                <v-col cols="4">
                     <v-img src="../../assets/kakao_login_large_narrow.png" @click="KakoLoginBtn()"></v-img> 
                 </v-col>
-                <v-col cols="3">
+                <v-col cols="4">
                     <v-img src="../../assets/btnG_완성형.png" ></v-img> 
                 </v-col>
-                <v-col cols="3">
+                <v-col cols="4">
                     <v-img src="../../assets/btn_google_signin_light_normal_web@2x.png"></v-img> 
                 </v-col>
-                <v-col cols="3">
-                    <v-img src="../../assets/btnG_완성형.png" ></v-img> 
-                </v-col>
+                
             </v-row>
         </v-container>
 

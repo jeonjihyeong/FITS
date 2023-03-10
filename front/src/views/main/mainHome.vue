@@ -2,7 +2,7 @@
     <v-container>
         <v-container id="pc">
             <v-row class="homeTitle">
-                인기 스터디룸
+                최신 스터디글
             </v-row>
             <v-row>
                 <v-col cols="4"><RoomCard/></v-col>
@@ -21,7 +21,7 @@
             </v-row>
             <br><br>
             <v-row class="homeTitle">
-                추천 게시글
+                추천 스터디글
             </v-row>
             <v-row>
                 <v-col cols="3"><TextCard 

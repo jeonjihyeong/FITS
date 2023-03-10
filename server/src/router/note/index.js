@@ -7,11 +7,11 @@ const noteRouter= express.Router();
 noteRouter.post('/', note.writeNote);
 
 // 게시글 가져오기
-noteRouter.get('/all', note.getNote);
+noteRouter.get('/all/:page', note.getNote);
 // TODO: 모든게시글에 검색 옵션을 넣어서 하는 방식으로 api 변경
 
 // 내 노트 가져오기
-noteRouter.get('/my', note.getMyNote)
+noteRouter.get('/my/:user', note.getMyNote)
 
 // 게시글 좋아요
 noteRouter.post('/view/like/:noteIdx', note.likeNote);
@@ -21,6 +21,7 @@ noteRouter.delete('/view/unlike/:noteIdx', note.unLikeNote);
 noteRouter.get('/view/:noteIdx', note.getOneNote);
 
 // 게시글 수정
+
 noteRouter.put('/view/:noteIdx',note.updateNote);
 
 // 게시글 삭제

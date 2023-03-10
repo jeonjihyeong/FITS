@@ -25,12 +25,11 @@ const getNote= async({limit, offset},searchOption)=>{
     try{
         result = await models['note'].findAndCountAll({
             include:[
-                {
-                    model:models['user'],
-                    where: {
-                        id:searchOption.id
-                    }
-                }
+                models['user'],
+                    // where: {
+                    //     id:searchOption.id
+                    // }
+                
             ],
             include:[models['like']],
             // include:[[Sequelize.fn('COUNT', Sequelize.col('models[like].likeIdx')),'likeCount']],
@@ -38,11 +37,11 @@ const getNote= async({limit, offset},searchOption)=>{
             distinct:true,
             limit : limit,
             offset : offset,
-            where:{
+            // where:{
                 // [Op.or]:{
                 //     title: searchOption.title
                 // },
-            }
+            // }
         })
     }catch(err){
         console.log(err)
