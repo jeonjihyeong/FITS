@@ -9,9 +9,6 @@ export const login=async(reqInfo)=>{
     catch(err){
         console.log(err);
     }
-    if(!result)  { 
-        alert ('통신 실패 !입니다 !'); return;
-    }
 
     if(!result.data.message){
         console.log(result.data)
