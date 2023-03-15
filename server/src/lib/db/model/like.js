@@ -16,7 +16,6 @@ const create = async (sequelize) => {
                 model: 'user',
                 key: 'userIdx',
             },
-            allowNull: false,
         },
         noteIdx: {
             type: DataTypes.INTEGER,
@@ -24,7 +23,6 @@ const create = async (sequelize) => {
                 model: 'note',
                 key: 'noteIdx',
             },
-            allowNull: false,
         },
     }, {
         // Other model options go here   timestamps: false,

@@ -12,11 +12,11 @@ const writeNote =async(userIdx,title,content)=>{
     }
 }
 
-const getNote = async(page, searchOption)=>{
+const getNote = async(page)=>{
     let result;
     try{
         const paginateData = pagination.getPage(page)
-        result = await noteRepo.getNote(paginateData,searchOption);
+        result = await noteRepo.getNote(paginateData);
         return {data:result,paginate:paginateData}
     }catch(err){
         if(err.message)throw new Error(err.message)
