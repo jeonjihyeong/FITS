@@ -40,7 +40,8 @@ const create = async (sequelize) => {
 
     userTable.associate = function (models) {
         userTable.hasMany(models.note, 
-            {foreignKey: 'userIdx',
+            {
+                foreignKey: 'userIdx',
         });
         userTable.hasMany(models.comment, 
             {
@@ -49,12 +50,12 @@ const create = async (sequelize) => {
 
         userTable.hasMany(models.follow, 
             {
-                foreignKey: 'userIdx',
+                foreignKey: 'follower',
         });
-        // userTable.hasMany(models.follow, 
-        //     {
-        //         foreignKey: 'userIdx',
-        // });
+        userTable.hasMany(models.follow, 
+            {
+                foreignKey: 'following',
+        });
 
         userTable.hasMany(models.like, 
             {foreignKey: 'userIdx',
